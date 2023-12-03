@@ -35,3 +35,12 @@ exports.getUserDelQues = async (userId, isDeleted) => {
         [userId, isDeleted]
     )
 }
+
+exports.hidQuse = async (userId, quesId) => {
+    if (typeof userId !== 'number' || typeof quesId !== 'number') throw Error('userId or quesId not number')
+    return await executeQuery(
+        `UPDATE surveys SET isDeleted = TRUE
+        WHERE userId = ? AND id = ?;`,
+        [userId, quesId]
+    )
+}

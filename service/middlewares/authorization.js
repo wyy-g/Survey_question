@@ -14,7 +14,6 @@ exports.generateToken = function (payload) {
 // 验证token
 exports.verifyToken = function (req, res, next) {
     const token = req.headers.authorization?.split(" ")[1] || ''
-    console.log('toekn', token)
     jwt.verify(token, secretKey, function (err, decoded) {
         if (err) {
             console.log("verify token error", err)

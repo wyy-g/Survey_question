@@ -8,7 +8,8 @@ const API = {
         createQues: `/api/question/create`,
         questionList: `/api/question/all_ques`,
         quesStar: `/api/question/star`,
-        quesDel: `/api/question/delete`
+        quesDel: `/api/question/delete`,
+        hiddenQues: '/api/question/hidden'
     }
 }
 

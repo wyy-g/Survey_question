@@ -2,9 +2,10 @@ const {
     createOneQues,
     getUserAllQues,
     getUserStarQues,
-    getUserDelQues
+    getUserDelQues,
+    hidQuse,
 } = require('../models/question')
-const { isHaveUser } = require('../models/common')
+const { isHaveUser, isHaveQues } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/httpStatusCodes')
 
 exports.createQues = async (req, res) => {
@@ -203,4 +204,53 @@ exports.getUserDel = async (req, res) => {
             msg: '服务器内部错误'
         })
     }
+}
+
+// 假删除某个问卷
+exports.hiddenQues = async (req, res) => {
+    const { userId, quesId } = req.query
+    if (!userId) {
+        return res.status(BAD_REQUEST).send({
+            code: BAD_REQUEST,
+            msg: 'userId 不能为空'
+        })
+    }
+
+    const userData = await isHaveUser(Number(userId))
+    if (userData.length <= 0) {
+        return res.status(NOT_FOUND).send({
+            code: NOT_FOUND,
+            msg: '该用户不存在'
+        })
+    }
+
+    if (!quesId) {
+        return res.status(BAD_REQUEST).send({
+            code: BAD_REQUEST,
+            msg: 'quesId 不能为空'
+        })
+    }
+
+    try {
+        const quesData = await isHaveQues(Number(quesId))
+        if (quesData.length <= 0) {
+            return res.status(NOT_FOUND).send({
+                code: NOT_FOUND,
+                msg: '该问卷不存在'
+            })
+        }
+
+        await hidQuse(Number(userId), Number(quesId))
+        return res.status(OK).send({
+            code: OK,
+            msg: ''
+        })
+    } catch (err) {
+        console.log(err)
+        return res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+
 }

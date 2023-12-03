@@ -7,3 +7,11 @@ exports.isHaveUser = async (userId) => {
         `select * from users where id=?;`, [userId]
     )
 }
+
+exports.isHaveQues = async (quesId) => {
+    if (!quesId) throw Error('quesId not null')
+    if (typeof quesId !== 'number') throw Error('userId not number')
+    return await executeQuery(
+        `select * from surveys where id=?;`, [quesId]
+    )
+}
