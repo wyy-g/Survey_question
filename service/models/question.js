@@ -26,3 +26,12 @@ exports.getUserStarQues = async (userId, isStar) => {
         [userId, isStar]
     )
 }
+
+exports.getUserDelQues = async (userId, isDeleted) => {
+    if (typeof userId !== 'number') throw Error('userId not number')
+    if (isDeleted !== true) throw Error('isDeleted not true')
+    return await executeQuery(
+        `select * from surveys where userId=? and isDeleted=?`,
+        [userId, isDeleted]
+    )
+}
