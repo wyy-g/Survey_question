@@ -10,7 +10,7 @@ const { executeQuery } = require('../db/index')
 
 //     static async register() {
 //         return executeQuery(`
-//             insert into users (account, password) values (?,?)`,
+//             insert into users (username, password) values (?,?)`,
 //             [this.username, this.password]
 //         )
 //     }
@@ -18,15 +18,14 @@ const { executeQuery } = require('../db/index')
 
 exports.register = async (username, password) => {
     return executeQuery(
-        `insert into users (account, password) values (?,?)`,
+        `insert into users (username, password) values (?,?)`,
         [username, password]
     )
 }
 exports.isHaveUsername = async (username) => {
     if (!username) throw Error('username not null')
-    console.log(typeof username)
     const res = await executeQuery(
-        `select * from users where account=?;`, [username]
+        `select * from users where username=?;`, [username]
     )
     return res
 }

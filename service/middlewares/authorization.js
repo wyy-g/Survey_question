@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-
+const { UNAUTHORIZED } = require('../utils/httpStatusCodes')
 const secretKey = "admin_secretKey"
 
 // 生成token
@@ -16,9 +16,9 @@ exports.verifyToken = function (req, res, next) {
     jwt.verify(token, secretKey, function (err, decoded) {
         if (err) {
             console.log("verify token error", err)
-            return res.json({
-                code: 404,
-                msg: 'token 无效'
+            return res.status(UNAUTHORIZED).send({
+                code: UNAUTHORIZED,
+                msg: 'token 无效或已过期'
             })
         }
         next()
