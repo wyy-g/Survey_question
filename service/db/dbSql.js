@@ -8,6 +8,18 @@ const userTableSql = `CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );`
 
-const dbTable = [userTableSql]
+const surveysTableSql = `CREATE TABLE IF NOT EXISTS surveys (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    isPublished BOOLEAN DEFAULT FALSE,
+    isStar BOOLEAN DEFAULT FALSE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+    isDeleted BOOLEAN DEFAULT FALSE,
+    userId INT,
+    FOREIGN KEY (userId) REFERENCES users(id)
+  );`
+
+const dbTable = [userTableSql, surveysTableSql]
 
 module.exports = dbTable
