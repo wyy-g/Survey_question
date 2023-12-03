@@ -1,4 +1,8 @@
-const { createOneQues, getUserAllQues } = require('../models/question')
+const {
+    createOneQues,
+    getUserAllQues,
+    getUserStarQues
+} = require('../models/question')
 const { isHaveUser } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/httpStatusCodes')
 
@@ -88,5 +92,47 @@ exports.getUserQuesList = async (req, res) => {
     }
 }
 
+//获取用户的标星问卷
+exports.getUserStar = async (req, res) => {
+    const { userId } = req.query
+    const isStar = req.query.isStar === 'true' || req.query.isStar === '1'
 
+    if (!userId) {
+        return res.status(BAD_REQUEST).send({
+            code: BAD_REQUEST,
+            msg: 'userId 不能为空'
+        })
+    }
+
+    if (!isStar) {
+        return res.status(BAD_REQUEST).send({
+            code: BAD_REQUEST,
+            msg: 'isStar 不存在 或为false'
+        })
+    }
+
+    try {
+        const userStarQues = await getUserStarQues(Number(userId), isStar)
+        if (userStarQues.length <= 0) {
+            return res.status(NOT_FOUND).send({
+                code: NOT_FOUND,
+                msg: '没有找到标星问卷',
+            })
+        }
+
+        return res.status(OK).send({
+            code: OK,
+            msg: '',
+            data: {
+                userStarQues
+            }
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务器内部错误'
+        })
+    }
+}
 

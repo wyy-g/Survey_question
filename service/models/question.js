@@ -17,3 +17,12 @@ exports.getUserAllQues = async (userId) => {
         [userId]
     )
 }
+
+exports.getUserStarQues = async (userId, isStar) => {
+    if (typeof userId !== 'number') throw Error('userId not number')
+    if (isStar !== true) throw Error('isStar not true')
+    return await executeQuery(
+        `select * from surveys where userId=? and isStar=?`,
+        [userId, isStar]
+    )
+}

@@ -6,7 +6,8 @@ const API = {
     },
     SURVEYS: {
         createQues: `/api/question/create`,
-        questionList: `/api/question/all_ques`
+        questionList: `/api/question/all_ques`,
+        quesStar: `/api/question/star`
     }
 }
 
