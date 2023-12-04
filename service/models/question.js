@@ -52,3 +52,20 @@ exports.setStarStatusModel = async (userId, quesId, isStar) => {
         [isStar, userId, quesId]
     )
 }
+
+exports.recoverQuesModel = async (quesId) => {
+    if (typeof quesId !== 'number') throw Error('quesId not number')
+    return await executeQuery(
+        `UPDATE surveys SET isDeleted = FALSE
+        WHERE  id = ?;`,
+        [quesId]
+    )
+}
+
+exports.delQuesModel = async (quesId) => {
+    if (typeof quesId !== 'number') throw Error('quesId not number')
+    return await executeQuery(
+        `delete from surveys WHERE  id = ?;`,
+        [quesId]
+    )
+}

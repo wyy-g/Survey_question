@@ -4,7 +4,9 @@ const {
     getUserStarQues,
     getUserDelQues,
     hidQuse,
-    setStarStatusModel
+    setStarStatusModel,
+    recoverQuesModel,
+    delQuesModel
 } = require('../models/question')
 const { isHaveUser, isHaveQues } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/httpStatusCodes')
@@ -291,6 +293,56 @@ exports.setStarStatus = async (req, res) => {
             })
         }
         await setStarStatusModel(Number(userId), Number(quesId), isStar)
+        return res.status(OK).send({
+            code: OK,
+            msg: ''
+        })
+    } catch (err) {
+        console.log(err)
+        return res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+}
+
+// 恢复问卷
+exports.recoverQues = async (req, res) => {
+    const quesId = req.params.id
+    try {
+        const quesData = await isHaveQues(Number(quesId))
+        if (quesData.length <= 0) {
+            return res.status(NOT_FOUND).send({
+                code: NOT_FOUND,
+                msg: '该问卷不存在'
+            })
+        }
+        await recoverQuesModel(Number(quesId))
+        return res.status(OK).send({
+            code: OK,
+            msg: ''
+        })
+    } catch (err) {
+        console.log(err)
+        return res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+}
+
+// 彻底删除某个问卷（从回收站中删除）
+exports.delQues = async (req, res) => {
+    const quesId = req.params.id
+    try {
+        const quesData = await isHaveQues(Number(quesId))
+        if (quesData.length <= 0) {
+            return res.status(NOT_FOUND).send({
+                code: NOT_FOUND,
+                msg: '该问卷不存在'
+            })
+        }
+        await delQuesModel(Number(quesId))
         return res.status(OK).send({
             code: OK,
             msg: ''

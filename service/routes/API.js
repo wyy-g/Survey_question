@@ -10,7 +10,9 @@ const API = {
         quesStar: `/api/question/star`,
         quesDel: `/api/question/delete`,
         hiddenQues: '/api/question/hidden',
-        setQuesStarStatus: '/api/question/setStarStatus/:id'
+        setQuesStarStatus: '/api/question/setStarStatus',
+        recoverQues: '/api/question/recoverQues/:id',
+        deleteQues: '/api/question/deleteQues/:id',
     }
 }
 

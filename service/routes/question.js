@@ -21,4 +21,11 @@ router.put(API.SURVEYS.hiddenQues, quesController.hiddenQues)
 
 // 标星与取消标星
 router.put(API.SURVEYS.setQuesStarStatus, quesController.setStarStatus)
+
+// 恢复问卷
+router.put(API.SURVEYS.recoverQues, quesController.recoverQues)
+
+//彻底删除问卷
+router.delete(API.SURVEYS.deleteQues, quesController.delQues)
+
 module.exports = router
