@@ -70,6 +70,13 @@ exports.getUserQuesList = async (req, res) => {
         })
     }
 
+    if (typeof Number(userId) !== 'number') {
+        return res.status(BAD_REQUEST).send({
+            code: BAD_REQUEST,
+            msg: 'userId 不是一个数字'
+        })
+    }
+
     const userData = await isHaveUser(Number(userId))
     if (userData.length <= 0) {
         return res.status(NOT_FOUND).send({
@@ -79,11 +86,11 @@ exports.getUserQuesList = async (req, res) => {
     }
 
     try {
-        const userAllQues = await getUserAllQues(Number(userId))
+        const userAllQues = await getUserAllQues(Number(userId), req.offset, req.pageSize)
         if (userAllQues.length <= 0) {
             return res.status(NOT_FOUND).send({
                 code: NOT_FOUND,
-                msg: '请检查用户ID是否正确',
+                msg: '暂时还没有数据',
                 data: {
                     userAllQues
                 }
@@ -133,7 +140,7 @@ exports.getUserStar = async (req, res) => {
     }
 
     try {
-        const userStarQues = await getUserStarQues(Number(userId), isStar)
+        const userStarQues = await getUserStarQues(Number(userId), isStar, req.offset, req.pageSize)
         if (userStarQues.length <= 0) {
             return res.status(NOT_FOUND).send({
                 code: NOT_FOUND,
@@ -185,7 +192,7 @@ exports.getUserDel = async (req, res) => {
     }
 
     try {
-        const userDelQues = await getUserDelQues(Number(userId), isDeleted)
+        const userDelQues = await getUserDelQues(Number(userId), isDeleted, req.offset, req.pageSize)
         if (userDelQues.length <= 0) {
             return res.status(NOT_FOUND).send({
                 code: NOT_FOUND,

@@ -10,7 +10,7 @@ exports.isHaveUser = async (userId) => {
 
 exports.isHaveQues = async (quesId) => {
     if (!quesId) throw Error('quesId not null')
-    if (typeof quesId !== 'number') throw Error('userId not number')
+    if (typeof quesId !== 'number') throw Error('quesId not number')
     return await executeQuery(
         `select * from surveys where id=?;`, [quesId]
     )

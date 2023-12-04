@@ -1,7 +1,6 @@
 const { executeQuery } = require('../db/index')
 
 exports.createOneQues = async (title, description, isPublished, isStar, isDeleted, userId) => {
-    console.log(isStar)
     if (typeof userId !== 'number') throw Error('userId not number')
     return await executeQuery(
         `INSERT INTO Surveys (title, description, isPublished, isStar, isDeleted, userId)
@@ -10,29 +9,29 @@ exports.createOneQues = async (title, description, isPublished, isStar, isDelete
     )
 }
 
-exports.getUserAllQues = async (userId) => {
+exports.getUserAllQues = async (userId, offset, pageSize) => {
     if (typeof userId !== 'number') throw Error('userId not number')
     return await executeQuery(
-        `select * from surveys where userId=?`,
-        [userId]
+        `select * from surveys where userId=? limit ?, ?`,
+        [userId, offset, pageSize]
     )
 }
 
-exports.getUserStarQues = async (userId, isStar) => {
+exports.getUserStarQues = async (userId, isStar, offset, pageSize) => {
     if (typeof userId !== 'number') throw Error('userId not number')
     if (isStar !== true) throw Error('isStar not true')
     return await executeQuery(
-        `select * from surveys where userId=? and isStar=?`,
-        [userId, isStar]
+        `select * from surveys where userId=? and isStar=? limit ?, ?`,
+        [userId, isStar, offset, pageSize]
     )
 }
 
-exports.getUserDelQues = async (userId, isDeleted) => {
+exports.getUserDelQues = async (userId, isDeleted, offset, pageSize) => {
     if (typeof userId !== 'number') throw Error('userId not number')
     if (isDeleted !== true) throw Error('isDeleted not true')
     return await executeQuery(
-        `select * from surveys where userId=? and isDeleted=?`,
-        [userId, isDeleted]
+        `select * from surveys where userId=? and isDeleted=? limit ?, ?`,
+        [userId, isDeleted, offset, pageSize]
     )
 }
 
