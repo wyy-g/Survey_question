@@ -18,4 +18,7 @@ router.get(API.SURVEYS.quesDel, quesController.getUserDel)
 
 // 假删除问卷
 router.put(API.SURVEYS.hiddenQues, quesController.hiddenQues)
+
+// 标星与取消标星
+router.put(API.SURVEYS.setQuesStarStatus, quesController.setStarStatus)
 module.exports = router

@@ -44,3 +44,11 @@ exports.hidQuse = async (userId, quesId) => {
         [userId, quesId]
     )
 }
+
+exports.setStarStatusModel = async (userId, quesId, isStar) => {
+    if (typeof userId !== 'number' || typeof quesId !== 'number') throw Error('userId or quesId not number')
+    return await executeQuery(
+        `update surveys set isStar = ? where userId = ? and id = ?`,
+        [isStar, userId, quesId]
+    )
+}

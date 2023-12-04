@@ -13,6 +13,14 @@ initDatabase()
 
 app.use(cors())
 
+// app.all('*', (req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*')
+//     res.header('Access-Control-Allow-headers', 'Content-Type')
+//     res.header('Access-Contril-Allow-Methods', 'GET, POST, PUT, DELETE')
+//     res.header('Content-Type', 'application/json;charset=utf-8')
+//     next()
+// })
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 

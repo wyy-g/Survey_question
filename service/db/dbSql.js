@@ -14,6 +14,7 @@ const surveysTableSql = `CREATE TABLE IF NOT EXISTS surveys (
     isPublished BOOLEAN DEFAULT FALSE,
     isStar BOOLEAN DEFAULT FALSE,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     description TEXT,
     isDeleted BOOLEAN DEFAULT FALSE,
     userId INT,

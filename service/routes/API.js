@@ -9,7 +9,8 @@ const API = {
         questionList: `/api/question/all_ques`,
         quesStar: `/api/question/star`,
         quesDel: `/api/question/delete`,
-        hiddenQues: '/api/question/hidden'
+        hiddenQues: '/api/question/hidden',
+        setQuesStarStatus: '/api/question/setStarStatus/:id'
     }
 }
 
