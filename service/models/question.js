@@ -68,3 +68,31 @@ exports.delQuesModel = async (quesId) => {
         [quesId]
     )
 }
+
+exports.searchQuesModel = async (userId, keyword, isStar, isDeleted, offset, pageSize) => {
+    if (typeof userId !== 'number') throw Error('userId not number')
+    if (isDeleted != true) isDeleted = false
+    if (isStar != true) isStar = false
+
+    const searchKeyword = `%${keyword}%`
+
+    console.log(searchKeyword)
+
+    switch (true) {
+        case isStar:
+            return await executeQuery(
+                'select * from surveys where userId=? and isStar = ? and title like ? limit ?, ?',
+                [userId, isStar, searchKeyword, offset, pageSize]
+            )
+        case isDeleted:
+            return await executeQuery(
+                'select * from surveys where userId=? and isDeleted = ? and title like ? limit ?, ?',
+                [userId, isDeleted, searchKeyword, offset, pageSize]
+            )
+        default:
+            return await executeQuery(
+                'select * from surveys where userId=? and title like ? limit ?, ?',
+                [userId, searchKeyword, offset, pageSize]
+            )
+    }
+}

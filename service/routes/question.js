@@ -31,4 +31,7 @@ router.put(API.SURVEYS.recoverQues, quesController.recoverQues)
 //彻底删除问卷
 router.delete(API.SURVEYS.deleteQues, quesController.delQues)
 
+// 搜索问卷
+router.get(API.SURVEYS.searchQues, pagination, quesController.searchQues)
+
 module.exports = router

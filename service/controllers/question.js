@@ -6,7 +6,8 @@ const {
     hidQuse,
     setStarStatusModel,
     recoverQuesModel,
-    delQuesModel
+    delQuesModel,
+    searchQuesModel
 } = require('../models/question')
 const { isHaveUser, isHaveQues } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/httpStatusCodes')
@@ -353,6 +354,36 @@ exports.delQues = async (req, res) => {
         return res.status(OK).send({
             code: OK,
             msg: ''
+        })
+    } catch (err) {
+        console.log(err)
+        return res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+}
+
+// 搜索问卷
+exports.searchQues = async (req, res) => {
+    const { userId, keyword } = req.query
+
+    const isStar = req.query.isStar === 'true' || req.body.query > 0
+    const isDeleted = req.query.isDeleted === 'true' || req.body.query > 0
+
+    try {
+        let quesData = await searchQuesModel(Number(userId), keyword, isStar, isDeleted, req.offset, req.pageSize)
+        // 如果不是搜索回收站则过滤掉在回收站中的问卷
+        if (!isDeleted) {
+            quesData = quesData.filter(item => item.isDeleted == 0)
+            console.log(quesData)
+        }
+        return res.status(OK).send({
+            code: OK,
+            msg: '',
+            data: {
+                quesData
+            }
         })
     } catch (err) {
         console.log(err)

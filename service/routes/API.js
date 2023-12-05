@@ -13,6 +13,7 @@ const API = {
         setQuesStarStatus: '/api/question/setStarStatus',
         recoverQues: '/api/question/recoverQues/:id',
         deleteQues: '/api/question/deleteQues/:id',
+        searchQues: '/api/question/searchQues'
     }
 }
 
