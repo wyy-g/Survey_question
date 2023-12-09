@@ -34,4 +34,7 @@ router.delete(API.SURVEYS.deleteQues, quesController.delQues)
 // 搜索问卷
 router.get(API.SURVEYS.searchQues, pagination, quesController.searchQues)
 
+// 问卷的排序
+router.get(API.SURVEYS.sortQues, pagination, quesController.sortQues)
+
 module.exports = router

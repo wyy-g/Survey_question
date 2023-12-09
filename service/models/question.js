@@ -76,8 +76,6 @@ exports.searchQuesModel = async (userId, keyword, isStar, isDeleted, offset, pag
 
     const searchKeyword = `%${keyword}%`
 
-    console.log(searchKeyword)
-
     switch (true) {
         case isStar:
             return await executeQuery(
@@ -93,6 +91,27 @@ exports.searchQuesModel = async (userId, keyword, isStar, isDeleted, offset, pag
             return await executeQuery(
                 'select * from surveys where userId=? and title like ? limit ?, ?',
                 [userId, searchKeyword, offset, pageSize]
+            )
+    }
+}
+
+// 问卷排序
+exports.sortQuesModel = async (userId, sort, order, offset, pageSize) => {
+    if (typeof userId !== 'number') throw Error('userId not number')
+    if (sort == null || sort == '' || sort == 0) sort = 'createAt'
+    if (order == null || order == '' || order == 0) order = 'desc'
+
+
+    switch (order) {
+        case 'desc':
+            return await executeQuery(
+                'select * from surveys where userId = ? and isDeleted = false order by ? desc limit ?, ?',
+                [userId, sort, offset, pageSize]
+            )
+        case 'asc':
+            return await executeQuery(
+                'select * from surveys where userId = ? and isDeleted = false order by ? asc limit ?, ?',
+                [userId, sort, offset, pageSize]
             )
     }
 }

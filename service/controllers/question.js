@@ -7,7 +7,8 @@ const {
     setStarStatusModel,
     recoverQuesModel,
     delQuesModel,
-    searchQuesModel
+    searchQuesModel,
+    sortQuesModel
 } = require('../models/question')
 const { isHaveUser, isHaveQues } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/httpStatusCodes')
@@ -392,4 +393,30 @@ exports.searchQues = async (req, res) => {
             msg: '服务端内部错误'
         })
     }
+}
+
+// 排序
+exports.sortQues = async (req, res) => {
+    let { userId, sort, order } = req.query
+
+    if (sort !== 'createdAt' || sort !== 'updatedAt') sort = 'createdAt'
+    if (order !== 'desc' || order !== 'asc') sort = 'desc'
+
+    try {
+        const quesData = await sortQuesModel(Number(userId), sort, order, req.offset, req.pageSize)
+        return res.status(OK).send({
+            code: OK,
+            msg: '',
+            data: {
+                quesData
+            }
+        })
+    } catch (err) {
+        console.log(err)
+        return res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+
 }
