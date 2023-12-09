@@ -1,8 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 
-const userRoutes = require('./routes/user')
+const userRouter = require('./routes/user')
 const questionRouter = require('./routes/question.js')
+const quesComRouter = require('./routes/quesComponent.js')
 
 const { initDatabase } = require('./db/index.js');
 const addApiPrefix = require('./middlewares/addApiPrefix.js')
@@ -25,8 +26,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.use(addApiPrefix)
-app.use(userRoutes)
+app.use(userRouter)
 app.use(questionRouter)
+app.use(quesComRouter)
 
 const PORT = process.env.PORT || 3031
 

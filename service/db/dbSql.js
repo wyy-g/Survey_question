@@ -21,6 +21,13 @@ const surveysTableSql = `CREATE TABLE IF NOT EXISTS surveys (
     FOREIGN KEY (userId) REFERENCES users(id)
   );`
 
-const dbTable = [userTableSql, surveysTableSql]
+const quesComponent = `CREATE TABLE IF NOT EXISTS ques_components (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  type VARCHAR(50) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  description TEXT
+);`
+
+const dbTable = [userTableSql, surveysTableSql, quesComponent]
 
 module.exports = dbTable

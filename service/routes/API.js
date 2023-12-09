@@ -15,6 +15,9 @@ const API = {
         deleteQues: '/api/question/deleteQues/:id',
         searchQues: '/api/question/searchQues',
         sortQues: '/api/question/sortQues'
+    },
+    QUES_COM: {
+        getAllQuesCom: '/api/questionComponents'
     }
 }
 
