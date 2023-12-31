@@ -1,6 +1,7 @@
 const {
     createOneQues,
     getUserAllQues,
+    getQuesTotal,
     getUserStarQues,
     getUserDelQues,
     hidQuse,
@@ -47,9 +48,12 @@ exports.createQues = async (req, res) => {
             })
         }
 
-        await createOneQues(title, description, isPublished, isStar, isDeleted, Number(userId))
+        const result = await createOneQues(title, description, isPublished, isStar, isDeleted, Number(userId))
         res.status(CREATED).send({
-            code: CREATED,
+            code: OK,
+            data: {
+                id: result.insertId
+            },
             msg: '创建问卷成功'
         })
     } catch (err) {
@@ -89,12 +93,15 @@ exports.getUserQuesList = async (req, res) => {
 
     try {
         const userAllQues = await getUserAllQues(Number(userId), req.offset, req.pageSize)
+        // 获取问卷的未删除的数量
+        const total = await getQuesTotal(Number(userId))
         if (userAllQues.length <= 0) {
             return res.status(NOT_FOUND).send({
                 code: NOT_FOUND,
                 msg: '暂时还没有数据',
                 data: {
-                    userAllQues
+                    userAllQues,
+                    total: total[0].total
                 }
             })
         }
@@ -102,7 +109,8 @@ exports.getUserQuesList = async (req, res) => {
             code: OK,
             msg: '',
             data: {
-                userAllQues
+                userAllQues,
+                total: total[0].total
             }
         })
     } catch (err) {
@@ -419,4 +427,13 @@ exports.sortQues = async (req, res) => {
         })
     }
 
+}
+
+//获取某个问卷
+exports.getQuesInfo = async (req, res) => {
+    const quesId = req.params.id
+    res.status(OK).send({
+        code: OK,
+        msg: quesId
+    })
 }

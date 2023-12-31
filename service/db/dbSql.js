@@ -28,6 +28,23 @@ const quesComponent = `CREATE TABLE IF NOT EXISTS ques_components (
   description TEXT
 );`
 
+// const questionsTableSql = `CREATE TABLE IF NOT EXISTS questions (
+//   id INT AUTO_INCREMENT PRIMARY KEY,
+//   survey_id INT NOT NULL,
+//   title VARCHAR(255) NOT NULL,
+//   description TEXT,
+//   component_id INT NOT NULL,
+//   required BOOLEAN DEFAULT false,
+//   order INT NOT NULL
+// );
+// `
+
+// const optionsTableSql = `CREATE TABLE IF NOT EXISTS options (
+//   id INT AUTO_INCREMENT PRIMARY KEY,
+//   question_id INT NOT NULL,
+//   text VARCHAR(255) NOT NULL,
+// );`
+
 const dbTable = [userTableSql, surveysTableSql, quesComponent]
 
 module.exports = dbTable

@@ -37,4 +37,7 @@ router.get(API.SURVEYS.searchQues, pagination, quesController.searchQues)
 // 问卷的排序
 router.get(API.SURVEYS.sortQues, pagination, quesController.sortQues)
 
+// 获取某个问卷的详细信息
+router.get(API.SURVEYS.getOneQues, quesController.getQuesInfo)
+
 module.exports = router

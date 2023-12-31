@@ -9,12 +9,37 @@ exports.createOneQues = async (title, description, isPublished, isStar, isDelete
     )
 }
 
+// 获取问卷列表（分页）
 exports.getUserAllQues = async (userId, offset, pageSize) => {
     if (typeof userId !== 'number') throw Error('userId not number')
     return await executeQuery(
-        `select * from surveys where userId=? limit ?, ?`,
+        `select * from surveys where userId=? and isDeleted = 0 limit ?, ?`,
         [userId, offset, pageSize]
     )
+}
+// 获取问卷列表的总条数或者标星问卷的总条数，或者回收站的总条数
+exports.getQuesTotal = async (userId, isStar, isDeleted) => {
+    if (typeof userId !== 'number') throw Error('userId not number')
+    if (isDeleted != true) isDeleted = false
+    if (isStar != true) isStar = false
+    switch (true) {
+        case isStar:
+            return await executeQuery(
+                `SELECT COUNT(*) AS total FROM surveys WHERE userId=? and isDeleted = 0 and isStar = 1`,
+                [userId]
+            )
+        case isDeleted:
+            return await executeQuery(
+                `SELECT COUNT(*) AS total FROM surveys WHERE userId=? and isDeleted = 1`,
+                [userId]
+            )
+        default:
+            return await executeQuery(
+                `SELECT COUNT(*) AS total FROM surveys WHERE userId=? and isDeleted = 0`,
+                [userId]
+            )
+    }
+
 }
 
 exports.getUserStarQues = async (userId, isStar, offset, pageSize) => {

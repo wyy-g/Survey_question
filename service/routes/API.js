@@ -14,10 +14,14 @@ const API = {
         recoverQues: '/api/question/recoverQues/:id',
         deleteQues: '/api/question/deleteQues/:id',
         searchQues: '/api/question/searchQues',
-        sortQues: '/api/question/sortQues'
+        sortQues: '/api/question/sortQues',
+        getOneQues: `/api/question/:id`
     },
     QUES_COM: {
         getAllQuesCom: '/api/questionComponents'
+    },
+    PROBLEMS: {
+        getAllProblems: '/api/problem/:id'
     }
 }
 

@@ -67,7 +67,7 @@ exports.userRegister = async (req, res) => {
 		try {
 			await register(username, hash)
 			res.send({
-				code: CREATED,
+				code: OK,
 				msg: '注册成功'
 			})
 		} catch (err) {

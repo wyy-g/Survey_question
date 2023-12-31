@@ -5,7 +5,7 @@ exports.getAllQuesCom = async (req, res) => {
     try {
         const quesComData = await getAllQuesComModel()
         res.status(OK).send({
-            code: 200,
+            code: OK,
             msg: '',
             data: {
                 quesComData
