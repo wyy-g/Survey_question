@@ -46,7 +46,7 @@ exports.getUserStarQues = async (userId, isStar, offset, pageSize) => {
     if (typeof userId !== 'number') throw Error('userId not number')
     if (isStar !== true) throw Error('isStar not true')
     return await executeQuery(
-        `select * from surveys where userId=? and isStar=? limit ?, ?`,
+        `select * from surveys where userId=? and isStar=? and isDeleted = 0 limit ?, ?`,
         [userId, isStar, offset, pageSize]
     )
 }
