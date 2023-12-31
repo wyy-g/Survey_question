@@ -1,0 +1,32 @@
+.header {
+    height: 66px;
+    display: flex;
+    align-items: center;
+    // position: fixed;
+    .left {
+        flex: 1;
+    }
+    .right {
+        /* flex: 1; */
+       
+        text-align: right;
+        .filter {
+            display: flex;
+            .time {
+                opacity: 1;
+            }
+            .search {
+                opacity: 1;
+            }
+        }
+        
+    }
+}
+
+.content {
+    margin-bottom: 20px;
+}
+
+.footer {
+    text-align: center;
+}

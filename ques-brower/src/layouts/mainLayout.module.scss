@@ -1,0 +1,33 @@
+.header {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-color: #fff;
+    box-shadow: 0px 3px 8px 0px rgba(224, 229, 236, 0.4);
+    position: fixed;
+    z-index: 1000;
+    .logo {
+        width: 111px;
+        height:40px;
+        background-image: url('../../public/logo1.png');
+        background-size:contain;
+    }
+    .right {
+        display: flex;
+        align-items: center;
+        .search {
+            margin-top: 25px;
+            margin-right: 20px;
+        }
+    }
+}
+
+.content {
+    margin-top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+}
