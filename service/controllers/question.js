@@ -151,6 +151,7 @@ exports.getUserStar = async (req, res) => {
 
     try {
         const userStarQues = await getUserStarQues(Number(userId), isStar, req.offset, req.pageSize)
+        const total = await getQuesTotal(Number(userId), isStar)
         if (userStarQues.length <= 0) {
             return res.status(NOT_FOUND).send({
                 code: NOT_FOUND,
@@ -162,7 +163,8 @@ exports.getUserStar = async (req, res) => {
             code: OK,
             msg: '',
             data: {
-                userStarQues
+                userStarQues,
+                total: total[0].total
             }
         })
     } catch (err) {
@@ -203,6 +205,7 @@ exports.getUserDel = async (req, res) => {
 
     try {
         const userDelQues = await getUserDelQues(Number(userId), isDeleted, req.offset, req.pageSize)
+        const total = await getQuesTotal(Number(userId), isDeleted)
         if (userDelQues.length <= 0) {
             return res.status(NOT_FOUND).send({
                 code: NOT_FOUND,
@@ -214,7 +217,8 @@ exports.getUserDel = async (req, res) => {
             code: OK,
             msg: '',
             data: {
-                userDelQues
+                userDelQues,
+                total: total[0].total
             }
         })
     } catch (err) {
