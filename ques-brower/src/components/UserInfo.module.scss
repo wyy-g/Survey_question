@@ -1,4 +1,18 @@
-.headImg {
-    width: 28px;
-    height: 28px;
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .headImg {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
+

@@ -83,6 +83,6 @@ export default router
 
 // 常用的路由，变量
 export const HOME_PATHNAME = '/'
-export const LOGIN_PATHNAME = '/login'
-export const REGISTER_PATHNAME = '/register'
+export const LOGIN_PATHNAME = '/user/login'
+export const REGISTER_PATHNAME = '/user/register'
 export const MANAGE_INDEX_PATHNAME = '/manage/list'

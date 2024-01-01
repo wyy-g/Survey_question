@@ -5,6 +5,7 @@ import { Empty, Table, Tag, Button, Space, Modal, Spin } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 
 import ListSearch from '../../components/ListSearch'
+import ListPage from '../../components/ListPage'
 import styles from './common.module.scss'
 import { getTrashQuesService } from '../../services/question'
 import useLoadSearchQues from '../../hooks/useLoadSearchQues'
@@ -23,13 +24,13 @@ const Trash: FC = () => {
 
 	const [questionList, setQuestionList] = useState([])
 	const [searchParams] = useSearchParams()
-	const offset = parseInt(searchParams.get('page') || '') || 1
+	const page = parseInt(searchParams.get('page') || '') || 1
 	const pageSize = parseInt(searchParams.get('pageSize') || '') || 3
 
 	const { data = {}, loading } = useRequest(
-		async () => await getTrashQuesService('62', offset, pageSize),
+		async () => await getTrashQuesService('62', page, pageSize),
 	)
-	const { userDelQues = [] } = data
+	const { userDelQues = [], total } = data
 
 	const { data: trashData = {}, loading: trashLoading } = useLoadSearchQues({
 		isDeleted: true,
@@ -38,14 +39,12 @@ const Trash: FC = () => {
 	const { quesData = [] } = trashData
 
 	useEffect(() => {
-		if (!loading) {
+		if (searchParams.get('keyword')) {
+			setQuestionList(quesData)
+		} else {
 			setQuestionList(userDelQues)
 		}
-	}, [data, loading])
-
-	useEffect(() => {
-		setQuestionList(quesData)
-	}, [trashData, trashLoading])
+	}, [data, loading, trashData, trashLoading])
 
 	// 记录选中的id
 	const [selectedIds, setSelectedIds] = useState<string[]>([])
@@ -127,6 +126,9 @@ const Trash: FC = () => {
 				)}
 				{!loading && questionList.length > 0 && TableElem}
 				{!loading && questionList.length === 0 && <Empty description="暂无数据" />}
+			</div>
+			<div className={styles['footer']}>
+				<ListPage total={total} pageSize={pageSize}></ListPage>
 			</div>
 		</>
 	)

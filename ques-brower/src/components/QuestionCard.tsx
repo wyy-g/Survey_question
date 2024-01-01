@@ -61,7 +61,7 @@ const QuestionCard: FC<PropsType> = props => {
 					</Space>
 				</div>
 			</div>
-			<Divider style={{ marginTop: '14px' }} />
+			<Divider style={{ marginTop: '12px', marginBottom: '12px' }} />
 			<div className={styles['opeartion']}>
 				<div className={styles['opeartion-left']}>
 					<Space>

@@ -24,9 +24,17 @@
 }
 
 .content {
-    margin-bottom: 20px;
+    height: 490px;
+    overflow: auto;
+}
+
+.list-content {
+    height: 530px;
+    overflow: auto;
 }
 
 .footer {
-    text-align: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
 }

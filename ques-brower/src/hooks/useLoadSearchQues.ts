@@ -6,29 +6,29 @@ import { getSearchQuesListService } from '../services/question'
 type OptionsType = {
 	isStar?: boolean
 	isDeleted?: boolean
-	offset?: number
+	page?: number
 	pageSize?: number
 }
 
 const useLoadSearchQues = (opt: Partial<OptionsType>) => {
 	const { isDeleted, isStar } = opt
 	const [searchParams] = useSearchParams()
+	const keyword = searchParams.get('keyword') || ''
 	const { data, loading, error } = useRequest(
 		async () => {
-			const keyword = searchParams.get('keyword') || ''
-			const offset = parseInt(searchParams.get('page') || '') || 1
-			const pageSize = parseInt(searchParams.get('pageSize') || '') || 3
+			const page = parseInt(searchParams.get('page') || '') || 1
+			const pageSize = parseInt(searchParams.get('pageSize') || '') || 4
 			const data = await getSearchQuesListService({
 				userId: '62',
 				keyword,
 				isDeleted,
 				isStar,
-				offset,
+				page,
 				pageSize,
 			})
 			return data
 		},
-		{ refreshDeps: [searchParams] },
+		{ refreshDeps: [keyword] },
 	)
 	return { data, loading, error }
 }

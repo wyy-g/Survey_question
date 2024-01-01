@@ -6,7 +6,7 @@ type SearchType = {
 	keyword?: string
 	isStar?: boolean
 	isDeleted?: boolean
-	offset?: number
+	page?: number
 	pageSize?: number
 }
 
@@ -28,13 +28,13 @@ async function getQuesInfoService(id: number): Promise<ResDataType> {
 // 获取某个用户的全部问卷
 async function getAllQuestionListService(
 	id: number,
-	offset?: number,
+	page?: number,
 	pageSize?: number,
 ): Promise<ResDataType> {
 	const data = await http.get(API.SURVEYS.questionList, {
 		params: {
 			userId: id,
-			offset,
+			page,
 			pageSize,
 		},
 	})
@@ -52,14 +52,14 @@ async function getSearchQuesListService(props: SearchType): Promise<ResDataType>
 // 获取星标问卷
 async function getStarQuesService(
 	id: string,
-	offset?: number,
+	page?: number,
 	pageSize?: number,
 ): Promise<ResDataType> {
 	const data = await http.get(API.SURVEYS.quesStar, {
 		params: {
 			userId: id,
 			isStar: true,
-			offset,
+			page,
 			pageSize,
 		},
 	})
@@ -69,14 +69,14 @@ async function getStarQuesService(
 // 获取回收站里面的问卷
 async function getTrashQuesService(
 	id: string,
-	offset?: number,
+	page?: number,
 	pageSize?: number,
 ): Promise<ResDataType> {
 	const data = await http.get(API.SURVEYS.quesDel, {
 		params: {
 			userId: id,
 			isDeleted: true,
-			offset,
+			page,
 			pageSize,
 		},
 	})

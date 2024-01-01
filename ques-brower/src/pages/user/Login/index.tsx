@@ -1,8 +1,13 @@
 import React, { FC, useEffect } from 'react'
-import { Input, Button, Checkbox, Form } from 'antd'
+import { Input, Button, Checkbox, Form, message } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { useRequest } from 'ahooks'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './login.module.scss'
+import { loginService } from '../../../services/user'
+import { MANAGE_INDEX_PATHNAME } from '../../../router'
+import { setToken, setUserId } from '../../../utools/user-storage'
 
 const USERNAME_KEY = 'USERNAME'
 const PASSWORD_KEY = 'PASSWORD'
@@ -25,6 +30,25 @@ function getUserInfoFromStorage() {
 }
 
 const Login: FC = () => {
+	const nav = useNavigate()
+	const { run } = useRequest(
+		async values => {
+			const { username, password } = values
+			const data = await loginService(username, password)
+			return data
+		},
+		{
+			manual: true,
+			onSuccess(result) {
+				const { token, userId } = result
+				setToken(token)
+				setUserId(userId)
+				message.success('登录成功')
+				nav(MANAGE_INDEX_PATHNAME)
+			},
+		},
+	)
+
 	const [form] = Form.useForm()
 	useEffect(() => {
 		const { username, password } = getUserInfoFromStorage()
@@ -32,9 +56,12 @@ const Login: FC = () => {
 	}, [])
 
 	function onFinish(values: any) {
+		run(values)
+		console.log(values.remember)
 		if (values.remember) {
 			rememberUser(values.username, values.password)
 		} else {
+			console.log(1)
 			delUserFromStorage()
 		}
 	}
@@ -42,7 +69,7 @@ const Login: FC = () => {
 	return (
 		<div className={styles['container']}>
 			<div className={styles['form']}>
-				<Form onFinish={onFinish} form={form} initialValues={{ remember: true }}>
+				<Form onFinish={onFinish} form={form}>
 					<Form.Item
 						name="username"
 						rules={[

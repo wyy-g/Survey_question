@@ -1,22 +1,28 @@
-import React, { FC, useState, ChangeEvent } from 'react'
+import React, { FC, useState, ChangeEvent, useEffect } from 'react'
 import { Input } from 'antd'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 const { Search } = Input
 
 const ListSearch: FC = () => {
 	const nav = useNavigate()
 	const { pathname } = useLocation()
+	const [searchParams] = useSearchParams()
+	const keyword = searchParams.get('keyword')
 	const [value, setValue] = useState('')
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		setValue(event.target.value)
 	}
+	useEffect(() => {
+		if (keyword) {
+			setValue(keyword)
+		}
+	}, [])
 	function handleSearch(value: string) {
 		nav({
 			pathname,
 			search: `keyword=${value}`,
 		})
-		console.log(value)
 	}
 	return (
 		<>

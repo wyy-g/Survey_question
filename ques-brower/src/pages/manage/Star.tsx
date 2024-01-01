@@ -2,10 +2,11 @@ import React, { FC, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTitle, useRequest } from 'ahooks'
 import type { MenuProps } from 'antd'
-import { Dropdown, Button, Space, Empty, Spin, Pagination } from 'antd'
+import { Dropdown, Button, Space, Empty, Spin } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
 import ListSearch from '../../components/ListSearch'
+import ListPage from '../../components/ListPage'
 import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 import { getStarQuesService } from '../../services/question'
@@ -23,11 +24,12 @@ const Star: FC = () => {
 	const [questionList, setQuestionList] = useState([])
 
 	const [searchParams] = useSearchParams()
-	const offset = parseInt(searchParams.get('page') || '') || 1
-	const pageSize = parseInt(searchParams.get('pageSize') || '') || 3
+	const page = parseInt(searchParams.get('page') || '') || 1
+	const pageSize = parseInt(searchParams.get('pageSize') || '') || 4
 
 	const { data = {}, loading } = useRequest(
-		async () => await getStarQuesService('62', offset, pageSize),
+		async () => await getStarQuesService('62', page, pageSize),
+		{ refreshDeps: [searchParams] },
 	)
 	const { userStarQues = [], total } = data
 
@@ -39,12 +41,12 @@ const Star: FC = () => {
 	const { quesData = [] } = searchData
 
 	useEffect(() => {
-		setQuestionList(userStarQues)
-	}, [data, loading])
-
-	useEffect(() => {
-		setQuestionList(quesData)
-	}, [searchData, searchLoading])
+		if (searchParams.get('keyword')) {
+			setQuestionList(quesData)
+		} else {
+			setQuestionList(userStarQues)
+		}
+	}, [data, loading, searchData, searchLoading])
 
 	const items: MenuProps['items'] = [
 		{
@@ -98,7 +100,7 @@ const Star: FC = () => {
 					})}
 			</div>
 			<div className={styles['footer']}>
-				<Pagination total={total} />
+				<ListPage total={total} pageSize={pageSize}></ListPage>
 			</div>
 		</>
 	)
