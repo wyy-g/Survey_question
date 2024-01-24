@@ -1,9 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTitle, useRequest } from 'ahooks'
-import type { MenuProps } from 'antd'
-import { Dropdown, Button, Space, Empty, Spin } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { Empty, Spin } from 'antd'
 
 import ListSearch from '../../components/ListSearch'
 import ListPage from '../../components/ListPage'
@@ -12,18 +10,12 @@ import QuestionCard from '../../components/QuestionCard'
 import { getStarQuesService } from '../../services/question'
 import useLoadSearchQues from '../../hooks/useLoadSearchQues'
 
-// const rowQuestionList = [
-// 	{ id: '1', title: '问卷1', isPublished: false, isStar: false, answerCount: 5, createAt: '3.10' },
-// 	{ id: '2', title: '问卷1', isPublished: true, isStar: true, answerCount: 5, createAt: '3.10' },
-// 	{ id: '3', title: '问卷1', isPublished: true, isStar: false, answerCount: 5, createAt: '3.10' },
-// 	{ id: '4', title: '问卷1', isPublished: true, isStar: false, answerCount: 5, createAt: '3.10' },
-// ]
-
 const Star: FC = () => {
 	useTitle('问卷调查 - 星标问卷')
 	const [questionList, setQuestionList] = useState([])
 
 	const [searchParams] = useSearchParams()
+	const keyword = searchParams.get('keyword')
 	const page = parseInt(searchParams.get('page') || '') || 1
 	const pageSize = parseInt(searchParams.get('pageSize') || '') || 4
 
@@ -38,29 +30,25 @@ const Star: FC = () => {
 		isStar: true,
 	})
 
-	const { quesData = [] } = searchData
+	const { quesData = [], total: searchTotal } = searchData
+
+	// 处理单个问卷标星状态改变的函数(取消标星后没有立即刷新展示新的数据)
+	function handleUpdateSingleQuesStatus(quesId: number, newStatrState: boolean) {
+		if (!newStatrState) {
+			setQuestionList((prevQuestions: any) => {
+				return prevQuestions.filter((ques: any) => ques.id !== quesId)
+			})
+		}
+	}
 
 	useEffect(() => {
-		if (searchParams.get('keyword')) {
+		if (keyword) {
 			setQuestionList(quesData)
 		} else {
 			setQuestionList(userStarQues)
 		}
-	}, [data, loading, searchData, searchLoading])
+	}, [loading, searchLoading])
 
-	const items: MenuProps['items'] = [
-		{
-			key: '1',
-			label: '最新创建',
-		},
-		{
-			key: '2',
-			label: '最近修改',
-			onClick: () => {
-				console.log('最近修改')
-			},
-		},
-	]
 	return (
 		<>
 			<div className={styles['header']}>
@@ -69,16 +57,7 @@ const Star: FC = () => {
 				</div>
 				<div className={styles['right']}>
 					<div className={styles['filter']}>
-						<div className={styles['time']}>
-							<Dropdown menu={{ items }} placement="bottom">
-								<Button>
-									<Space>
-										时间排序
-										<DownOutlined />
-									</Space>
-								</Button>
-							</Dropdown>
-						</div>
+						<div className={styles['time']}>sort</div>
 						<div className={styles['search']}>
 							<ListSearch />
 						</div>
@@ -96,11 +75,19 @@ const Star: FC = () => {
 					questionList.length > 0 &&
 					questionList.map((ques: any) => {
 						const { id } = ques
-						return <QuestionCard key={id} {...ques} />
+						return (
+							<QuestionCard
+								key={id}
+								{...ques}
+								onStarStatusChange={(newIsStar: boolean) => {
+									handleUpdateSingleQuesStatus(id, newIsStar)
+								}}
+							/>
+						)
 					})}
 			</div>
 			<div className={styles['footer']}>
-				<ListPage total={total} pageSize={pageSize}></ListPage>
+				<ListPage total={keyword ? searchTotal : total} pageSize={pageSize}></ListPage>
 			</div>
 		</>
 	)

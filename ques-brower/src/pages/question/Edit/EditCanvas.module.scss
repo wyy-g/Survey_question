@@ -1,0 +1,32 @@
+.canvas {
+    min-height: 100%;
+    background-color: #fff;
+    overflow: hidden;   
+}
+
+.component-wrapper {
+    position: relative;
+    margin: 14px;
+    border: 1px solid #fff;
+    padding: 12px;
+    border-radius: 3px;
+    // box-shadow: 2px 2px 2px #d9d9d9;
+    &:hover {
+        // border-color: #d9d9d9;
+        background: #F3F9FF;
+    }
+}
+
+.component {
+    pointer-events: none; //屏蔽鼠标行为
+}
+
+.selectedId {
+    background: #F3F9FF;
+}
+
+.icon {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+}

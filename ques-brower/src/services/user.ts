@@ -2,10 +2,10 @@ import http, { ResDataType } from './http'
 import API from './api'
 
 // 获取用户信息
-async function getUserInfoService(username: string): Promise<ResDataType> {
+async function getUserInfoService(id: number): Promise<ResDataType> {
 	const data = (await http.get(API.USER.info, {
 		params: {
-			username,
+			id,
 		},
 	})) as ResDataType
 	return data

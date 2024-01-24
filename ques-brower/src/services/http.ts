@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { message } from 'antd'
-import { useNavigate } from 'react-router-dom'
-
 import { getToekn, getUserIdStorage } from '../utools/user-storage'
+import { removeToken, removeUserId } from '../utools/user-storage'
 import API from './api'
 import { LOGIN_PATHNAME } from '../router'
 
@@ -53,10 +52,11 @@ instance.interceptors.response.use(
 	},
 	error => {
 		if (error.response) {
-			// const nav = useNavigate()
 			if (error.response.data.code === 401) {
-				console.log('token')
-				// window.location.replace(LOGIN_PATHNAME)
+				// message.error('token 无效或过期请重新登录')
+				removeToken()
+				removeUserId()
+				window.location.href = LOGIN_PATHNAME
 			}
 			message.error(error.response.data.msg)
 		}

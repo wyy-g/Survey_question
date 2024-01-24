@@ -8,7 +8,7 @@ type PropsType = {
 }
 
 const ListPage: FC<PropsType> = props => {
-	const { total, pageSize = 3 } = props
+	const { total, pageSize = 4 } = props
 	const nav = useNavigate()
 	const { pathname } = useLocation()
 

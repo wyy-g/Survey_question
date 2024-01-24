@@ -12,10 +12,12 @@ const API = {
 		hiddenQues: '/api/question/hidden',
 		setQuesStarStatus: '/api/question/setStarStatus',
 		recoverQues: '/api/question/recoverQues/:id',
-		deleteQues: '/api/question/deleteQues/:id',
+		deleteQues: '/api/question/deleteQues',
 		searchQues: '/api/question/searchQues',
 		sortQues: '/api/question/sortQues',
 		getOneQues: `/api/question/`,
+		updateQues: `/api/question/`,
+		copyQues: `/api/question/duplicate/`,
 	},
 	QUES_COM: {
 		getAllQuesCom: '/api/questionComponents',

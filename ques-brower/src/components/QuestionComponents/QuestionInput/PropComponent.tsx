@@ -1,0 +1,58 @@
+import React, { FC, useEffect } from 'react'
+import { Form, Input, Switch } from 'antd'
+import {} from '@ant-design/icons'
+import { QuestionInputPropsType, QuestionInputDefaultProps } from './interface'
+
+const PropComponent: FC<QuestionInputPropsType> = (props: QuestionInputPropsType) => {
+	const { title, placeholder, isClear, isShow, isShowTitle, isMustFill, onChange } = {
+		...QuestionInputDefaultProps,
+		...props,
+	}
+	const [form] = Form.useForm()
+
+	function handleValueChange() {
+		if (onChange) {
+			onChange(form.getFieldsValue())
+		}
+	}
+
+	useEffect(() => {
+		form.setFieldsValue({ title, placeholder, isClear, isShow, isShowTitle, isMustFill })
+	}, [title, placeholder, isClear, isShow, isShowTitle, isMustFill])
+
+	return (
+		<Form
+			layout="horizontal"
+			initialValues={{ title, placeholder, isClear, isShow, isShowTitle, isMustFill }}
+			form={form}
+			onValuesChange={handleValueChange}
+			labelCol={{ span: 7 }}
+			wrapperCol={{ span: 14 }}
+		>
+			<Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
+				<Input />
+			</Form.Item>
+			<Form.Item label="占位文案" name="placeholder">
+				<Input />
+			</Form.Item>
+			<Form.Item label="显示标题" name="isShowTitle">
+				<Switch />
+			</Form.Item>
+			<Form.Item label="能否清空" name="isClear">
+				<Switch />
+			</Form.Item>
+			<Form.Item
+				label="隐藏组件"
+				name="isShow"
+				tooltip="开启此属性，则组件发布后不会显示，可作为备注使用"
+			>
+				<Switch />
+			</Form.Item>
+			<Form.Item label="是否必填" name="isMustFill">
+				<Switch />
+			</Form.Item>
+		</Form>
+	)
+}
+
+export default PropComponent

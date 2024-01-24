@@ -1,14 +1,32 @@
 import React, { FC } from 'react'
-import { useParams } from 'react-router-dom'
-
-import useLoadQuestionData from '../../../hooks/useLoadQUestionData'
+import styles from './index.module.scss'
+import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
+import EditCanvas from './EditCanvas'
+import LeftPanel from './LeftPanel'
+import RightPanel from './RightPanel'
 
 const Edit: FC = () => {
-	const { id } = useParams()
-	const { loading, data } = useLoadQuestionData()
+	const { loading } = useLoadQuestionData()
 	return (
-		<div>
-			Edit-{id}-{loading}-{JSON.stringify(data)}
+		<div className={styles['container']}>
+			{/* <div>
+				<Header />
+			</div> */}
+			<div className={styles['content-wrapper']}>
+				<div className={styles['content']}>
+					<div className={styles['left']}>
+						<LeftPanel />
+					</div>
+					<div className={styles['main']}>
+						<div className={styles['canvas-wrapper']}>
+							<EditCanvas loading={loading} />
+						</div>
+					</div>
+					<div className={styles['right']}>
+						<RightPanel />
+					</div>
+				</div>
+			</div>
 		</div>
 	)
 }

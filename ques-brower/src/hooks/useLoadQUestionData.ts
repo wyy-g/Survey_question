@@ -1,35 +1,42 @@
-// import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useRequest } from 'ahooks'
+import { useDispatch } from 'react-redux'
 
+import { resetComponents } from '../store/componentReducer'
 import { getQuesInfoService } from '../services/question'
 
 function useLoadQuestionData() {
-	const { id } = useParams()
-	// const [loading, setLoading] = useState(true)
-	// const [questionData, setQuestionData] = useState({})
-	// useEffect(() => {
-	// 	;(async function () {
-	// 		const data = await getQuesInfoService(Number(id))
-	// 		console.log(data)
+	const { id = '' } = useParams()
+	const dispatch = useDispatch()
 
-	// 		setQuestionData(data)
-	// 		setLoading(false)
-	// 	})()
-	// }, [])
-	// return {
-	// 	loading,
-	// 	questionData,
-	// }
+	const { data, error, loading, run } = useRequest(
+		async (id: string) => {
+			if (!id) return
+			const data = await getQuesInfoService(Number(id))
+			return data
+		},
+		{
+			manual: true,
+		},
+	)
 
-	async function loadData() {
-		const data = await getQuesInfoService(Number(id))
-		return data
-	}
+	useEffect(() => {
+		if (!data) return
+		const { title = '', componentList = [] } = data
+		//获取默认选中的selected
+		let selectId = ''
+		if (componentList.length > 0) {
+			selectId = componentList[0].id
+		}
+		dispatch(resetComponents({ selectId, componentList }))
+	}, [data])
 
-	const { data, error, loading } = useRequest(loadData)
+	useEffect(() => {
+		run(id)
+	}, [id])
+
 	return {
-		data,
 		error,
 		loading,
 	}

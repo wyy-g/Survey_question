@@ -5,10 +5,12 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import commons from './loginLayout.module.scss'
 import TyperWriter from '../utools/TyperWriterComponent'
+import useRouteGuard from '../hooks/useRouteGuard'
 
 const Login: FC = () => {
 	const nav = useNavigate()
 	const { pathname } = useLocation()
+	useRouteGuard()
 	return (
 		<>
 			<div className={commons['container']}>

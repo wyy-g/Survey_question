@@ -14,10 +14,13 @@ export function removeToken() {
 }
 
 export function setUserId(userId: string) {
-	console.log(userId)
 	localStorage.setItem(UEER_ID, userId)
 }
 
 export function getUserIdStorage() {
 	return localStorage.getItem(UEER_ID) || ''
+}
+
+export function removeUserId() {
+	localStorage.removeItem(UEER_ID)
 }
