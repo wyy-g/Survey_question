@@ -25,6 +25,7 @@ const EditToolbar: FC<EditToolbarProps> = ({ id }) => {
 				shape="circle"
 				icon={<IconFont type="icon-yidong" />}
 				style={{ borderRadius: '36%' }}
+				size="small"
 			></Button>
 			<Button
 				title="复制"
@@ -32,6 +33,7 @@ const EditToolbar: FC<EditToolbarProps> = ({ id }) => {
 				icon={<IconFont type="icon-fuzhi" />}
 				style={{ borderRadius: '36%' }}
 				onClick={e => handleCopy(e)}
+				size="small"
 			></Button>
 			<Button
 				title="删除"
@@ -40,6 +42,7 @@ const EditToolbar: FC<EditToolbarProps> = ({ id }) => {
 				icon={<IconFont type="icon-shanchu" />}
 				style={{ borderRadius: '36%' }}
 				onClick={e => handleDelete(e)}
+				size="small"
 			></Button>
 		</Space>
 	)

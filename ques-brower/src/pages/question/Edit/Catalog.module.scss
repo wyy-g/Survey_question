@@ -1,0 +1,35 @@
+.title-wrapper {
+    width: 90%;
+    color: #333333;
+    cursor: pointer;
+    margin-bottom: 10px;
+    // height: 16px;
+    // line-height: 16px;
+    font-size: 14px;
+    padding: 8px 10px;
+    box-sizing: content-box;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+
+    &:hover {
+        color: #366ef4;
+        background-color: #F3F9FF;
+    }
+    .title {
+        width: calc(100% - 18px);
+        white-space: nowrap; /* 防止文本换行 */
+        overflow: hidden; /* 超出容器范围时进行隐藏 */
+        text-overflow: ellipsis; /* 使用省略号表示文本溢出 */
+    }
+    .handler {
+        font-size: 14px;
+        margin-left: 4px;
+    }
+    
+}
+
+.selectedId {
+    background: #F3F9FF;
+}

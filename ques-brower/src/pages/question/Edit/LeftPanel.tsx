@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Tabs } from 'antd'
 import { AppstoreAddOutlined, BarsOutlined } from '@ant-design/icons'
 import ComponentLib from './ComponentLib'
+import Catalog from './Catalog'
 
 const LeftPanel: FC = () => {
 	const tableColumns = [
@@ -23,7 +24,7 @@ const LeftPanel: FC = () => {
 					<span style={{ marginLeft: '-7px' }}>大纲</span>
 				</span>
 			),
-			children: <div>大纲</div>,
+			children: <Catalog />,
 		},
 	]
 	return <Tabs items={tableColumns} defaultActiveKey="componentLib"></Tabs>

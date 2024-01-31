@@ -61,11 +61,18 @@ export const componentsSlice = createSlice({
 				const { id, newProps } = action.payload
 				// 当前要修改属性的组件
 				const curCom = draft.componentList.find(c => c.id === id)
+				// if (curCom) {
+				// 	curCom.props = {
+				// 		...curCom.props,
+				// 		...newProps,
+				// 	}
+				// }
 				if (curCom) {
 					curCom.props = {
 						...curCom.props,
 						...newProps,
 					}
+					curCom.title = newProps.title!
 				}
 			},
 		),
@@ -100,6 +107,32 @@ export const componentsSlice = createSlice({
 				draft.selectId = newComponent.id
 			},
 		),
+		// 修改组件标题
+		changeComponentTitle: produce(
+			(
+				draft: ComponentStateType,
+				action: PayloadAction<{ id: string | number; title: string }>,
+			) => {
+				const { id, title } = action.payload
+				const curCom = draft.componentList.find(c => c.id === id)
+				if (curCom) {
+					curCom.title = title
+				}
+			},
+		),
+		// 切换隐藏显示
+		changeHiddenComponent: produce(
+			(
+				draft: ComponentStateType,
+				action: PayloadAction<{ id: string | number; isShow: boolean }>,
+			) => {
+				const { id, isShow } = action.payload
+				const curCom = draft.componentList.find(c => c.id === id)
+				if (curCom) {
+					curCom.props.isShow = isShow
+				}
+			},
+		),
 	},
 })
 
@@ -110,5 +143,7 @@ export const {
 	changeComponentProps,
 	deleteComponent,
 	copyComponent,
+	changeComponentTitle,
+	changeHiddenComponent,
 } = componentsSlice.actions
 export default componentsSlice.reducer

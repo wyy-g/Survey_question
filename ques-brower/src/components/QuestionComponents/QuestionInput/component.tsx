@@ -20,7 +20,7 @@ const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
 					</Paragraph>
 				)}
 			</div>
-			<div>
+			<div style={{ margin: '0 6px' }}>
 				<Input placeholder={placeholder} allowClear={isClear}></Input>
 			</div>
 		</div>

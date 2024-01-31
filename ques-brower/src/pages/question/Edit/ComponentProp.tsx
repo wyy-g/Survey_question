@@ -9,7 +9,7 @@ const ComponentProp: FC = () => {
 	const dispatch = useDispatch()
 	if (selectedComponent == null) return <div style={{ textAlign: 'center' }}>未选中组件</div>
 
-	const { type, props } = selectedComponent!
+	const { type, props, title } = selectedComponent!
 	const componentConf = getComponentConfByType(type)
 	if (componentConf == null) return <div style={{ textAlign: 'center' }}>未选中组件</div>
 
@@ -18,11 +18,15 @@ const ComponentProp: FC = () => {
 	function changeProps(newProps: ComponentPropsType) {
 		if (selectedComponent == null) return
 		const { id } = selectedComponent
-		console.log('id', id)
 		dispatch(changeComponentProps({ id, newProps }))
 	}
 
-	return <PropComponent {...props} onChange={changeProps} />
+	const newProps = {
+		...props,
+		title,
+	}
+
+	return <PropComponent {...newProps} onChange={changeProps} />
 }
 
 export default ComponentProp

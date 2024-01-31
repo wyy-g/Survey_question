@@ -31,6 +31,15 @@
         background-color: #fff;
         padding: 0 12px;
     }
+    .right::-webkit-scrollbar {
+        
+        width: 8px;
+        background: #fff;
+    }
+    .right::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background: #53535320;
+    }
     .main {
         flex: 1;
         position: relative;

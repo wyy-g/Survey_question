@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 
 import { resetComponents } from '../store/componentReducer'
 import { getQuesInfoService } from '../services/question'
+import { resetPageInfo } from '../store/pageInfoReducer'
 
 function useLoadQuestionData() {
 	const { id = '' } = useParams()
@@ -23,13 +24,14 @@ function useLoadQuestionData() {
 
 	useEffect(() => {
 		if (!data) return
-		const { title = '', componentList = [] } = data
+		const { title = '', description, isShowOrderIndex, componentList = [] } = data
 		//获取默认选中的selected
 		let selectId = ''
 		if (componentList.length > 0) {
 			selectId = componentList[0].id
 		}
 		dispatch(resetComponents({ selectId, componentList }))
+		dispatch(resetPageInfo({ title, isShowOrderIndex, description }))
 	}, [data])
 
 	useEffect(() => {

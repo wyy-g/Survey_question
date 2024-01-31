@@ -64,7 +64,7 @@ const QuestionCard: FC<PropsType> = props => {
 		async () => {
 			let copyNum = 1
 			let copyTitle = ''
-			if (title.includes('_copy')) {
+			if (title.includes(' _copy') || title.includes('_copy')) {
 				copyTitle = `${title}${++copyNum}`
 			} else {
 				copyTitle = `${title}_copy`

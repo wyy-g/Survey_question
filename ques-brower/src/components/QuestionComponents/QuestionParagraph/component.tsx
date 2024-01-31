@@ -10,7 +10,7 @@ const Component: FC<QuestionParagraphProps> = (props: QuestionParagraphProps) =>
 	const textList = text.split('\n')
 
 	return (
-		<Paragraph>
+		<Paragraph style={{ margin: '0 6px' }}>
 			{textList.map((t, index) => (
 				<span key={index}>
 					{index > 0 && <br />}

@@ -14,11 +14,15 @@ type PropsType = {
 }
 
 function genComponent(componentInfo: ComponentInfoType) {
-	const { type, props } = componentInfo
+	const { type, props, title } = componentInfo
 	const componentConf = getComponentConfByType(type)
 	if (!componentConf) return
 	const { Component } = componentConf
-	return <Component {...props} />
+	const newProps = {
+		...props,
+		title,
+	}
+	return <Component {...newProps} />
 }
 
 const EditCanvas: FC<PropsType> = ({ loading }) => {
