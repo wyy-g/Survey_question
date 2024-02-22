@@ -22,10 +22,15 @@ type SortType = {
 }
 
 // 创建问卷 返回ID
-async function createQuesService(title: string, userId: number): Promise<ResDataType> {
+async function createQuesService(
+	title: string,
+	userId: number,
+	description?: string,
+): Promise<ResDataType> {
 	const data = await http.post(API.SURVEYS.createQues, {
 		title,
 		userId,
+		description,
 	})
 	return data
 }

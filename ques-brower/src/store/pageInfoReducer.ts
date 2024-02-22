@@ -5,12 +5,18 @@ export type PageInfoType = {
 	title: string
 	description?: string
 	isShowOrderIndex?: boolean
+	isPublished?: boolean
+	createdAt?: string
+	updatedAt?: string
 }
 
 const INIT_STATE: PageInfoType = {
 	title: '',
 	description: '',
 	isShowOrderIndex: true,
+	isPublished: false,
+	createdAt: '',
+	updatedAt: '',
 }
 
 const pageInfoSlice = createSlice({
@@ -24,8 +30,12 @@ const pageInfoSlice = createSlice({
 		changePageTitle: produce((draft: PageInfoType, action: PayloadAction<string>) => {
 			draft.title = action.payload
 		}),
+		// 修改发布状态
+		changePageIsPushlished: produce((draft: PageInfoType, action: PayloadAction<boolean>) => {
+			draft.isPublished = action.payload
+		}),
 	},
 })
 
-export const { resetPageInfo, changePageTitle } = pageInfoSlice.actions
+export const { resetPageInfo, changePageTitle, changePageIsPushlished } = pageInfoSlice.actions
 export default pageInfoSlice.reducer

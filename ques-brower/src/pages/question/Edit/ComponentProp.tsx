@@ -18,6 +18,10 @@ const ComponentProp: FC = () => {
 	function changeProps(newProps: ComponentPropsType) {
 		if (selectedComponent == null) return
 		const { id } = selectedComponent
+		// 如果是undefined的话没有传给后端，后端没做处理，所以在前端赋值为空字符串在前端做处理了
+		if (!newProps.value) {
+			newProps.value = ''
+		}
 		dispatch(changeComponentProps({ id, newProps }))
 	}
 

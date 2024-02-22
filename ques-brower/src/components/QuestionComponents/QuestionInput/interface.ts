@@ -7,6 +7,8 @@ export type QuestionInputPropsType = {
 	isShow?: boolean //是否隐藏该组件，隐藏后发布不会显示，可作为备注使用
 	onChange?: (newProps: QuestionInputPropsType) => void
 	isMustFill?: boolean
+	order_index?: number | string
+	isShowOrderIndex?: boolean
 }
 
 export const QuestionInputDefaultProps: QuestionInputPropsType = {
@@ -17,4 +19,5 @@ export const QuestionInputDefaultProps: QuestionInputPropsType = {
 	defaultValue: '',
 	isShow: false,
 	isMustFill: true,
+	isShowOrderIndex: true,
 }

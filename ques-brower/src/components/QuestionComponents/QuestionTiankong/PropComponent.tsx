@@ -14,8 +14,8 @@ const PropComponent: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPro
 	const [form] = Form.useForm()
 
 	useEffect(() => {
-		form.setFieldsValue({ title, isShow, isShowTitle, isMustFill })
-	}, [title, isShow, isShowTitle, isMustFill])
+		form.setFieldsValue({ title, isShow, isShowTitle, isMustFill, content })
+	}, [title, isShow, isShowTitle, isMustFill, content])
 
 	function handleValueChange() {
 		if (onChange) {

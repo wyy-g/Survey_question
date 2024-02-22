@@ -4,6 +4,8 @@ export type QuestionTitlePropsType = {
 	isCenter?: boolean
 	onChange?: (newProps: QuestionTitlePropsType) => void
 	isShow?: boolean
+	order_index?: number | string
+	isShowOrderIndex?: boolean
 }
 
 export const QuestionTitleDefaultProps: QuestionTitlePropsType = {
@@ -11,4 +13,5 @@ export const QuestionTitleDefaultProps: QuestionTitlePropsType = {
 	level: 1,
 	isCenter: false,
 	isShow: false,
+	isShowOrderIndex: true,
 }

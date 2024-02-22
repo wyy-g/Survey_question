@@ -7,6 +7,8 @@ export type QuestionTextareaPropsType = {
 	defaultValue?: string
 	isShow?: boolean
 	isMustFill?: boolean
+	order_index?: number | string
+	isShowOrderIndex?: boolean
 }
 
 export const QuestionTextareaDefaultProps: QuestionTextareaPropsType = {
@@ -17,4 +19,5 @@ export const QuestionTextareaDefaultProps: QuestionTextareaPropsType = {
 	defaultValue: '',
 	isShow: false,
 	isMustFill: true,
+	isShowOrderIndex: true,
 }

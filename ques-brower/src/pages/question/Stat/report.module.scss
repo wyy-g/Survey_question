@@ -1,0 +1,15 @@
+.report-query {
+        margin-bottom: 20px;
+}
+.report-main {
+    width: 100%;
+    padding: 24px 16px 4px 16px;
+    background-color: #fff;
+    border-radius: 10px;
+    font-size: 14px;
+    .report-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+}

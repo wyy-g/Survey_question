@@ -1,7 +1,15 @@
 .canvas {
     min-height: 100%;
     background-color: #fff;
-    overflow: hidden;   
+    overflow: hidden;  
+    .canvas-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 107px;
+        padding: 0 24px;
+    }    
 }
 
 .component-wrapper {

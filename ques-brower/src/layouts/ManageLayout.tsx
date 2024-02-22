@@ -2,17 +2,19 @@ import React, { FC, useState } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Space, Modal, Form, Input, message } from 'antd'
 import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-design/icons'
-
 import styles from './manageLayout.module.scss'
 import { createQuesService } from '../services/question'
+import { getUserIdStorage } from '../utools/user-storage'
 
 const { TextArea } = Input
 
 const ManageLayout: FC = () => {
+	const userId = getUserIdStorage()
 	const nav = useNavigate()
 	const { pathname } = useLocation()
 	// 表单标题（之后要替换在redux中）
 	const [title, setTitle] = useState('')
+	const [description, setDescription] = useState('')
 	// 是否显示新建问卷的弹窗
 	const [isShowModal, setIsShowModal] = useState(false)
 	// 新建问卷标题必填的校验 ->获取form
@@ -20,7 +22,7 @@ const ManageLayout: FC = () => {
 
 	const modalView = (
 		<>
-			<Form labelCol={{ span: 4 }} form={form}>
+			<Form labelCol={{ span: 4 }} form={form} initialValues={{ description, title }}>
 				<Form.Item
 					label="问卷名称"
 					name="title"
@@ -28,8 +30,8 @@ const ManageLayout: FC = () => {
 				>
 					<Input value={title} onChange={e => setTitle(e.target.value)} />
 				</Form.Item>
-				<Form.Item label="问卷描述" name="desc">
-					<TextArea />
+				<Form.Item label="问卷描述" name="description">
+					<TextArea value={description} onChange={e => setDescription(e.target.value)} />
 				</Form.Item>
 			</Form>
 		</>
@@ -40,7 +42,7 @@ const ManageLayout: FC = () => {
 		form
 			.validateFields()
 			.then(async values => {
-				const data = await createQuesService(values.title, 8)
+				const data = await createQuesService(values.title, Number(userId), values.description)
 				const { id } = data || {}
 				if (id) {
 					nav(`/question/edit/${id}`)

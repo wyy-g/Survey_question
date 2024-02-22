@@ -42,7 +42,7 @@ const RightPanel: FC = () => {
 		},
 	]
 	// return <Tabs activeKey={activeKey} items={tabsItems}></Tabs>
-	return <Tabs defaultActiveKey="setting" items={tabsItems}></Tabs>
+	return <Tabs defaultActiveKey="prop" items={tabsItems}></Tabs>
 }
 
 export default RightPanel

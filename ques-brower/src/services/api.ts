@@ -25,6 +25,9 @@ const API = {
 	PROBLEMS: {
 		getAllProblems: '/api/problem/:id',
 	},
+	ANSWER: {
+		getSingleAnswers: '/api/answers/',
+	},
 }
 
 export default API

@@ -1,16 +1,22 @@
 import React, { FC } from 'react'
 import { Typography } from 'antd'
 import { QuestionParagraphProps, QuestionParagraphDefaultProps } from './interface'
+import addZero from '../../../utools/addZero'
 
 const { Paragraph } = Typography
 
 const Component: FC<QuestionParagraphProps> = (props: QuestionParagraphProps) => {
-	const { text = '' } = { ...QuestionParagraphDefaultProps, ...props }
+	const {
+		text = '',
+		isShowOrderIndex,
+		order_index,
+	} = { ...QuestionParagraphDefaultProps, ...props }
 
 	const textList = text.split('\n')
 
 	return (
-		<Paragraph style={{ margin: '0 6px' }}>
+		<Paragraph style={{ marginLeft: '15px' }}>
+			{!!isShowOrderIndex && <span>{addZero(order_index!)}&nbsp;</span>}
 			{textList.map((t, index) => (
 				<span key={index}>
 					{index > 0 && <br />}

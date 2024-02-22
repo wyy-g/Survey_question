@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { produce } from 'immer'
 import { ComponentPropsType } from '../../components/QuestionComponents'
 import { getNextSelected } from './utils'
-import { nanoid } from 'nanoid'
+import { arrayMove } from '@dnd-kit/sortable'
 
 // 单个组件的信息
 export type ComponentInfoType = {
@@ -10,7 +10,6 @@ export type ComponentInfoType = {
 	title: string
 	type: string
 	order_index?: number
-	component_id?: number
 	props: ComponentPropsType
 }
 
@@ -48,7 +47,11 @@ export const componentsSlice = createSlice({
 				draft.componentList.push({ ...newComponent, order_index: componentList.length + 1 })
 			} else {
 				// 选中了组件，插入到index后
-				draft.componentList.splice(index + 1, 0, { ...newComponent, order_index: index + 1 })
+				draft.componentList.splice(index + 1, 0, { ...newComponent, order_index: index + 2 })
+				draft.componentList.forEach((com, comIndex) => {
+					if (comIndex <= index + 1) return
+					else com.order_index = com.order_index! + 1
+				})
 			}
 			draft.selectId = newComponent.id
 		}),
@@ -85,6 +88,10 @@ export const componentsSlice = createSlice({
 				draft.selectId = newSelectId
 				const index = componentList.findIndex(c => c.id === action.payload.id)
 				componentList.splice(index, 1)
+				draft.componentList.forEach((com, comIndex) => {
+					if (comIndex < index) return
+					else com.order_index = com.order_index! - 1
+				})
 			},
 		),
 		// 复制组件
@@ -98,13 +105,17 @@ export const componentsSlice = createSlice({
 				const index = componentList.findIndex(c => c.id === action.payload.id)
 				const newComponent = {
 					...copy_com,
-					id: nanoid(5),
-					order_index: index + 1,
+					id: Math.floor(Math.random() * 100000),
+					order_index: index + 2,
 				}
 				// 将组件插入到组件列表中
 				draft.componentList.splice(index + 1, 0, newComponent)
 				// 重新计算选中ID
 				draft.selectId = newComponent.id
+				draft.componentList.forEach((com, comIndex) => {
+					if (comIndex <= index + 1) return
+					else com.order_index = com.order_index! + 1
+				})
 			},
 		),
 		// 修改组件标题
@@ -133,6 +144,18 @@ export const componentsSlice = createSlice({
 				}
 			},
 		),
+		// 移动组件位置（拖拽）
+		moveComponent: produce(
+			(
+				draft: ComponentStateType,
+				action: PayloadAction<{ oldIndex: number; newIndex: number }>,
+			) => {
+				const { componentList: curComponentList } = draft
+				const { oldIndex, newIndex } = action.payload
+				draft.componentList = arrayMove(curComponentList, oldIndex, newIndex)
+				draft.componentList.forEach((c, index) => (c.order_index = index + 1))
+			},
+		),
 	},
 })
 
@@ -145,5 +168,6 @@ export const {
 	copyComponent,
 	changeComponentTitle,
 	changeHiddenComponent,
+	moveComponent,
 } = componentsSlice.actions
 export default componentsSlice.reducer

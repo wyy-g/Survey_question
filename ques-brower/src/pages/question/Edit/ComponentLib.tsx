@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import { useRequest } from 'ahooks'
 import { Tooltip } from 'antd'
 import { useDispatch } from 'react-redux'
-import { nanoid } from 'nanoid'
 import { getSystemComponents } from '../../../services/question'
 import styles from './ComponentLib.module.scss'
 import { addComponent } from '../../../store/componentReducer'
@@ -18,7 +17,7 @@ const ComponentLib: FC = () => {
 		const { title = '', type, defaultProps } = component
 		dispatch(
 			addComponent({
-				id: nanoid(5),
+				id: Math.floor(Math.random() * 100000),
 				title,
 				type,
 				props: defaultProps,

@@ -7,20 +7,19 @@ import {
 	changeSelectId,
 	changeComponentTitle,
 	changeHiddenComponent,
+	moveComponent,
 } from '../../../store/componentReducer'
 import styles from './Catalog.module.scss'
 import IconFont from '../../../utools/IconFont'
+import addZero from '../../../utools/addZero'
+import SortableComtainer from '../../../components/DragSoetable/SortableContainer'
+import SortableItem from '../../../components/DragSoetable/SortableItem'
 
 const Catalog: FC = () => {
 	const dispatch = useDispatch()
 	// 记录当前正在修改标题的组件
 	const [changeTitleId, setChangeTitleId] = useState<string | number>('')
 	const { componentList, selectId } = useGetComponentStore()
-	function addZero(num: number) {
-		if (num < 10) {
-			return '0' + num
-		}
-	}
 
 	function handleClick(id: number | string) {
 		if (id !== selectId) {
@@ -47,8 +46,14 @@ const Catalog: FC = () => {
 		dispatch(changeHiddenComponent({ id, isShow }))
 	}
 
+	// 拖拽排序结束
+	function handleDragEnd(oldIndex: number, newIndex: number) {
+		console.log('index', oldIndex, newIndex)
+		dispatch(moveComponent({ oldIndex, newIndex }))
+	}
+
 	return (
-		<>
+		<SortableComtainer items={componentList} onDragEnd={handleDragEnd}>
 			{componentList.map(c => {
 				const { id, title, order_index, props } = c
 				const { isShow = false } = props
@@ -61,47 +66,49 @@ const Catalog: FC = () => {
 				})
 
 				return (
-					<div key={id} className={wrapperClassName} onClick={() => handleClick(id)}>
-						<div className={styles['title']}>
-							{' '}
-							{id !== changeTitleId && (
-								<span>
-									{addZero(order_index!)}.&nbsp;{title}
-								</span>
-							)}
-							{id === changeTitleId && (
-								<Input
-									value={title}
-									onChange={e => changeTitle(e)}
-									onPressEnter={() => setChangeTitleId('')}
-									onBlur={() => setChangeTitleId('')}
-									size="small"
-								/>
-							)}
+					<SortableItem key={id} id={id}>
+						<div className={wrapperClassName} onClick={() => handleClick(id)}>
+							<div className={styles['title']}>
+								{' '}
+								{id !== changeTitleId && (
+									<span>
+										{addZero(order_index!)}.&nbsp;{title}
+									</span>
+								)}
+								{id === changeTitleId && (
+									<Input
+										value={title}
+										onChange={e => changeTitle(e)}
+										onPressEnter={() => setChangeTitleId('')}
+										onBlur={() => setChangeTitleId('')}
+										size="small"
+									/>
+								)}
+							</div>
+							<div className={styles['handler']}>
+								{!isShow ? (
+									<Button
+										type="text"
+										size="small"
+										icon={<IconFont type="icon-yanjing_xianshi_o"></IconFont>}
+										title="隐藏组件"
+										onClick={e => changeHidden(e, id, !isShow)}
+									></Button>
+								) : (
+									<Button
+										type="text"
+										size="small"
+										icon={<IconFont type="icon-yanjing_yincang_o"></IconFont>}
+										title="显示组件"
+										onClick={e => changeHidden(e, id, !isShow)}
+									></Button>
+								)}
+							</div>
 						</div>
-						<div className={styles['handler']}>
-							{!isShow ? (
-								<Button
-									type="text"
-									size="small"
-									icon={<IconFont type="icon-yanjing_xianshi_o"></IconFont>}
-									title="隐藏组件"
-									onClick={e => changeHidden(e, id, !isShow)}
-								></Button>
-							) : (
-								<Button
-									type="text"
-									size="small"
-									icon={<IconFont type="icon-yanjing_yincang_o"></IconFont>}
-									title="显示组件"
-									onClick={e => changeHidden(e, id, !isShow)}
-								></Button>
-							)}
-						</div>
-					</div>
+					</SortableItem>
 				)
 			})}
-		</>
+		</SortableComtainer>
 	)
 }
 

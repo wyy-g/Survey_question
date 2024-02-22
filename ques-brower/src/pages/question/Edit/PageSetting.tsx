@@ -6,12 +6,13 @@ import { resetPageInfo } from '../../../store/pageInfoReducer'
 
 const PageSetting: FC = () => {
 	const pageInfo = useGetPageInfo()
+	const { isPublished, createdAt, updatedAt } = pageInfo
 	const [form] = Form.useForm()
 
 	const dispatch = useDispatch()
 
 	function handleValueChange() {
-		dispatch(resetPageInfo(form.getFieldsValue()))
+		dispatch(resetPageInfo({ ...form.getFieldsValue(), isPublished, createdAt, updatedAt }))
 	}
 
 	useEffect(() => {

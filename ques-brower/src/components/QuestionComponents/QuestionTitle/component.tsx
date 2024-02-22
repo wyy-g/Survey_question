@@ -1,11 +1,18 @@
 import React, { FC } from 'react'
 import { Typography } from 'antd'
 import { QuestionTitlePropsType, QuestionTitleDefaultProps } from './interface'
+import addZero from '../../../utools/addZero'
 
 const { Title } = Typography
 
 const QuestionTitle: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType) => {
-	const { text = '', level = 1, isCenter = false } = { ...QuestionTitleDefaultProps, ...props }
+	const {
+		text = '',
+		level = 1,
+		isCenter = false,
+		isShowOrderIndex,
+		order_index,
+	} = { ...QuestionTitleDefaultProps, ...props }
 
 	const genFontSize = (level: number) => {
 		switch (level) {
@@ -27,8 +34,11 @@ const QuestionTitle: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType
 				textAlign: isCenter ? 'center' : 'start',
 				marginBottom: 0,
 				fontSize: genFontSize(level),
+				marginLeft: '15px',
 			}}
 		>
+			{!!isShowOrderIndex && <span>{addZero(order_index!)}&nbsp;</span>}
+
 			{text}
 		</Title>
 	)

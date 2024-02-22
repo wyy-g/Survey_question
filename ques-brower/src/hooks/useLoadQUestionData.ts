@@ -24,14 +24,24 @@ function useLoadQuestionData() {
 
 	useEffect(() => {
 		if (!data) return
-		const { title = '', description, isShowOrderIndex, componentList = [] } = data
+		const {
+			title = '',
+			description,
+			isShowOrderIndex,
+			componentList = [],
+			isPublished,
+			createdAt,
+			updatedAt,
+		} = data
 		//获取默认选中的selected
 		let selectId = ''
 		if (componentList.length > 0) {
 			selectId = componentList[0].id
 		}
 		dispatch(resetComponents({ selectId, componentList }))
-		dispatch(resetPageInfo({ title, isShowOrderIndex, description }))
+		dispatch(
+			resetPageInfo({ title, isShowOrderIndex, description, isPublished, createdAt, updatedAt }),
+		)
 	}, [data])
 
 	useEffect(() => {

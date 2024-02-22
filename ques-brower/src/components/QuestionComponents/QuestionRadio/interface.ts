@@ -12,6 +12,8 @@ export type QuestionRadioPropsType = {
 	isShow?: boolean
 	// 用于PropComponent
 	onChange?: (newProps: QuestionRadioPropsType) => void
+	order_index?: number | string
+	isShowOrderIndex?: boolean
 }
 
 export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
@@ -26,4 +28,5 @@ export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
 		{ value: 'item3', text: '选项三' },
 	],
 	value: '',
+	isShowOrderIndex: true,
 }

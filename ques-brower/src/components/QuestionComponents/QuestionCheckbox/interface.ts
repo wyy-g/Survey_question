@@ -12,6 +12,8 @@ export type QuestionCheckboxPropsType = {
 	isShow?: boolean
 	// 用于PropComponent
 	onChange?: (newProps: QuestionCheckboxPropsType) => void
+	order_index?: number | string
+	isShowOrderIndex?: boolean
 }
 
 export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
@@ -25,4 +27,5 @@ export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
 	isShowTitle: true,
 	isMustFill: true,
 	isShow: false,
+	isShowOrderIndex: true,
 }

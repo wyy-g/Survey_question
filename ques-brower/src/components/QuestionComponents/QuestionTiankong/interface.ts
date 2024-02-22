@@ -5,6 +5,8 @@ export type QuestionTiankongPropsType = {
 	isMustFill?: boolean
 	content?: string
 	onChange?: (newProps: QuestionTiankongPropsType) => void
+	order_index?: number | string
+	isShowOrderIndex?: boolean
 }
 
 export const QuestionTiankongDefaultProps: QuestionTiankongPropsType = {
@@ -13,4 +15,5 @@ export const QuestionTiankongDefaultProps: QuestionTiankongPropsType = {
 	isShowTitle: true,
 	isShow: false,
 	content: '请输入多项填空内容',
+	isShowOrderIndex: true,
 }

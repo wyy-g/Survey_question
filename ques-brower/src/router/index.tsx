@@ -11,9 +11,11 @@ import Star from '../pages/manage/Star'
 import Trash from '../pages/manage/Trash'
 import QuestionLayout from '../layouts/QuestionLayout'
 import Edit from '../pages/question/Edit'
+import Publish from '../pages/question/Publish'
 import Stat from '../pages/question/Stat'
 import NotFound from '../pages/404'
 import LoginLayout from '../layouts/LoginLayout'
+import Report from '../pages/question/Stat/report'
 
 const router = createBrowserRouter([
 	{
@@ -68,8 +70,18 @@ const router = createBrowserRouter([
 				element: <Edit />,
 			},
 			{
+				path: 'publish/:id',
+				element: <Publish />,
+			},
+			{
 				path: 'stat/:id',
 				element: <Stat />,
+				children: [
+					{
+						path: 'report',
+						element: <Report />,
+					},
+				],
 			},
 		],
 	},
