@@ -50,18 +50,77 @@ const Header: FC = () => {
 	// 自动保存（防抖）
 	useDebounceEffect(
 		() => {
-			save()
+			if (page == 'edit') {
+				save()
+			}
 		},
-		[componentList, title, description, isShowOrderIndex, isPublished],
+		[componentList, title, description, isShowOrderIndex],
 		{
 			wait: 1000,
 		},
 	)
 
+	// 发布按钮
+	const PublishButton: FC = () => {
+		const { run: publish } = useRequest(
+			async (status: boolean) => {
+				await updateQuesService(Number(id), {
+					title,
+					isShowOrderIndex,
+					description,
+					componentList,
+					isPublished: status,
+					updatedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+				})
+			},
+			{ manual: true },
+		)
+
+		return (
+			<>
+				{isPublished ? (
+					<Tooltip
+						placement="right"
+						title={
+							<span style={{ color: '#fff' }}>用户将无法查看和填写当前表单停止后仍再可开启</span>
+						}
+						arrow={true}
+						overlayClassName={styles['toolTipStyle']}
+						color="#ff4d4f"
+					>
+						<Button
+							icon={<IconFont type="icon-jian" />}
+							type="primary"
+							danger
+							onClick={() => {
+								publish(false)
+								dispatch(changePageIsPushlished(false))
+								message.success('已停止发布')
+							}}
+						>
+							停止
+						</Button>
+					</Tooltip>
+				) : (
+					<Button
+						icon={<IconFont type="icon-wodefabu-baise" />}
+						type="primary"
+						onClick={() => {
+							publish(true)
+							dispatch(changePageIsPushlished(true))
+							message.success('发布成功')
+						}}
+					>
+						发布
+					</Button>
+				)}
+			</>
+		)
+	}
+
 	// 修改标题的组件
 	const TitleElem: FC = () => {
 		// 获取问卷信息
-
 		// 显示输入框还是标题
 		const [editState, setEditState] = useState(false)
 		function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -99,11 +158,25 @@ const Header: FC = () => {
 		)
 	}
 
+	// todo 问卷收集得答案（要去掉预览不计入答案回收中）
+	// const [writeAnswer, setWriteAnswer] = useState<{ id: string | number; value: string }[]>([])
+	const writeAnswer: any = []
+
 	// 预览组件
 	const [openPriview, setOpenPriview] = useState(false)
 	const PreviewElem: FC = () => {
+		function handleValueChange(value: string, id: string | number) {
+			// setWriteAnswer([...writeAnswer, { id, value }])
+			const answer = writeAnswer.find((a: any) => a.id === id)
+			if (answer) {
+				answer.value = value
+			} else {
+				writeAnswer.push({ id, value })
+			}
+		}
+		const [device, setDevice] = useState('pc')
 		function genComponent(componentInfo: ComponentInfoType, isShowOrderIndex: boolean) {
-			const { type, props, title, order_index } = componentInfo
+			const { type, props, title, order_index, id } = componentInfo
 			const componentConf = getComponentConfByType(type)
 			if (!componentConf) return
 			const { Component } = componentConf
@@ -113,7 +186,7 @@ const Header: FC = () => {
 				order_index,
 				isShowOrderIndex,
 			}
-			return <Component {...newProps} />
+			return <Component {...newProps} onValueChange={value => handleValueChange(value, id)} />
 		}
 		return (
 			<Modal
@@ -146,25 +219,57 @@ const Header: FC = () => {
 				<div className={styles['preview']}>
 					<div className={styles['preview-pattern']}>
 						<Space>
-							<Button>PC端</Button>
-							<Button>移动端</Button>
+							<Button
+								type={device == 'pc' ? 'primary' : 'default'}
+								icon={<IconFont type="icon-pc" />}
+								onClick={() => setDevice('pc')}
+							>
+								PC端
+							</Button>
+							<Button
+								type={device == 'mobile' ? 'primary' : 'default'}
+								icon={<IconFont type="icon-shouji" />}
+								onClick={() => setDevice('mobile')}
+							>
+								移动端
+							</Button>
 						</Space>
 					</div>
-					<div className={styles['preview-content']}>
-						<div className={styles['header']}>
-							<div style={{ fontWeight: 500, fontSize: '22px' }}>{title}</div>
-							<div style={{ marginTop: '10px', fontSize: '16px' }}>{description}</div>
-						</div>
-						{componentList.map((c: any) => {
-							const { id } = c
-							return (
-								<div className={styles['component-wrapper']} key={id}>
-									<div className={styles['component']}>{genComponent(c, isShowOrderIndex!)}</div>
+					<div className={device == 'mobile' ? styles['preview-content-mobile-wrapper'] : ''}>
+						<div
+							className={
+								device == 'pc' ? styles['preview-content'] : styles['preview-content-mobile']
+							}
+						>
+							{device == 'pc' ? (
+								<div className={styles['header']}>
+									<div style={{ fontWeight: 500, fontSize: '22px' }}>{title}</div>
+									<div style={{ marginTop: '10px', fontSize: '16px' }}>{description}</div>
 								</div>
-							)
-						})}
-						<div className={styles['footer']}>
-							<Button type="primary">提交</Button>
+							) : (
+								<div className={styles['header-mobile']}>
+									<div style={{ fontWeight: 500, fontSize: '18px' }}>{title}</div>
+									<div style={{ marginTop: '5px', fontSize: '14px' }}>{description}</div>
+								</div>
+							)}
+
+							{componentList.map((c: any) => {
+								const { id } = c
+								return (
+									<div className={styles['component-wrapper']} key={id}>
+										<div
+											className={device == 'pc' ? styles['component'] : styles['component-mobile']}
+										>
+											{genComponent(c, isShowOrderIndex!)}
+										</div>
+									</div>
+								)
+							})}
+							<div className={styles['footer']}>
+								<Button type="primary" onClick={() => console.log('writeAnswer', writeAnswer)}>
+									提交
+								</Button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -216,42 +321,7 @@ const Header: FC = () => {
 						<Button icon={<IconFont type="icon-shida" />} onClick={() => setOpenPriview(true)}>
 							预览
 						</Button>
-						{isPublished ? (
-							<Tooltip
-								placement="right"
-								title={
-									<span style={{ color: '#fff' }}>
-										用户将无法查看和填写当前表单停止后仍再可开启
-									</span>
-								}
-								arrow={true}
-								overlayClassName={styles['toolTipStyle']}
-								color="#ff4d4f"
-							>
-								<Button
-									icon={<IconFont type="icon-jian" />}
-									type="primary"
-									danger
-									onClick={() => {
-										dispatch(changePageIsPushlished(false))
-										message.success('已停止发布')
-									}}
-								>
-									停止
-								</Button>
-							</Tooltip>
-						) : (
-							<Button
-								icon={<IconFont type="icon-wodefabu-baise" />}
-								type="primary"
-								onClick={() => {
-									dispatch(changePageIsPushlished(true))
-									message.success('发布成功')
-								}}
-							>
-								发布
-							</Button>
-						)}
+						<PublishButton />
 					</Space>
 				</div>
 			</div>

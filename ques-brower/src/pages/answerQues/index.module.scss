@@ -1,0 +1,122 @@
+html {
+    font-size: 50px;
+  }
+.loading-wrapper {
+    margin-top: 4rem;
+}
+
+@media (min-width: 1200px) {
+    html {
+      font-size: 16px; /* 您可以根据实际情况调整这个数值 */
+    }
+}
+
+.answers-wrapper {
+    width: 100vw;
+    height: 100vh;
+}
+.answers-wrapper-pc {
+    // position: relative;
+    min-height: 100vh;
+    background-color: #F8F8F8;
+
+}
+
+  
+  .header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 3rem; /* 107px / 50px */
+      padding: 0 0.48rem; /* 24px / 50px */
+  }
+  .header .title {
+      font-weight: 500;
+      font-size: .8rem; /* 18px / 50px */
+  }
+  .header .desc {
+      margin-top: .2rem; /* 5px / 50px */
+      font-size: .5rem; /* 14px / 50px */
+  }
+  
+  .component {
+      padding: 0 1rem; /* 60px / 50px */
+      margin-bottom: 0.66rem; /* 33px / 50px */
+  }
+  
+  .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0.8rem 0; /* 40px / 50px */
+  }
+  
+    .submit-success {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .desc {
+            font-size: .56rem;
+            margin: .48rem 0;
+        }
+    }
+
+    .pc-wrapper {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+            .qr-code {
+                width: 130px;
+                background-color: #fff;
+                height: 160px;
+                position: fixed;
+                top: 80px;
+                right: 4em;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            }
+         .answer-ques-wrapper {
+            width: 776px;
+            min-height: 250px;
+            background-color: #fff;
+            border-radius: 10px;
+            margin: 80px 0;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 107px;
+            padding: 0 24px;
+            .title {
+                font-weight: 500;
+                font-size: 22px;
+            }
+            .desc {
+                margin-top: 10px;
+                font-size: 16px;
+            }
+            
+        }   
+        .component {
+            padding: 0 60px;
+            margin-bottom: 33px;
+        }
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 40px 0;
+        }
+    }

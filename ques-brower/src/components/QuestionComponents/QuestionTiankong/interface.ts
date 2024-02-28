@@ -7,6 +7,7 @@ export type QuestionTiankongPropsType = {
 	onChange?: (newProps: QuestionTiankongPropsType) => void
 	order_index?: number | string
 	isShowOrderIndex?: boolean
+	onValueChange?: (value: string) => void
 }
 
 export const QuestionTiankongDefaultProps: QuestionTiankongPropsType = {

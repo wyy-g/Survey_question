@@ -1,16 +1,18 @@
 import { useParams } from 'react-router-dom'
 import { useRequest } from 'ahooks'
-import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 
-import { resetAnswers } from '../store/answerReducer'
 import { getAnswers } from '../services/answer'
 
 export default function useLoadAnswers() {
 	const { id = '' } = useParams()
-	const dispatch = useDispatch()
 
-	const { data, loading } = useRequest(async () => await getAnswers(id))
+	const { run, loading, data } = useRequest(async () => await getAnswers(id), { manual: true })
+	useEffect(() => {
+		run()
+	}, [])
 	return {
+		run,
 		data,
 		loading,
 	}

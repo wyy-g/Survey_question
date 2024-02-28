@@ -4,7 +4,7 @@ import { Button } from 'antd'
 import styles from './index.module.scss'
 import IconFont from '../../../utools/IconFont'
 import Report from './report'
-import useLoadAnswers from '../../../hooks/useLoadAnswers'
+import Statistics from './statistics'
 
 const Stat: FC = () => {
 	const nav = useNavigate()
@@ -33,6 +33,7 @@ const Stat: FC = () => {
 			</div>
 			<div className={styles['container']}>
 				{pathname === `/question/stat/${id}/report` && <Report />}
+				{pathname === `/question/stat/${id}` && <Statistics />}
 			</div>
 		</div>
 	)

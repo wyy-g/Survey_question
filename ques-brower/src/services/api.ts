@@ -27,6 +27,9 @@ const API = {
 	},
 	ANSWER: {
 		getSingleAnswers: '/api/answers/',
+		delAnswer: '/api/answers',
+		downloadExcel: '/api/download/',
+		submitAnswer: '/api/answers',
 	},
 }
 

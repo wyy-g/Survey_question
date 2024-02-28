@@ -16,6 +16,7 @@ import Stat from '../pages/question/Stat'
 import NotFound from '../pages/404'
 import LoginLayout from '../layouts/LoginLayout'
 import Report from '../pages/question/Stat/report'
+import AnswerQues from '../pages/answerQues'
 
 const router = createBrowserRouter([
 	{
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
 				],
 			},
 		],
+	},
+	{
+		path: 'question/:id',
+		element: <AnswerQues />,
 	},
 	{
 		path: '*',

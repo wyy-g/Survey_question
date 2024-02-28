@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Typography, Input } from 'antd'
 import { QuestionTiankongPropsType, QuestionTiankongDefaultProps } from './interface'
 import IconFont from '../../../utools/IconFont'
@@ -7,9 +7,18 @@ import addZero from '../../../utools/addZero'
 const { Paragraph } = Typography
 
 const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsType) => {
-	const { title, isMustFill, isShowTitle, content, order_index, isShowOrderIndex } = {
-		...QuestionTiankongDefaultProps,
-		...props,
+	const { title, isMustFill, isShowTitle, content, order_index, isShowOrderIndex, onValueChange } =
+		{
+			...QuestionTiankongDefaultProps,
+			...props,
+		}
+
+	// 存储答案
+	const [fillValue, setFillValue] = useState<string[]>([])
+
+	function handlValueChange() {
+		const filterValue = fillValue.filter((item: any) => item)
+		onValueChange && onValueChange(filterValue.join(','))
 	}
 
 	const contentList = content ? content?.split('$') : []
@@ -38,9 +47,8 @@ const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsTy
 						{text !== 'input' ? (
 							text
 						) : (
-							<input
+							<Input
 								style={{
-									borderColor: ' #878787',
 									borderStyle: 'solid',
 									borderTopWidth: '0',
 									borderRightWidth: '0',
@@ -48,7 +56,17 @@ const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsTy
 									borderLeftWidth: '0',
 									backgroundColor: 'transparent',
 									width: '70px',
+									borderBottomColor: '#878787',
+									borderRadius: 0,
+									padding: 0,
 								}}
+								value={fillValue[index]}
+								onChange={e => {
+									const newValue = [...fillValue]
+									newValue[index] = e.target.value
+									setFillValue(newValue)
+								}}
+								onBlur={handlValueChange}
 							/>
 						)}
 					</span>

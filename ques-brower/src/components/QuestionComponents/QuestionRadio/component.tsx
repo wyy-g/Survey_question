@@ -18,6 +18,7 @@ const Component: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) =>
 		isVertical,
 		order_index,
 		isShowOrderIndex,
+		onValueChange,
 	} = {
 		...QuestionRadioDefaultProps,
 		...props,
@@ -27,10 +28,16 @@ const Component: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) =>
 
 	function handleChange(e: RadioChangeEvent) {
 		setInnerValue(e.target.value)
+		const selectText = options.find(item => item.value === e.target.value)
+		onValueChange && onValueChange(selectText!.text)
 	}
 
 	useEffect(() => {
 		setInnerValue(value)
+		if (value) {
+			const selectText = options.find(item => item.value === value)
+			onValueChange && onValueChange(selectText!.text)
+		}
 	}, [value])
 
 	return (
@@ -61,6 +68,7 @@ const Component: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) =>
 									border: '1px solid #dcdfe6',
 									padding: '5px 12px',
 									minWidth: '150px',
+									marginRight: '3px',
 								}}
 							>
 								{text}

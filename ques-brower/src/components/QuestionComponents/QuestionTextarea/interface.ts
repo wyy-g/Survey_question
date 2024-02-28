@@ -9,6 +9,7 @@ export type QuestionTextareaPropsType = {
 	isMustFill?: boolean
 	order_index?: number | string
 	isShowOrderIndex?: boolean
+	onValueChange?: (value: string) => void
 }
 
 export const QuestionTextareaDefaultProps: QuestionTextareaPropsType = {

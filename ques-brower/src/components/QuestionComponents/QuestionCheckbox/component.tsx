@@ -16,6 +16,7 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 		isShow,
 		order_index,
 		isShowOrderIndex,
+		onValueChange,
 	} = {
 		...QuestionCheckboxDefaultProps,
 		...props,
@@ -28,14 +29,23 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 
 	// 定义一个通用的handleChange函数
 	const handleChange = (value: string) => {
-		setCheckboxValues(prevState => ({
-			...prevState,
-			[value]: !prevState[value],
-		}))
+		const newCheckboxValues = { ...checkboxValues, [value]: !checkboxValues[value] }
+
+		setCheckboxValues(newCheckboxValues)
+
+		// 找到newCheckboxValues中值为true对应的text
+		const selectedTexts = list.filter(item => newCheckboxValues[item.value]).map(item => item.text)
+
+		onValueChange && onValueChange(selectedTexts.join(','))
 	}
 
 	useEffect(() => {
 		setCheckboxValues(list.reduce((acc, opt) => ({ ...acc, [opt.value]: !!opt.checked }), {}))
+		if (list) {
+			const defaultSelected = list.filter(item => item.checked).map(item => item.text)
+
+			onValueChange && onValueChange(defaultSelected.join(','))
+		}
 	}, [list])
 
 	return (
@@ -65,6 +75,7 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 								border: '1px solid #dcdfe6',
 								padding: '5px 12px',
 								minWidth: '150px',
+								marginRight: '3px',
 							}}
 							onChange={() => handleChange(value)}
 						>

@@ -5,10 +5,10 @@
     display: flex;
 }
 .menu-list {
-    position: fixed;
-    left: 0;
-    top: 65px;
-    height: 100%;
+    // position: fixed;
+    // left: 0;
+    // top: 65px;
+    // height: 100%;
     background-color: #fff;
     width: 56px;
     display: flex;
@@ -16,6 +16,7 @@
     align-items: center;
     padding-top: 24px;
     padding-bottom: 24px;
+    border-right: 1px solid #F0F2F5;
     .menu-item{
         display: flex;
         flex-direction: column;
@@ -25,6 +26,117 @@
 }
 
 .container {
-    margin: 20px 40px 20px 96px;
+    // margin: 20px 40px 20px 96px;
     width: 100%;
+}
+
+.stat-detail-wrapper {
+    display: flex;
+    height: 100%;
+
+    .catalog {
+        width: 224px;
+        height: 225px;
+        background-color: #fff;
+        height: 100%;
+        
+        .title-wrapper {
+            width: 100%;
+            color: #333333;
+            cursor: pointer;
+            margin-bottom: 10px;
+            // height: 16px;
+            // line-height: 16px;
+            font-size: 14px;
+            padding: 10px 15px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+        
+            &:hover {
+                color: #366ef4;
+                background-color: #F3F9FF;
+            }
+            .title {
+                width: calc(100% - 18px);
+                white-space: nowrap; /* 防止文本换行 */
+                overflow: hidden; /* 超出容器范围时进行隐藏 */
+                text-overflow: ellipsis; /* 使用省略号表示文本溢出 */
+            }            
+        }
+    }
+    .stat-detail {
+        width: calc(100%);
+        padding: 24px 50px;
+        box-sizing: border-box;
+        overflow: auto;
+        .stat-params {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            .rotate-icon {
+                animation: spin 1s linear infinite;
+            }
+            
+            @keyframes spin {
+                0% {transform: rotate(0deg);}
+                100% {transform: rotate(360deg);}
+            }
+        }
+        .answer-item {
+            // width: calc(100% - 100px);
+            width: 100%;
+            background-color: #fff;
+            border: 2px solid transparent;
+
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+            .answer-item-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .answer-item-data {
+                margin-top: 15px;
+            }
+        }
+    }
+}
+
+.active-answer-header {
+    border: 2px solid blue;
+    animation-name: blink;
+    animation-duration: .5s; /* 调整闪烁持续时间 */
+    animation-iteration-count: 1; /* 调整闪烁次数 */
+  }
+
+  @keyframes blink {
+    0% { border-color: blue; }
+    50% { border-color: transparent; }
+    100% { border-color: blue; }
+  }
+
+// 定义滚动条高宽
+.stat-detail::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  // 定义滑块 
+  .stat-detail::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+  
+  .stat-detail::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 设置滚动条轨道背景颜色 */
+    border-radius: 10px;
+  }
+
+  .toolTipStyle {
+    background-color: #fff !important;
+    color: #333333;
 }

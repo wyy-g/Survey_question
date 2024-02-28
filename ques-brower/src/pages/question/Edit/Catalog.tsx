@@ -48,7 +48,6 @@ const Catalog: FC = () => {
 
 	// 拖拽排序结束
 	function handleDragEnd(oldIndex: number, newIndex: number) {
-		console.log('index', oldIndex, newIndex)
 		dispatch(moveComponent({ oldIndex, newIndex }))
 	}
 
