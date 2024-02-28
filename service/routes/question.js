@@ -40,4 +40,10 @@ router.get(API.SURVEYS.sortQues, pagination, quesController.sortQues)
 // 获取某个问卷的详细信息
 router.get(API.SURVEYS.getOneQues, quesController.getQuesInfo)
 
+// 更新问卷信息
+router.patch(API.SURVEYS.updateQues, quesController.updateQues)
+
+// 复制某个问卷
+router.post(API.SURVEYS.copyQues, quesController.copyQues)
+
 module.exports = router

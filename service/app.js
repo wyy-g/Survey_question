@@ -5,6 +5,7 @@ const userRouter = require('./routes/user')
 const questionRouter = require('./routes/question.js')
 const quesComRouter = require('./routes/quesComponent.js')
 const problemRouter = require('./routes/problem.js')
+const answerRouter = require('./routes/answer.js')
 
 const { initDatabase } = require('./db/index.js');
 const addApiPrefix = require('./middlewares/addApiPrefix.js')
@@ -30,7 +31,8 @@ app.use(addApiPrefix)
 app.use(userRouter)
 app.use(questionRouter)
 app.use(quesComRouter)
-app.use(problemRouter)
+// app.use(problemRouter)
+app.use(answerRouter)
 
 
 const PORT = process.env.PORT || 3031

@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const { register, isHaveUsername } = require('../models/user')
 const { generateToken } = require('../middlewares/authorization')
+const { isHaveUser } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/httpStatusCodes')
 //const User = require('../models/user')
 
@@ -8,8 +9,6 @@ const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('
 const saltRounds = 10
 
 // 是否存在该用户
-
-
 exports.userRegister = async (req, res) => {
 	const { username, password, confirmPwd } = req.body
 	if (!username || username.length < 6 || username.length > 15) {
@@ -20,9 +19,8 @@ exports.userRegister = async (req, res) => {
 	}
 
 	const userData = await isHaveUsername(username)
-	console.log(userData)
 	if (userData.length > 0) {
-		return res.status(BAD_REQUEST).send({
+		return res.send({
 			code: BAD_REQUEST,
 			msg: '该用户名已存在'
 		})
@@ -107,28 +105,22 @@ exports.userLogin = async (req, res) => {
 		if (!result) {
 			return res.send({
 				code: BAD_REQUEST,
-				msg: '密码错误，请重新输入'
+				msg: '账号或密码错误，请检查后重新输入'
 			})
 		}
 		const token = generateToken({ username: username })
 		return res.send({
 			code: OK,
 			msg: '登录成功',
-			data: { token }
+			data: { token, userId: userData[0].id }
 		})
 	});
 }
 
 exports.getUserInfo = async (req, res) => {
-	const { username } = req.query
-	if (!username || typeof username !== 'string') {
-		return res.status(BAD_REQUEST).send({
-			code: BAD_REQUEST,
-			msg: '用户名为空或格式不正确'
-		})
-	}
+	const userId = req.userId
 	try {
-		const userData = await isHaveUsername(username)
+		const userData = await isHaveUser(Number(userId))
 		if (userData.length <= 0) {
 			return res.status(NOT_FOUND).send({
 				code: NOT_FOUND,

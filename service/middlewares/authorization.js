@@ -8,12 +8,22 @@ exports.generateToken = function (payload) {
     const token = "Bearer " + jwt.sign(payload, secretKey, {
         expiresIn: JWT_EXPIRESIN
     })
-    return token
+    return token.split(" ")[1]
 }
 
 // 验证token
 exports.verifyToken = function (req, res, next) {
     const token = req.headers.authorization?.split(" ")[1] || ''
+    // req.params { '0': '接口地址'}
+    if (req.params['0'].split('/')[0] === 'question' && req.method === 'GET') {
+        next()
+        return
+    }
+    if (req.params['0'] === 'answers' && req.method === 'POST') {
+        next()
+        return
+    }
+    // console.log('req.path', req.path, req.query, req.method)
     jwt.verify(token, secretKey, function (err, decoded) {
         if (err) {
             console.log("verify token error", err)

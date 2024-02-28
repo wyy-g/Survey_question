@@ -12,16 +12,24 @@ const API = {
         hiddenQues: '/api/question/hidden',
         setQuesStarStatus: '/api/question/setStarStatus',
         recoverQues: '/api/question/recoverQues/:id',
-        deleteQues: '/api/question/deleteQues/:id',
+        deleteQues: '/api/question/deleteQues',
         searchQues: '/api/question/searchQues',
         sortQues: '/api/question/sortQues',
-        getOneQues: `/api/question/:id`
+        getOneQues: `/api/question/:id`,
+        updateQues: `/api/question/:id`,
+        copyQues: `/api/question/duplicate/:id`
     },
     QUES_COM: {
         getAllQuesCom: '/api/questionComponents'
     },
     PROBLEMS: {
         getAllProblems: '/api/problem/:id'
+    },
+    ANSWER: {
+        getSingleAnswers: '/api/answers/:id',
+        delAnswer: '/api/answers',
+        downloadExcel: '/api/download/:id',
+        submitAnswer: '/api/answers'
     }
 }
 
