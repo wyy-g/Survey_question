@@ -581,6 +581,19 @@ exports.updateQues = async (req, res) => {
 				title: item.title,
 				order_index: item.order_index
 			})
+
+			if (item.type === 'questionRadio') {
+				const addComPropInfoRes = await addComPropInfo({ comId: item.id, property_key: 'radio', property_value: '', option_mode: 'single', is_complex: 1 })
+				for (const optItem of item.props.options) {
+					await addOptionItem({ propId: addComPropInfoRes.insertId, value: optItem.value, text: optItem.text, checked: optItem.value === item.props.value ? true : '' });
+				}
+			}
+			if (item.type === 'questionCheckbox') {
+				const addComPropInfoRes = await addComPropInfo({ comId: item.id, property_key: 'checkbox', property_value: '', option_mode: 'multiple', is_complex: 1 })
+				for (const optItem of item.props.list) {
+					await addOptionItem({ propId: addComPropInfoRes.insertId, value: optItem.value, text: optItem.text, checked: optItem.checked || '' });
+				}
+			}
 		}
 	})
 
