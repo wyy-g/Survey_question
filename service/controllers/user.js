@@ -4,7 +4,6 @@ const { generateToken } = require('../middlewares/authorization')
 const { isHaveUser } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/httpStatusCodes')
 //const User = require('../models/user')
-
 // 定义加密密码计算强度
 const saltRounds = 10
 
@@ -142,5 +141,24 @@ exports.getUserInfo = async (req, res) => {
 			code: INTERNAL_SERVER_ERROR,
 			msg: '服务器内部错误'
 		})
+	}
+}
+
+exports.uploadImg = async (req, res) => {
+	try {
+		if (!req.file) {
+			return res.status(400).json({ success: false, message: '未接收到图片文件' });
+		}
+
+		// 图片已经存储在./uploads/<type>/<filename>
+		const imagePath = req.file.path;
+
+		// 这里可以继续处理图片，例如保存到数据库，返回响应等
+		// ...
+
+		res.status(200).json({ success: true, message: '图片上传成功', imagePath });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ success: false, message: '图片上传失败' });
 	}
 }

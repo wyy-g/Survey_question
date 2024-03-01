@@ -528,10 +528,10 @@ exports.updateQues = async (req, res) => {
 									const optionRes = await getComplexPropOption({ propId: radioRes[0].id, value: option.value })
 									// 如果选项表中有该选项就更新text
 									if (optionRes.length > 0) {
-										await updateComplexPropOption({ propId: radioRes[0].id, value: option.value, text: option.text, checked: option.value === item.props.value ? true : '' })
+										await updateComplexPropOption({ propId: radioRes[0].id, value: option.value, text: option.text, checked: option.value === item.props.value ? true : false })
 									} else {
 										// 没有就新增
-										await addOptionItem({ propId: radioRes[0].id, value: option.value, text: option.text, checked: option.value === item.props.value ? true : '' })
+										await addOptionItem({ propId: radioRes[0].id, value: option.value, text: option.text, checked: option.value === item.props.value ? true : false })
 									}
 								})
 								// 获取选项表中的某个属性的所有选项
@@ -553,10 +553,10 @@ exports.updateQues = async (req, res) => {
 									const optionRes = await getComplexPropOption({ propId: checkboxRes[0].id, value: option.value })
 									// 如果选项表中有该选项就更新text
 									if (optionRes.length > 0) {
-										await updateComplexPropOption({ propId: checkboxRes[0].id, value: option.value, text: option.text, checked: option.checked || '' })
+										await updateComplexPropOption({ propId: checkboxRes[0].id, value: option.value, text: option.text, checked: option.checked || null })
 									} else {
 										// 没有就新增
-										await addOptionItem({ propId: checkboxRes[0].id, value: option.value, text: option.text, checked: option.checked || '' })
+										await addOptionItem({ propId: checkboxRes[0].id, value: option.value, text: option.text, checked: option.checked || null })
 									}
 								})
 								// 获取选项表中的某个属性的所有选项
@@ -585,13 +585,13 @@ exports.updateQues = async (req, res) => {
 			if (item.type === 'questionRadio') {
 				const addComPropInfoRes = await addComPropInfo({ comId: item.id, property_key: 'radio', property_value: '', option_mode: 'single', is_complex: 1 })
 				for (const optItem of item.props.options) {
-					await addOptionItem({ propId: addComPropInfoRes.insertId, value: optItem.value, text: optItem.text, checked: optItem.value === item.props.value ? true : '' });
+					await addOptionItem({ propId: addComPropInfoRes.insertId, value: optItem.value, text: optItem.text, checked: optItem.value === item.props.value ? true : false });
 				}
 			}
 			if (item.type === 'questionCheckbox') {
 				const addComPropInfoRes = await addComPropInfo({ comId: item.id, property_key: 'checkbox', property_value: '', option_mode: 'multiple', is_complex: 1 })
 				for (const optItem of item.props.list) {
-					await addOptionItem({ propId: addComPropInfoRes.insertId, value: optItem.value, text: optItem.text, checked: optItem.checked || '' });
+					await addOptionItem({ propId: addComPropInfoRes.insertId, value: optItem.value, text: optItem.text, checked: optItem.checked || null });
 				}
 			}
 		}

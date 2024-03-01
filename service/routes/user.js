@@ -6,6 +6,7 @@ const userController = require('../controllers/user.js')
 const quesController = require('../controllers/question')
 const { verifyToken } = require('../middlewares/authorization.js')
 const userId = require('../middlewares/userId.js')
+const upload = require('../middlewares/upload')
 
 // 登录
 router.post(API.USER.login, userController.userLogin)
@@ -20,5 +21,7 @@ router.use('/api/*', verifyToken)
 router.use('/api/*', userId)
 // 获取用户信息
 router.get(API.USER.info, userController.getUserInfo)
+// 上传用户头像
+router.post(API.UPLOADIMG, upload.single('imgFile'), userController.uploadImg)
 
 module.exports = router

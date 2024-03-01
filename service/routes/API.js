@@ -30,7 +30,8 @@ const API = {
         delAnswer: '/api/answers',
         downloadExcel: '/api/download/:id',
         submitAnswer: '/api/answers'
-    }
+    },
+    UPLOADIMG: '/api/uploadimg',
 }
 
 module.exports = API

@@ -12,7 +12,7 @@ const addApiPrefix = require('./middlewares/addApiPrefix.js')
 
 const app = express()
 
-initDatabase()
+// initDatabase()
 
 app.use(cors())
 
