@@ -27,7 +27,7 @@ const UserInfo: FC = () => {
 	}
 	const items: MenuProps['items'] = [
 		{
-			label: <Link to={LOGIN_PATHNAME}>个人信息</Link>,
+			label: <Link to="/profile">个人信息</Link>,
 			key: 'userInfo',
 		},
 		{
@@ -40,14 +40,6 @@ const UserInfo: FC = () => {
 	]
 	return (
 		<>
-			{/* {
-				<div className={styles['container']}>
-					<div className={styles['headImg']}>
-						<img src={headImg || headDefaultImg} alt="" />
-					</div>
-					<span>{nickname || username}</span>
-				</div>
-			} */}
 			<div className={styles['container']}>
 				{username ? (
 					<Dropdown trigger={['click']} menu={{ items, onClick }}>

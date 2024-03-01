@@ -31,6 +31,7 @@ const API = {
 		downloadExcel: '/api/download/',
 		submitAnswer: '/api/answers',
 	},
+	UPLOADIMG: '/api/uploadimg',
 }
 
 export default API

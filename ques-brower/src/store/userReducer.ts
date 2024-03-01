@@ -4,9 +4,17 @@ export type UserStateType = {
 	username: string
 	nickname?: string
 	headImg?: string
+	email?: string
+	created_at?: string
 }
 
-const INIT_STATE: UserStateType = { username: '', nickname: '', headImg: '' }
+const INIT_STATE: UserStateType = {
+	username: '',
+	nickname: '',
+	headImg: '',
+	email: '',
+	created_at: '',
+}
 
 export const userSlice = createSlice({
 	name: 'user',

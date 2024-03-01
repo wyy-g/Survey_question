@@ -26,7 +26,6 @@ async function registerService(
 }
 
 // 登录
-
 async function loginService(username: string, password: string): Promise<ResDataType> {
 	const data = await http.post(API.USER.login, {
 		username,
@@ -35,4 +34,22 @@ async function loginService(username: string, password: string): Promise<ResData
 	return data
 }
 
-export { getUserInfoService, registerService, loginService }
+// 上传头像
+async function uploadimgService(
+	userId: string,
+	formData: FormData,
+	type?: string,
+): Promise<ResDataType> {
+	const data = await http.post(API.UPLOADIMG, formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+		params: {
+			userId,
+			type,
+		},
+	})
+	return data
+}
+
+export { getUserInfoService, registerService, loginService, uploadimgService }

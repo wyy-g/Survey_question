@@ -5,6 +5,7 @@ import MainLayout from '../layouts/MainLayout'
 import Home from '../pages/Home'
 import Login from '../pages/user/Login'
 import Register from '../pages/user/Register'
+import Profile from '../pages/user/Profile'
 import ManageLayout from '../layouts/ManageLayout'
 import List from '../pages/manage/List'
 import Star from '../pages/manage/Star'
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
 						element: <Trash />,
 					},
 				],
+			},
+			{
+				path: 'profile',
+				element: <Profile />,
 			},
 		],
 	},

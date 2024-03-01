@@ -15,8 +15,8 @@ function useLoadUserData() {
 	const { run } = useRequest(getUserInfoService, {
 		manual: true,
 		onSuccess(res) {
-			const { username, nickname, headImg } = res
-			dispatch(loginReducer({ username, nickname, headImg }))
+			const { username, nickname, headImg, email, created_at } = res
+			dispatch(loginReducer({ username, nickname, headImg, email, created_at }))
 		},
 		onFinally() {
 			setWaitingUserData(false)
