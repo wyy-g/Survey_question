@@ -3,6 +3,7 @@ const router = express()
 
 const API = require('./API')
 const quesController = require('../controllers/question')
+const aiQuesController = require('../controllers/aiQuestion')
 
 // 分页中间件
 const pagination = require('../middlewares/pagenition')
@@ -45,5 +46,8 @@ router.patch(API.SURVEYS.updateQues, quesController.updateQues)
 
 // 复制某个问卷
 router.post(API.SURVEYS.copyQues, quesController.copyQues)
+
+// AI智能生成问卷
+router.post(API.AI, aiQuesController.generateSurvey)
 
 module.exports = router
