@@ -3,8 +3,9 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Space, Modal, Form, Input, message } from 'antd'
 import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-design/icons'
 import styles from './manageLayout.module.scss'
-import { createQuesService } from '../services/question'
+import { createQuesService, genAiQuestion } from '../services/question'
 import { getUserIdStorage } from '../utools/user-storage'
+import IconFont from '../utools/IconFont'
 
 const { TextArea } = Input
 
@@ -17,8 +18,14 @@ const ManageLayout: FC = () => {
 	const [description, setDescription] = useState('')
 	// 是否显示新建问卷的弹窗
 	const [isShowModal, setIsShowModal] = useState(false)
+	// 是否显示AI创作的modal
+	const [isShowAiModal, setIsShowAiModal] = useState(false)
 	// 新建问卷标题必填的校验 ->获取form
 	const [form] = Form.useForm()
+	// ai创作的标题
+	const [aiTitle, setAiTitle] = useState('')
+	// ai创作的form表单
+	const [aiForm] = Form.useForm()
 
 	const modalView = (
 		<>
@@ -34,6 +41,29 @@ const ManageLayout: FC = () => {
 					<TextArea value={description} onChange={e => setDescription(e.target.value)} />
 				</Form.Item>
 			</Form>
+		</>
+	)
+
+	const aiModalView = (
+		<>
+			<div className={styles['ai-wrapper']}>
+				<div className={styles['ai-left']}>
+					<Form initialValues={{ aiTitle }} form={aiForm}>
+						<Form.Item name="aiTitle">
+							<TextArea
+								showCount
+								maxLength={200}
+								onChange={e => setAiTitle(e.target.value)}
+								placeholder="输入你想要创建的表单问卷信息"
+								style={{ height: 150, resize: 'none' }}
+							/>
+						</Form.Item>
+					</Form>
+					<Button type="primary" onClick={handleGeneratorQues}>
+						生成问题
+					</Button>
+				</div>
+			</div>
 		</>
 	)
 
@@ -62,6 +92,19 @@ const ManageLayout: FC = () => {
 		form.resetFields()
 	}
 
+	// 处理ai创作点击创建
+	function handleCreateAiClick() {
+		return false
+	}
+
+	// 处理ai创作生成问题
+	function handleGeneratorQues() {
+		aiForm.validateFields().then(async values => {
+			const data = await genAiQuestion(values.aiTitle)
+			console.log('aiData', data)
+		})
+	}
+
 	return (
 		<div className={styles['container']}>
 			<div className={styles['left']}>
@@ -70,10 +113,25 @@ const ManageLayout: FC = () => {
 						type="primary"
 						size="large"
 						icon={<PlusOutlined />}
-						style={{ width: '180px', marginBottom: '20px' }}
+						style={{ width: '180px', marginBottom: '5px' }}
 						onClick={() => setIsShowModal(true)}
 					>
 						新建问卷
+					</Button>
+					<Button
+						// type="primary"
+						size="large"
+						style={{
+							width: '180px',
+							marginBottom: '20px',
+							color: '#fae0a5',
+							backgroundColor: '#272a33',
+							borderColor: 'transparent',
+						}}
+						onClick={() => setIsShowAiModal(true)}
+						icon={<IconFont type="icon-jiqiren" />}
+					>
+						AI&nbsp;创作（BETA）
 					</Button>
 					<Button
 						type={pathname.startsWith('/manage/list') ? 'default' : 'text'}
@@ -117,6 +175,15 @@ const ManageLayout: FC = () => {
 				cancelText="取消"
 			>
 				{modalView}
+			</Modal>
+			<Modal
+				title="AI&nbsp;创作（BETA）"
+				open={isShowAiModal}
+				onOk={handleCreateAiClick}
+				onCancel={handleModalCancel}
+				okText="创建"
+			>
+				{aiModalView}
 			</Modal>
 		</div>
 	)

@@ -140,6 +140,19 @@ async function getSystemComponents(): Promise<ResDataType> {
 	return data
 }
 
+async function genAiQuestion(title: string): Promise<ResDataType> {
+	const data = await http.post(
+		API.AI,
+		{
+			content: title,
+		},
+		{
+			timeout: 60000, //设置超时时间60s
+		},
+	)
+	return data
+}
+
 export {
 	createQuesService,
 	getQuesInfoService,
@@ -152,4 +165,5 @@ export {
 	copyQuesService,
 	deleteQuesService,
 	getSystemComponents,
+	genAiQuestion,
 }
