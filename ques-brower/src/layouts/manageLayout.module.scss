@@ -27,4 +27,61 @@
 }
 
 .ai-wrapper {
+    display: flex;
+    height: 350px;
+    padding: 15px 0;
+    box-sizing: border-box;
+    .ai-left {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        padding-right: 20px;
+        .ai-left-more {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .how-use {
+            width: 270px;
+        }
+        .set-num {
+            margin-top: 20px;
+            margin-left: 5px;
+        }
+    }
+    .ai-right {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        padding-left: 20px;
+        flex: 1;
+        .ai-right-com-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+        }
+    }
 }
+.ai-left::-webkit-scrollbar {
+    width: 3px;
+}
+.ai-left::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+.ai-left::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 设置滚动条轨道背景颜色 */
+    border-radius: 10px;
+  }
+.ai-right::-webkit-scrollbar {
+    width: 3px;
+}
+.ai-right::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+.ai-right::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 设置滚动条轨道背景颜色 */
+    border-radius: 10px;
+  }

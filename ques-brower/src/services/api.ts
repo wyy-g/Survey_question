@@ -33,6 +33,7 @@ const API = {
 	},
 	UPLOADIMG: '/api/uploadimg',
 	AI: '/api/generate/gpt',
+	CREATEDQUESBYAI: '/api/createAiQues',
 }
 
 export default API
