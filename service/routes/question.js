@@ -50,4 +50,7 @@ router.post(API.SURVEYS.copyQues, quesController.copyQues)
 // AI智能生成问卷
 router.post(API.AI, aiQuesController.generateSurvey)
 
+// 创建AI生成的问卷
+router.post(API.CREATEDQUESBYAI, aiQuesController.createdAiGenQues)
+
 module.exports = router

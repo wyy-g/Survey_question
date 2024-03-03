@@ -32,7 +32,8 @@ const API = {
         submitAnswer: '/api/answers'
     },
     UPLOADIMG: '/api/uploadimg',
-    AI: '/api/generate/gpt'
+    AI: '/api/generate/gpt',
+    CREATEDQUESBYAI: '/api/createAiQues',
 }
 
 module.exports = API
