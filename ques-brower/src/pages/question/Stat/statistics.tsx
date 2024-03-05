@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Button, Skeleton, Table, Space, Tooltip, Empty } from 'antd'
 import IconFont from '../../../utools/IconFont'
 import useGetComponentStore from '../../../hooks/useGetComponentStore'
@@ -22,6 +22,27 @@ const Statistics: FC = () => {
 	const [currentChartType, setCurrentChartType] = useState('barChart')
 	// 存储子组件图表传过来的实例
 	const [chartInstance, setChartInstance] = useState()
+	// 新增一个用来存储每个需要展示图表的问题及其对应图表类型的状态
+	const [questionCharts, setQuestionCharts] = useState<any>({})
+
+	// 初始化questionCharts
+	useEffect(() => {
+		const initCharts: any = {}
+		componentList.forEach(c => {
+			if (['questionRadio', 'questionCheckbox'].includes(c.type)) {
+				initCharts[c.id] = 'barChart'
+			}
+		})
+		setQuestionCharts(initCharts)
+	}, [componentList])
+
+	// 定义一个函数用于改变单个问题的图表类型
+	const changeQuestionChartType = (questionId: string | number, newType: string) => {
+		setQuestionCharts((prevState: any) => ({
+			...prevState,
+			[questionId]: newType,
+		}))
+	}
 
 	// 点击题目跳到指定位置
 	function scrollToAnchor(anchorName: string, id: number | string) {
@@ -169,7 +190,7 @@ const Statistics: FC = () => {
 					function downloadChartImage() {
 						/* eslint-disable */
 						// @ts-ignore
-						chartInstance?.current.downloadImage(`${title}_${chartTypeName[currentChartType]}`)
+						chartInstance?.current.downloadImage(`${title}_${chartTypeName[questionCharts[id]]}`)
 					}
 					// 接收子组件图表传过来的实例
 					function handleChartInstance(chartInstance: any) {
@@ -210,33 +231,35 @@ const Statistics: FC = () => {
 														</Tooltip>
 
 														<Button
-															type={currentChartType == 'statChart' ? 'primary' : 'text'}
+															type={questionCharts[id] == 'statChart' ? 'primary' : 'text'}
 															style={{
 																background:
-																	currentChartType === 'statChart' ? '#1677ff' : '#f2f3f9',
+																	questionCharts[id] === 'statChart' ? '#1677ff' : '#f2f3f9',
 															}}
-															onClick={() => setCurrentChartType('statChart')}
+															onClick={() => changeQuestionChartType(id, 'statChart')}
 															icon={<IconFont type="icon-tiaoxingtu-shu-2" />}
 														>
 															柱状图
 														</Button>
 														<Button
-															type={currentChartType == 'barChart' ? 'primary' : 'text'}
+															type={questionCharts[id] == 'barChart' ? 'primary' : 'text'}
 															style={{
-																background: currentChartType === 'barChart' ? '#1677ff' : '#f2f3f9',
+																background:
+																	questionCharts[id] === 'barChart' ? '#1677ff' : '#f2f3f9',
 															}}
-															onClick={() => setCurrentChartType('barChart')}
+															onClick={() => changeQuestionChartType(id, 'barChart')}
 															icon={<IconFont type="icon-tiaoxingtu-heng" />}
 														>
 															条形图
 														</Button>
 														<Button
-															type={currentChartType == 'pieChart' ? 'primary' : 'text'}
+															type={questionCharts[id] == 'pieChart' ? 'primary' : 'text'}
 															style={{
-																background: currentChartType === 'pieChart' ? '#1677ff' : '#f2f3f9',
+																background:
+																	questionCharts[id] === 'pieChart' ? '#1677ff' : '#f2f3f9',
 															}}
 															icon={<IconFont type="icon-bingtu" />}
-															onClick={() => setCurrentChartType('pieChart')}
+															onClick={() => changeQuestionChartType(id, 'pieChart')}
 														>
 															饼图
 														</Button>
@@ -260,30 +283,31 @@ const Statistics: FC = () => {
 											<Skeleton />
 										) : showState === 'table' ? (
 											<>
-												{/* {type === 'questionTiankong' && genComponent(c)} */}
 												<Table columns={columns} dataSource={genDataSource(type)} />
 											</>
-										) : (
+										) : isShowChart ? (
 											<div style={{ width: '80%', marginTop: '5px' }}>
-												{currentChartType === 'statChart' && (
+												{questionCharts[id] === 'statChart' && (
 													<ColumnChart
 														chartData={genDataSource(type)}
 														onChartReady={handleChartInstance}
 													/>
 												)}
-												{currentChartType === 'barChart' && (
+												{questionCharts[id] === 'barChart' && (
 													<BarChart
 														chartData={genDataSource(type)}
 														onChartReady={handleChartInstance}
 													/>
 												)}
-												{currentChartType === 'pieChart' && (
+												{questionCharts[id] === 'pieChart' && (
 													<PieChart
 														chartData={genDataSource(type)}
 														onChartReady={handleChartInstance}
 													/>
 												)}
 											</div>
+										) : (
+											<Table columns={columns} dataSource={genDataSource(type)} />
 										)}
 									</div>
 								</div>
