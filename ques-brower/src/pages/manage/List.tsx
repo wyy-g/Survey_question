@@ -13,10 +13,12 @@ import {
 	getSortQuestionService,
 } from '../../services/question'
 import ListSort from '../../components/ListSort'
+import { getUserIdStorage } from '../../utools/user-storage'
 
 const List: FC = () => {
 	useTitle('问卷调查 - 我的问卷')
 	const [questionList, setQuestionList] = useState([])
+	const userId = getUserIdStorage()
 
 	const [searchParams] = useSearchParams()
 	const keyword = searchParams.get('keyword') || ''
@@ -49,7 +51,7 @@ const List: FC = () => {
 		async () => {
 			const data = keyword
 				? await getSearchQuesListService({
-						userId: '62',
+						userId,
 						keyword,
 						isDeleted: false,
 						isStar: false,
@@ -57,7 +59,7 @@ const List: FC = () => {
 						pageSize: 5,
 						isPublished: status,
 					})
-				: await getAllQuestionListService(62, page, 5, status)
+				: await getAllQuestionListService(Number(userId), page, 5, status)
 			return data
 		},
 		{
@@ -112,7 +114,7 @@ const List: FC = () => {
 	const { run: loadSortData } = useRequest(
 		async (status, timeType, page) => {
 			const data = await getSortQuestionService({
-				userId: '62',
+				userId,
 				sort: timeType,
 				page,
 				pageSize: 5,

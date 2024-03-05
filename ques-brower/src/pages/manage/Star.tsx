@@ -9,10 +9,12 @@ import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 import { getStarQuesService } from '../../services/question'
 import useLoadSearchQues from '../../hooks/useLoadSearchQues'
+import { getUserIdStorage } from '../../utools/user-storage'
 
 const Star: FC = () => {
 	useTitle('问卷调查 - 星标问卷')
 	const [questionList, setQuestionList] = useState([])
+	const userId = getUserIdStorage()
 
 	const [searchParams] = useSearchParams()
 	const keyword = searchParams.get('keyword')
@@ -20,7 +22,7 @@ const Star: FC = () => {
 	const pageSize = parseInt(searchParams.get('pageSize') || '') || 4
 
 	const { data = {}, loading } = useRequest(
-		async () => await getStarQuesService('62', page, pageSize),
+		async () => await getStarQuesService(userId, page, pageSize),
 		{ refreshDeps: [searchParams] },
 	)
 	const { userStarQues = [], total } = data

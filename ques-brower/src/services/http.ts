@@ -5,9 +5,17 @@ import { removeToken, removeUserId } from '../utools/user-storage'
 import API from './api'
 import { LOGIN_PATHNAME } from '../router'
 
-const instance = axios.create({
-	timeout: 10 * 500,
-})
+const apiUrl = process.env.REACT_APP_API_URL
+
+const instance =
+	process.env.NODE_ENV === 'production'
+		? axios.create({
+				timeout: 10 * 500,
+				baseURL: apiUrl,
+			})
+		: axios.create({
+				timeout: 10 * 500,
+			})
 
 const getUserId = () => {
 	const userId = getUserIdStorage()

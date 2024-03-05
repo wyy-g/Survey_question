@@ -10,6 +10,7 @@ import styles from './common.module.scss'
 import { getTrashQuesService } from '../../services/question'
 import useLoadSearchQues from '../../hooks/useLoadSearchQues'
 import { updateQuesService, deleteQuesService } from '../../services/question'
+import { getUserIdStorage } from '../../utools/user-storage'
 
 // const rowQuestionList = [
 // 	{ id: '1', title: '问卷1', isPublished: false, isStar: false, answerCount: 5, createAt: '3.10' },
@@ -22,6 +23,7 @@ const { confirm } = Modal
 
 const Trash: FC = () => {
 	useTitle('问卷调查 - 回收站')
+	const userId = getUserIdStorage()
 
 	const [questionList, setQuestionList] = useState([])
 	const [searchParams] = useSearchParams()
@@ -33,7 +35,7 @@ const Trash: FC = () => {
 		data = {},
 		loading,
 		refresh,
-	} = useRequest(async () => await getTrashQuesService('62', page, pageSize), {
+	} = useRequest(async () => await getTrashQuesService(userId, page, pageSize), {
 		refreshDeps: [searchParams],
 	})
 	const { userDelQues = [], total } = data

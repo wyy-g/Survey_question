@@ -5,10 +5,6 @@
     display: flex;
 }
 .menu-list {
-    // position: fixed;
-    // left: 0;
-    // top: 65px;
-    // height: 100%;
     background-color: #fff;
     width: 56px;
     display: flex;
@@ -26,7 +22,6 @@
 }
 
 .container {
-    // margin: 20px 40px 20px 96px;
     width: 100%;
 }
 
@@ -45,8 +40,6 @@
             color: #333333;
             cursor: pointer;
             margin-bottom: 10px;
-            // height: 16px;
-            // line-height: 16px;
             font-size: 14px;
             padding: 10px 15px;
             box-sizing: border-box;
@@ -86,7 +79,6 @@
             }
         }
         .answer-item {
-            // width: calc(100% - 100px);
             width: 100%;
             background-color: #fff;
             border: 2px solid transparent;
@@ -119,13 +111,10 @@
     50% { border-color: transparent; }
     100% { border-color: blue; }
   }
-
-// 定义滚动条高宽
 .stat-detail::-webkit-scrollbar {
     width: 5px;
   }
   
-  // 定义滑块 
   .stat-detail::-webkit-scrollbar-thumb {
     background: rgba(0,0,0,0.2);
     border-radius: 10px;

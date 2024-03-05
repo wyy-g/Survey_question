@@ -9,12 +9,10 @@ h1,h2,h3,h4,h5,h6 {
   padding: 0;
 }
 
-// 定义滚动条高宽
 ::-webkit-scrollbar {
   width: 5px;
 }
 
-// 定义滑块 
 ::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
   border-radius: 10px;
