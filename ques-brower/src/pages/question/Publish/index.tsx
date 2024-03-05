@@ -27,7 +27,9 @@ const Publish: FC = () => {
 		dispatch(changePageIsPushlished(checked))
 	}
 
-	const url = `http://localhost:3000/question/${id}`
+	const apiUrl = process.env.REACT_APP_API_URL!
+	const url =
+		process.env.NODE_ENV === 'production' ? apiUrl : `http://192.168.1.5:3000/question/${id}`
 
 	function copyLink() {
 		navigator.clipboard

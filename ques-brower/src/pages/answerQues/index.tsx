@@ -34,7 +34,9 @@ const AnswerQues: FC = () => {
 	const [browser_info, setBrowser_info] = useState('')
 	const [writeAnswer, setWriteAnswer] = useState<{ [key: string]: string | number }[]>([])
 
-	const url = `http://192.168.1.5:3000/question/${id}`
+	const apiUrl = process.env.REACT_APP_API_URL!
+	const url =
+		process.env.NODE_ENV === 'production' ? apiUrl : `http://192.168.1.5:3000/question/${id}`
 
 	const { loading } = useRequest(
 		async () => {
