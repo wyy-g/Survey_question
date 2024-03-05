@@ -3,7 +3,7 @@ const { executeQuery } = require('../db/index')
 exports.createOneQues = async (title, description, isPublished, isStar, isDeleted, userId) => {
     if (typeof userId !== 'number') throw Error('userId not number')
     return await executeQuery(
-        `INSERT INTO Surveys (title, description, isPublished, isStar, isDeleted, userId)
+        `INSERT INTO surveys (title, description, isPublished, isStar, isDeleted, userId)
         VALUES (?, ?, ?, ?, ?, ?);`,
         [title, description, isPublished, isStar, isDeleted, userId]
     )
