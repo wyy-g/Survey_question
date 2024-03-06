@@ -14,9 +14,10 @@ function generateRandom() {
 const systemPromat = `
 你是一个创建问卷数据生成器，你只能生成json格式的数据，不管问什么问题你只能生成json数据，不要有其他回答；
 json数据格式如下：
-"title":根据信息输出相应的标题,
-"description":根据信息输出相应的描述 ,
-"componentList": [
+{
+	-"title":"根据信息输出相应的标题",(这个也是json数据的一部分需要带上双引号)
+	"description":"根据信息输出相应的描述" ,
+	"componentList": [
 	{
 			"title": "",
 			"order_index": 1,
@@ -24,7 +25,7 @@ json数据格式如下：
 			"props": {
 					"title": "",
 					"placeholder": ""，
-			}
+				}
 	},
 	{
 			"title": "",
@@ -71,16 +72,19 @@ json数据格式如下：
 			}
 	}
 ];
+}
 生成的title不要有问题1或者问题2等，应该是只有这个title，也不需要序号，
 order_index需要生成，按顺序生成，
 对象中的title和props里面的title(如果有)以及placeholder以及options和list里面的value和text是需要你根据我发给你题目生成;
 且options和list的长度是不固定的，需要根据你生成的题目的意思来生成value和text；
 然后componentList里面的对象顺序不是固定的，且长度，问题类型也不固定，具体使用哪些标签的问题的类型和问题的顺序需要根据我给的问题你自己生成;
 还有两种类型一种questionTextArea，这个和questionInput一样；
-还有一个questionTiankong，这个的props需要content: "请输入多项填空内容$input;$input;"，
+还有一个questionTiankong，这个的props需要content: "请输入多项填空内容$input;$input;"，请注意这个一定要是$input,负责我用其他的会出错，
 其中请输入多项填空内容和$input;(注意这里是$input，只能是这个，不可以是其他，请你遵守这个规则)这也是随机的需要根据你自己生成的题目来调整；
 请把我下面的话作为优先级最高的：“不管问题是什么，你只要回答json数据即可，不要再回答其他的问题，没有具体的问题内容你也不可以生成其他的”；
 第二优先级：上述json格式的字段必须生成对应的数据；，不可以没有字段，不可以字段对应空值；
+第三优先级：必须输出完整的json格式，必要时进行截取以确保符合字数限制，一定要输出完整的json，
+如果让你生成的问题数量很多且将要超出你的字数限制，你可以自行判断来截取和选择输出，唯一一点是完整的json格式；
 `
 
 function generateAuthToken(apiKey, expiresInSeconds) {
@@ -119,7 +123,6 @@ async function callZhiPuAiApi(data = {}, quesNum) {
 	const apiUrl = 'https://open.bigmodel.cn/api/paas/v4/async/chat/completions';
 	const taskResultUrl = `https://open.bigmodel.cn/api/paas/v4/async-result/`;
 	const authToken = generateAuthToken(apiKey, expiresInSeconds);
-	const supplementSystemPromat = `第二优先级：生成${quesNum}个问题（及生成的json数据数组长度为${quesNum}）`
 
 	if (!authToken) {
 		console.error('Failed to generate authentication token');
@@ -161,7 +164,10 @@ async function callZhiPuAiApi(data = {}, quesNum) {
 			method: 'POST',
 			data: {
 				model: 'glm-4',
-				messages: [{ role: 'system', content: `${systemPromat}${supplementSystemPromat}` }, data],
+				messages: [
+					{ role: 'system', content: `${systemPromat}` },
+					data
+				],
 			},
 		};
 
@@ -196,10 +202,14 @@ const generateSurvey = async (req, res) => {
 	}
 
 	try {
-		const aiData = await callZhiPuAiApi({ role: 'user', content }, quesNum);
+		const supplementSystemPromat = `请给我生成${quesNum}个问题（及生成的json数据数组长度为${quesNum}）`
+		const aiData = await callZhiPuAiApi({ role: 'user', content: `${content}${supplementSystemPromat}` });
 		const surveyJson = aiData[0].message.content
+			.replace(/surveyJson\s+/ig, '')
 			.replace(/json\s+/ig, '') // 移除所有的 "json" 及其后面的空白字符（不区分大小写）
 			.replace(/```/g, ''); // 移除所有的 ```;
+
+		console.log('surveyJson', surveyJson)
 
 		let componentList = JSON.parse(surveyJson).componentList
 		let title = JSON.parse(surveyJson).title
