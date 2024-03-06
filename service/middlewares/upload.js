@@ -5,9 +5,9 @@ const path = require('path');
 // 创建multer存储引擎
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
-        console.log('req.params', req.query)
         // 根据type创建文件夹
-        const uploadFolder = path.join(__dirname, 'uploads', req.query.type);
+        const uploadsRoot = path.join(__dirname, '..', 'uploads');
+        const uploadFolder = path.join(uploadsRoot, req.query.type);
 
         fs.mkdir(uploadFolder, { recursive: true }, (err) => {
             if (err) {

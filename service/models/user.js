@@ -29,3 +29,28 @@ exports.isHaveUsername = async (username) => {
     )
     return res
 }
+
+exports.updateUserInfo = async (userInfo) => {
+    let sql = "UPDATE users SET ";
+    let values = [];
+
+    if (userInfo.headImg) {
+        sql += "headImg = ?,";
+        values.push(userInfo.headImg);
+    }
+    if (userInfo.nickname) {
+        sql += "nickname = ?,";
+        values.push(userInfo.nickname);
+    }
+    if (userInfo.email) {
+        sql += "email = ?,";
+        values.push(userInfo.email);
+    }
+    // 移除最后一个逗号并添加where子句
+    sql = sql.slice(0, -1) + " WHERE id = ?";
+
+    values.push(userInfo.userId);
+
+    const res = await executeQuery(sql, values);
+    return res;
+}

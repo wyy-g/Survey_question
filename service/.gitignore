@@ -2,3 +2,4 @@
 **/db/dbSql.js
 **/dbConfig.js
 .env
+/uploads

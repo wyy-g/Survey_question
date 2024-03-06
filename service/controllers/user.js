@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const { register, isHaveUsername } = require('../models/user')
+const { register, isHaveUsername, updateUserInfo } = require('../models/user')
 const { generateToken } = require('../middlewares/authorization')
 const { isHaveUser } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/httpStatusCodes')
@@ -145,18 +145,27 @@ exports.getUserInfo = async (req, res) => {
 }
 
 exports.uploadImg = async (req, res) => {
+	let userId = Number(req.header('x-user-id'));
 	try {
 		if (!req.file) {
 			return res.status(400).json({ success: false, message: '未接收到图片文件' });
 		}
 
 		// 图片已经存储在./uploads/<type>/<filename>
-		const imagePath = req.file.path;
-
+		const baseUrl = process.env.NODE_ENV === 'production' ? 'http://localhost:3031/uploads/' : 'http://localhost:3031/uploads/'
+		const headImg = `${baseUrl}${req.query.type}/${req.file.filename}`;
 		// 这里可以继续处理图片，例如保存到数据库，返回响应等
 		// ...
-
-		res.status(200).json({ success: true, message: '图片上传成功', imagePath });
+		if (headImg) {
+			await updateUserInfo({ headImg, userId })
+		}
+		res.status(200).send({
+			code: 200,
+			msg: '图片上传成功',
+			data: {
+				headImg
+			}
+		})
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ success: false, message: '图片上传失败' });
