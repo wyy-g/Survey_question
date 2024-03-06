@@ -7,24 +7,42 @@ import moment from 'moment'
 import { Typography, Switch, Divider, Button, Space, message } from 'antd'
 import { useDispatch } from 'react-redux'
 import QRCode from 'qrcode.react'
+import { useRequest } from 'ahooks'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import styles from './index.module.scss'
 import { changePageIsPushlished } from '../../../store/pageInfoReducer'
+import { updateQuesService } from '../../../services/question'
+import useGetComponentStore from '../../../hooks/useGetComponentStore'
 
 const { Title } = Typography
 
 const Publish: FC = () => {
 	const { id = '' } = useParams()
 	const { loading } = useLoadQuestionData()
-	const { createdAt, updatedAt, isPublished, title } = useGetPageInfo()
+	const { createdAt, updatedAt, isPublished, title, isShowOrderIndex, description } =
+		useGetPageInfo()
+	const { componentList = [] } = useGetComponentStore()
 
 	const dispatch = useDispatch()
 
-	const QRcodeRef = useRef(null)
+	const { run: publish } = useRequest(
+		async (status: boolean) => {
+			await updateQuesService(Number(id), {
+				title,
+				isShowOrderIndex,
+				description,
+				componentList,
+				isPublished: status,
+				updatedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+			})
+		},
+		{ manual: true },
+	)
 
 	function handleChange(checked: boolean) {
 		dispatch(changePageIsPushlished(checked))
+		publish(checked)
 	}
 
 	const apiUrl = process.env.REACT_APP_API_URL!

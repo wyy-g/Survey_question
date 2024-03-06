@@ -9,7 +9,7 @@ import { loginReducer } from '../store/userReducer'
 function useLoadUserData() {
 	const dispatch = useDispatch()
 	const [waitingUserData, setWaitingUserData] = useState(true)
-	const { username } = useGetUserinfo()
+	const { username, headImg } = useGetUserinfo()
 	const userId = getUserIdStorage()
 
 	const { run } = useRequest(getUserInfoService, {
@@ -31,9 +31,9 @@ function useLoadUserData() {
 		if (userId) {
 			run(parseInt(userId))
 		}
-	}, [username])
+	}, [username, headImg])
 
-	return { waitingUserData }
+	return { waitingUserData, run }
 }
 
 export default useLoadUserData

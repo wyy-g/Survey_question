@@ -11,12 +11,14 @@ import { getUserIdStorage } from '../../../utools/user-storage'
 import useGetUserInfo from '../../../hooks/useGetUserInfo'
 import headDefaultImg from '../../../assets/head.png'
 import { uploadimgService } from '../../../services/user'
+import useLoadUserData from '../../../hooks/useLoadUserData'
+import AvatarEditor from './avatarEditorElem'
 
 const { Dragger } = Upload
 
 const Profile: FC = () => {
 	const userId = getUserIdStorage()
-
+	const { run } = useLoadUserData()
 	const { username, nickname, headImg, email, created_at } = useGetUserInfo()
 	// 控制上传头像的modal
 	const [isShowUploadModel, setIsShowUploadModal] = useState(false)
@@ -26,7 +28,16 @@ const Profile: FC = () => {
 	const [imgFile, setImgFile] = useState<UploadFile | null>()
 	// 图片的本地url
 	const [imageUrl, setImageUrl] = useState<string>()
+	// 从数据库获取的图片url
 	const [uploading, setUploading] = useState(false)
+	// 裁剪后的图片
+	const [croppedImage, setCroppedImage] = useState<Blob | null>(null)
+	// 处理裁剪后的图片的函数
+	function handleCroppedImage(croppedImageBlob: Blob | null) {
+		if (croppedImageBlob) {
+			setCroppedImage(croppedImageBlob)
+		}
+	}
 	// upload的props
 	const props: UploadProps = {
 		beforeUpload: file => {
@@ -63,11 +74,12 @@ const Profile: FC = () => {
 		// }
 
 		const formData = new FormData()
-		formData.append('imgFile', imgFile as unknown as Blob)
+		formData.append('imgFile', croppedImage as unknown as Blob)
 
 		setUploading(true)
 		try {
 			await uploadimgService(userId, formData, 'headImg')
+			run(Number(userId))
 			message.success('头像上传成功')
 		} catch (error) {
 			console.error('上传头像失败:', error)
@@ -78,6 +90,7 @@ const Profile: FC = () => {
 
 		// 当上传完成（无论成功与否）时，关闭模态框
 		setIsShowUploadModal(false)
+		setImageUrl('')
 	}
 
 	function handleModalCancel() {
@@ -158,12 +171,19 @@ const Profile: FC = () => {
 						styles={{
 							body: {
 								minHeight: '250px',
+								// maxHeight: '300px',
 							},
 						}}
 					>
-						<div>
+						<div style={{ height: '250px', width: '100%', userSelect: 'none' }}>
 							{imageUrl ? (
-								<img src={imageUrl} alt="Preview Image" style={{ maxWidth: '100%' }} />
+								// <img
+								// 	src={imageUrl}
+								// 	alt="Preview Image"
+								// 	style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+								// />.
+
+								<AvatarEditor imageUrl={imageUrl} onCroppedImage={handleCroppedImage} />
 							) : (
 								<Dragger {...props}>
 									<div
