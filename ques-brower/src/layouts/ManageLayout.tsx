@@ -201,27 +201,30 @@ const ManageLayout: FC = () => {
 						</div>
 					)}
 					{!isShowHowUse && isShowSetting && (
-						<div className={styles['set-num']}>
-							<Row>
-								<Col span={14}>
-									<Slider
-										min={5}
-										max={10}
-										onChange={onChangeQuesNum}
-										value={typeof quesNum === 'number' ? quesNum : 0}
-									/>
-								</Col>
-								<Col span={2}>
-									<InputNumber
-										min={5}
-										max={10}
-										style={{ margin: '0 16px' }}
-										value={quesNum}
-										onChange={onChangeQuesNum}
-									/>
-								</Col>
-							</Row>
-						</div>
+						<>
+							<div className={styles['set-num']}>
+								<Row>
+									<Col span={14}>
+										<Slider
+											min={5}
+											max={10}
+											onChange={onChangeQuesNum}
+											value={typeof quesNum === 'number' ? quesNum : 0}
+										/>
+									</Col>
+									<Col span={2}>
+										<InputNumber
+											min={5}
+											max={10}
+											style={{ margin: '0 16px' }}
+											value={quesNum}
+											onChange={onChangeQuesNum}
+										/>
+									</Col>
+								</Row>
+							</div>
+							<span style={{ color: 'rgba(0, 0, 0, 0.45)' }}>温馨提示：如果出错请调整题目数量</span>
+						</>
 					)}
 				</div>
 				{/* <div> */}
