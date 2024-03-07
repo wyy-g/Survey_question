@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react'
-import { Divider, Button, Tabs, Form, Input, Space, Modal, Upload, message } from 'antd'
+import React, { FC, useEffect, useState } from 'react'
+import { Divider, Button, Tabs, Form, Input, Space, Modal, Upload, message, Row, Col } from 'antd'
 import type { UploadProps, UploadFile } from 'antd'
 import { InboxOutlined } from '@ant-design/icons'
 /* eslint-disable */
@@ -13,6 +13,8 @@ import headDefaultImg from '../../../assets/head.png'
 import { uploadimgService } from '../../../services/user'
 import useLoadUserData from '../../../hooks/useLoadUserData'
 import AvatarEditor from './avatarEditorElem'
+import { sendEmailCode, verifyCodeService, updateUserInfoService } from '../../../services/user'
+import { useRequest } from 'ahooks'
 
 const { Dragger } = Upload
 
@@ -32,12 +34,17 @@ const Profile: FC = () => {
 	const [uploading, setUploading] = useState(false)
 	// 裁剪后的图片
 	const [croppedImage, setCroppedImage] = useState<Blob | null>(null)
+	// 发送验证码后的秒数和是否禁用
+	const [secondsRemaining, setSecondsRemaining] = useState(60)
+	const [isDisabledSendBtn, setIsDisabledSendBtn] = useState(false)
+	const [sendEmailCodeLoading, setSendEmailCodeLoading] = useState(false)
 	// 处理裁剪后的图片的函数
 	function handleCroppedImage(croppedImageBlob: Blob | null) {
 		if (croppedImageBlob) {
 			setCroppedImage(croppedImageBlob)
 		}
 	}
+
 	// upload的props
 	const props: UploadProps = {
 		beforeUpload: file => {
@@ -65,13 +72,6 @@ const Profile: FC = () => {
 			console.error('No file selected for uploading.')
 			return
 		}
-
-		// 确保 imgFile 包含 Blob 对象
-		// const fileBlob = imgFile.originFileObj | undefined
-		// if (!fileBlob) {
-		// 	console.error('Failed to extract Blob from imgFile.')
-		// 	return
-		// }
 
 		const formData = new FormData()
 		formData.append('imgFile', croppedImage as unknown as Blob)
@@ -101,12 +101,101 @@ const Profile: FC = () => {
 	}
 
 	const Basic: FC = () => {
+		const [basicForm] = Form.useForm()
+		// 邮箱的验证规则
+		function validateEmail(_: any, value: any) {
+			const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+			return !value || emailPattern.test(value)
+				? Promise.resolve()
+				: Promise.reject(new Error('请输入有效的邮箱地址'))
+		}
+
+		// 点击发送邮件执行60s定时器60s后才能用
+		let timer: any
+		function timer60() {
+			setIsDisabledSendBtn(true)
+			timer = setInterval(() => {
+				if (secondsRemaining > 0) {
+					setSecondsRemaining(prevSeconds => prevSeconds - 1)
+				}
+			}, 1000)
+		}
+
+		// useEffect(() => {
+		// 	if (secondsRemaining === 0) {
+		// 		clearInterval(timer)
+		// 		setIsDisabledSendBtn(false)
+		// 		setSecondsRemaining(60)
+		// 	}
+		// }, [secondsRemaining])
+
+		const { run: sendEmailCodeFun, loading: sendEmailCodeLoading } = useRequest(
+			async (email: string) => {
+				await sendEmailCode(email)
+			},
+			{
+				manual: true,
+				onSuccess: () => {
+					message.success('已发送验证码，请注意查收')
+					timer60()
+				},
+			},
+		)
+
+		// 邮箱发送验证码
+		async function handleSendEmailCode() {
+			basicForm
+				.validateFields(['email'])
+				.then(async () => {
+					const email = basicForm.getFieldValue('email')
+					try {
+						// setSendEmailCodeLoading(true)
+						const res = await sendEmailCode(email)
+						if (res) {
+							// setSendEmailCodeLoading(false)
+							message.success('已发送验证码，请注意查收')
+							// timer60()
+						}
+					} catch (error) {
+						console.error('error', error)
+						message.error('发送邮件失败')
+					}
+				})
+				.catch(error => {
+					console.error('error', error)
+				})
+		}
+
+		function handleSavaBasic() {
+			basicForm
+				.validateFields()
+				.then(async values => {
+					const { nickname, email, captcha } = values
+					const verifyRes = await verifyCodeService(email, captcha)
+					if (!verifyRes) {
+						message.error('验证码有误，请重新输入')
+						return
+					}
+					const updateInfoRes = await updateUserInfoService(email, nickname)
+					if (!updateInfoRes) {
+						message.error('更新信息失败，请稍后再试')
+						return
+					}
+					message.success('更新信息成功')
+				})
+				.catch((error: any) => {
+					console.warn('error', error)
+				})
+		}
+
 		return (
 			<Form
 				style={{ marginTop: '24px' }}
 				initialValues={{ nickname, email }}
 				labelCol={{ span: 4 }}
 				wrapperCol={{ span: 16 }}
+				form={basicForm}
+				onFinish={handleSavaBasic}
 			>
 				<Form.Item
 					label="用户昵称"
@@ -115,9 +204,35 @@ const Profile: FC = () => {
 				>
 					<Input size="large" />
 				</Form.Item>
-				<Form.Item label="邮箱" name="email" rules={[{ required: true, message: '邮箱不能为空' }]}>
+				<Form.Item
+					label="邮箱"
+					name="email"
+					rules={[{ required: true, message: '邮箱不能为空' }, { validator: validateEmail }]}
+				>
 					<Input size="large" />
 				</Form.Item>
+
+				{
+					<Form.Item
+						label="验证码"
+						name="captcha"
+						rules={[{ required: true, message: '验证码不能为空' }]}
+					>
+						<Space>
+							<Input size="large" />
+
+							<Button
+								type="primary"
+								onClick={handleSendEmailCode}
+								disabled={isDisabledSendBtn}
+								loading={sendEmailCodeLoading}
+							>
+								{isDisabledSendBtn ? `${secondsRemaining} 秒后重新发送` : '发送验证码'}
+							</Button>
+						</Space>
+					</Form.Item>
+				}
+
 				<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
 					<Space>
 						<Button type="primary" htmlType="submit">

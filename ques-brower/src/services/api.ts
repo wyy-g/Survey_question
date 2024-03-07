@@ -3,6 +3,7 @@ const API = {
 		register: '/api/user/register',
 		login: '/api/user/login',
 		info: '/api/user/info',
+		updateUserInfo: '/api/user/update',
 	},
 	SURVEYS: {
 		createQues: `/api/question/create`,
@@ -34,6 +35,8 @@ const API = {
 	UPLOADIMG: '/api/uploadimg',
 	AI: '/api/generate/gpt',
 	CREATEDQUESBYAI: '/api/createAiQues',
+	SENDEMAILCODE: '/api/sendEmailCode',
+	VERIFSUBMITYCODE: '/api/verifyCode',
 }
 
 export default API

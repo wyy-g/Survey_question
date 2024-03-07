@@ -52,4 +52,37 @@ async function uploadimgService(
 	return data
 }
 
-export { getUserInfoService, registerService, loginService, uploadimgService }
+// 邮箱发送验证码
+async function sendEmailCode(email: string): Promise<ResDataType> {
+	const data = await http.post(API.SENDEMAILCODE, {
+		email,
+	})
+	return data
+}
+
+// 校验验证码
+async function verifyCodeService(email: string, code: number): Promise<ResDataType> {
+	const data = await http.post(API.VERIFSUBMITYCODE, {
+		email,
+		code,
+	})
+	return data
+}
+
+async function updateUserInfoService(email: string, nickname: string): Promise<ResDataType> {
+	const data = await http.post(API.USER.updateUserInfo, {
+		email,
+		nickname,
+	})
+	return data
+}
+
+export {
+	getUserInfoService,
+	registerService,
+	loginService,
+	uploadimgService,
+	sendEmailCode,
+	verifyCodeService,
+	updateUserInfoService,
+}
