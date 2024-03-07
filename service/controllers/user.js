@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const { register, isHaveUsername, updateUserInfo } = require('../models/user')
+const { deleteVerifyCode } = require('../models/verifyCode')
 const { generateToken } = require('../middlewares/authorization')
 const { isHaveUser } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/httpStatusCodes')
@@ -168,6 +169,37 @@ exports.uploadImg = async (req, res) => {
 		})
 	} catch (error) {
 		console.error(error);
-		res.status(500).json({ success: false, message: '图片上传失败' });
+		res.status(500).send({ success: false, message: '图片上传失败' });
+	}
+}
+
+// 更新用户信息
+exports.updateUserInfo = async (req, res) => {
+	let userId = Number(req.header('x-user-id'));
+	const { email, nickname } = req.body
+	try {
+		if (email && nickname) {
+			await updateUserInfo({ email, nickname, userId })
+			await deleteVerifyCode(email)
+			res.status(200).send({
+				code: 200,
+				msg: '更新信息成功',
+				data: {
+					userId
+				}
+			})
+		} else {
+			res.status(200).send({
+				code: 501,
+				msg: 'email和nickname不能为空',
+				data: {
+					userId
+				}
+			})
+		}
+
+	} catch (error) {
+		console.error(error);
+		res.status(500).send({ success: false, message: '更新信息失败' });
 	}
 }

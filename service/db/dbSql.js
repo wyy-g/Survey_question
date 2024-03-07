@@ -87,6 +87,16 @@ const answersSql = `CREATE TABLE IF NOT EXISTS answers (
   FOREIGN KEY (component_instance_id) REFERENCES question_components(id) ON DELETE SET NULL ON UPDATE CASCADE
 );`
 
+// 验证码表
+const codeSql = `CREATE TABLE IF NOT EXISTS verifications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  code VARCHAR(64) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP NOT NULL
+);
+`
+
 // const questionsTableSql = `CREATE TABLE IF NOT EXISTS questions (
 //   id INT AUTO_INCREMENT PRIMARY KEY,
 //   survey_id INT NOT NULL,
@@ -112,7 +122,8 @@ const dbTable = [
   componentProps,
   componentOptions,
   answersSql,
-  submissionSql
+  submissionSql,
+  codeSql
 ]
 
 module.exports = dbTable
