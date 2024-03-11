@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useRef, useEffect } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import {
 	Button,
@@ -28,6 +28,8 @@ import { createQuesService, genAiQuestion, createAiQues } from '../services/ques
 import { getUserIdStorage } from '../utools/user-storage'
 import IconFont from '../utools/IconFont'
 import addZero from '../utools/addZero'
+import VoiceAssistant from '../components/VoiceAssistant'
+import { commandRegistry, normalizeCommand } from '../utools/commandHandlers'
 
 const { TextArea } = Input
 
@@ -62,6 +64,31 @@ const ManageLayout: FC = () => {
 	const [aiGenTitle, setAiGenTitle] = useState('')
 	// ai生成的描述
 	const [aiGenDescription, setAiGenDescription] = useState('')
+
+	const componentRef = useRef({
+		openAiCreationModal: () => setIsShowAiModal(true),
+		generateCustomQuestion: (res: string) => {
+			// console.log('res', res)
+			setAiTitle(res)
+			setIsShowAiModal(true)
+			setTimeout(handleGeneratorQues, 0)
+		},
+		closeAiCreationModal: () => setIsShowAiModal(false),
+	})
+
+	useEffect(() => {
+		commandRegistry.set(normalizeCommand('打开AI创作'), componentRef)
+		commandRegistry.set(normalizeCommand('生成一个问卷'), componentRef)
+		commandRegistry.set(normalizeCommand('关闭AI创作'), componentRef)
+
+		// 返回清理函数，在组件卸载时取消注册
+		return () => {
+			commandRegistry.delete(normalizeCommand('打开AI创作'))
+			commandRegistry.delete(normalizeCommand('生成一个问卷'))
+			commandRegistry.delete(normalizeCommand('关闭AI创作'))
+		}
+	}, [componentRef])
+
 	// ai创作的示例（输入的信息）
 	const exampleInputQuesInfo = [
 		'为新员工创建一个入职调查问卷',
@@ -306,7 +333,7 @@ const ManageLayout: FC = () => {
 
 	//处理提交问卷标题
 	function handleCreateClick() {
-		aiForm
+		form
 			.validateFields()
 			.then(async values => {
 				const data = await createQuesService(values.title, Number(userId), values.description)
@@ -316,7 +343,7 @@ const ManageLayout: FC = () => {
 					message.success('创建成功')
 				}
 				setIsShowModal(false)
-				aiForm.resetFields()
+				form.resetFields()
 			})
 			.catch(errorInfo => {
 				message.error('问卷标题填写有误，请检查后重新提交')
@@ -429,6 +456,14 @@ const ManageLayout: FC = () => {
 				</Space>
 			</div>
 			<div className={styles['right']}>
+				{pathname.startsWith('/manage/trash') ? (
+					<></>
+				) : (
+					<div className={styles['voice']}>
+						<VoiceAssistant />
+					</div>
+				)}
+
 				<Outlet />
 			</div>
 			{/* 新建问卷后弹出modal */}

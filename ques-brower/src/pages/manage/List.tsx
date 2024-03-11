@@ -220,9 +220,11 @@ const List: FC = () => {
 			</div>
 			<div className={styles['list-content']} ref={containerRef}>
 				{questionList.length > 0 &&
-					questionList.map((ques: any) => {
+					questionList.map((ques: any, index) => {
 						const { id } = ques
-						return <QuestionCard key={id} {...ques} onDelQuestion={handleDelQuestion} />
+						return (
+							<QuestionCard key={`${id}${index}`} {...ques} onDelQuestion={handleDelQuestion} />
+						)
 					})}
 				<div ref={footerRef} className={styles['list-footer']}>
 					<div style={{ margin: '10px', textAlign: 'center' }}>{loadMoreContentElem()}</div>
