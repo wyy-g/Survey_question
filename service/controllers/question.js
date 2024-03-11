@@ -117,8 +117,8 @@ exports.getUserQuesList = async (req, res) => {
 		// 获取问卷的未删除的数量
 		const total = await getQuesTotal(Number(userId))
 		if (userAllQues.length <= 0) {
-			return res.status(NOT_FOUND).send({
-				code: NOT_FOUND,
+			return res.status(200).send({
+				code: 200,
 				msg: '暂时还没有数据',
 				data: {
 					userAllQues,
