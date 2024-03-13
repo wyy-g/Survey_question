@@ -3,6 +3,7 @@ import { Button } from 'antd'
 import IconFont from '../../utools/IconFont'
 import styles from './index.module.scss'
 import useVoiceToText from '../../hooks/useVoiceToText'
+import { commandRegistry, normalizeCommand } from '../../utools/commandHandlers'
 
 const VoiceAssistant: FC = () => {
 	// 是否展示输入框
@@ -15,6 +16,17 @@ const VoiceAssistant: FC = () => {
 		() => void,
 		() => void,
 	]
+
+	const componentRef = useRef({
+		closeVoiceAssistant: () => setIsShowVoiceInput(false),
+	})
+
+	useEffect(() => {
+		commandRegistry.set(normalizeCommand('关闭语音助手'), componentRef)
+		return () => {
+			commandRegistry.delete('关闭语音助手')
+		}
+	}, [componentRef])
 
 	useEffect(() => {
 		console.log('transcript', transcript)
@@ -46,6 +58,11 @@ const VoiceAssistant: FC = () => {
 			>
 				<IconFont type="icon-yuyin" />
 			</Button>
+			<IconFont
+				className={styles.promap}
+				type="icon-wenhao"
+				style={{ fontSize: '18px', color: '#1677ff' }}
+			></IconFont>
 			{isShowVoiceInput && (
 				<div className={styles['voice-input']}>
 					<div className={styles['input-with-icon']}>

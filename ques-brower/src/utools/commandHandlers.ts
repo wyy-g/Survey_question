@@ -1,9 +1,11 @@
 import { message } from 'antd'
 // 定义指令集
 const commandSet: any = {
-	openAiCreation: ['打开AI创作', '请给我打开AI创作', '给我打开AI创作', '给我打开a创作'], // 关联同一处理函数的不同命令表达
+	openAiCreation: ['打开AI创作', '请给我打开AI创作', '给我打开AI创作', '给我打开a创作', 'AI创作'], // 关联同一处理函数的不同命令表达
 	closeAiCreation: ['关闭AI创作'],
 	generateQuestion: ['生成一个问卷'],
+	createdAiQuestion: ['创建一个问卷'],
+	closeVoiceAssistant: ['关闭语音助手'],
 }
 
 // 指令归一化处理函数
@@ -27,6 +29,12 @@ const commandActions: any = {
 	},
 	generateQuestion: {
 		target: 'generateCustomQuestion',
+	},
+	createdAiQuestion: {
+		target: 'createdAiQuestion',
+	},
+	closeVoiceAssistant: {
+		target: 'closeVoiceAssistant',
 	},
 	// 其他指令与组件动作映射...
 }

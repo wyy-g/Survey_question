@@ -58,16 +58,21 @@ const useVoiceToText = () => {
 						if (execTranscript.includes('生成一个')) {
 							execTranscript = '生成一个问卷'
 						}
+
+						if (execTranscript.includes('创建一个')) {
+							execTranscript = '创建一个问卷'
+						}
 						// 此处执行预处理后的文本到指令的转换
 						const normalizedCommand = normalizeCommand(execTranscript)
 
-						// 设置定时器，1.5秒后执行指令
-						executionTimeout = setTimeout(() => {
-							console.log('执行指令', normalizedCommand)
+						// console.log('执行指令', normalizedCommand)
+						// executeCommand(normalizedCommand, titleTranscript)
 
+						// 设置定时器，1秒后执行指令
+						executionTimeout = setTimeout(() => {
 							executeCommand(normalizedCommand, titleTranscript)
 							// recognition.stop()
-						}, 1500)
+						}, 1000)
 					}
 				}
 			}

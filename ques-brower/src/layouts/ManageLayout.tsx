@@ -66,26 +66,52 @@ const ManageLayout: FC = () => {
 	const [aiGenDescription, setAiGenDescription] = useState('')
 
 	const componentRef = useRef({
-		openAiCreationModal: () => setIsShowAiModal(true),
-		generateCustomQuestion: (res: string) => {
-			// console.log('res', res)
-			setAiTitle(res)
+		openAiCreationModal: () => {
 			setIsShowAiModal(true)
+			aiForm.resetFields()
+		},
+		generateCustomQuestion: (res: string) => {
+			if (aiForm) {
+				aiForm.resetFields()
+			}
+			if (!isShowAiModal) {
+				setIsShowAiModal(true)
+			}
+			aiForm.setFieldsValue({ ['aiTitle']: res })
 			setTimeout(handleGeneratorQues, 0)
 		},
 		closeAiCreationModal: () => setIsShowAiModal(false),
+		createdAiQuestion: (res: string) => {
+			if (aiForm) {
+				aiForm.resetFields()
+			}
+			aiForm.setFieldsValue({ ['aiTitle']: res })
+			if (!isShowAiModal) {
+				setIsShowAiModal(true)
+			}
+			setTimeout(async () => {
+				try {
+					await handleGeneratorQues()
+					setTimeout(createAiQuesFun, 0)
+				} catch (error) {
+					console.error('error', error)
+				}
+			}, 0)
+		},
 	})
 
 	useEffect(() => {
 		commandRegistry.set(normalizeCommand('打开AI创作'), componentRef)
 		commandRegistry.set(normalizeCommand('生成一个问卷'), componentRef)
 		commandRegistry.set(normalizeCommand('关闭AI创作'), componentRef)
+		commandRegistry.set(normalizeCommand('创建一个问卷'), componentRef)
 
 		// 返回清理函数，在组件卸载时取消注册
 		return () => {
 			commandRegistry.delete(normalizeCommand('打开AI创作'))
 			commandRegistry.delete(normalizeCommand('生成一个问卷'))
 			commandRegistry.delete(normalizeCommand('关闭AI创作'))
+			commandRegistry.delete(normalizeCommand('创建一个问卷'))
 		}
 	}, [componentRef])
 
@@ -368,8 +394,8 @@ const ManageLayout: FC = () => {
 	}
 
 	// 处理ai创作生成问题
-	function handleGeneratorQues() {
-		aiForm
+	async function handleGeneratorQues() {
+		await aiForm
 			.validateFields()
 			.then(async values => {
 				try {

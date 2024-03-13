@@ -1,13 +1,22 @@
 .voice-wrapper {
     Button {
         position: fixed;
-        right: 50px;
+        right: 58px;
         bottom: 80px;
-        z-index: 100;
+        z-index: 10000;
     }
     Button:hover {
         transform: scale(1.2); /* 放大比例，可以根据需要调整 */
         transition: all 0.2s ease-in-out; /* 添加过渡效果 */
+    }
+    .promap {
+        position: fixed;
+        right: 43px;
+        bottom: 120px;
+        z-index: 10000;
+        cursor: pointer;
+        font-size: 18px; 
+        color: #1677ff;
     }
     .voice-input {
         position: absolute;
