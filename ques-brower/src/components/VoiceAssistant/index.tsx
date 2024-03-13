@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useRef } from 'react'
-import { Button } from 'antd'
+import { Button, Card } from 'antd'
 import IconFont from '../../utools/IconFont'
 import styles from './index.module.scss'
 import useVoiceToText from '../../hooks/useVoiceToText'
@@ -9,6 +9,8 @@ const VoiceAssistant: FC = () => {
 	// 是否展示输入框
 	const [isShowVoiceInput, setIsShowVoiceInput] = useState(false)
 	const previousShowInputRef = useRef(isShowVoiceInput)
+	// 说明是否显示
+	const [isSHowExplain, setIsShowExplain] = useState(false)
 	// 语音识别的hook
 	const [transcript, startListening, stopListening, clearTranscript] = useVoiceToText() as [
 		string,
@@ -61,8 +63,17 @@ const VoiceAssistant: FC = () => {
 			<IconFont
 				className={styles.promap}
 				type="icon-wenhao"
-				style={{ fontSize: '18px', color: '#1677ff' }}
+				onClick={() => setIsShowExplain(!isSHowExplain)}
 			></IconFont>
+			{isSHowExplain && (
+				<Card className={styles.explain} title="语音助手指令使用说明" style={{ width: 400 }}>
+					<p>1、打开AI创作</p>
+					<p>2、关闭AI创作</p>
+					<p>3、生成一个*****的问卷，既可以在打开AI创作后说，也可以在初始化的时候说</p>
+					<p>4、创建一个*****的问卷，既可以在打开AI创作后说，也可以在初始化的时候说</p>
+					<p>5、关闭语音助手</p>
+				</Card>
+			)}
 			{isShowVoiceInput && (
 				<div className={styles['voice-input']}>
 					<div className={styles['input-with-icon']}>

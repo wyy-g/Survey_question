@@ -18,6 +18,16 @@
         font-size: 18px; 
         color: #1677ff;
     }
+    .explain {
+        position: fixed;
+        right: 43px;
+        bottom: 140px;
+        z-index: 10000;
+        p {
+            padding: 0;
+            margin: 5px;
+        }
+    }
     .voice-input {
         position: absolute;
         left: 50%;
