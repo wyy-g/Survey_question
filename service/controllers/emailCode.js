@@ -7,7 +7,7 @@ const transport = nodemailer.createTransport(smtpTransport({
     port: 465, // smtp端口 默认无需改动
     secure: true,
     auth: {
-        user: '1482581329@qq.com', // 用户名
+        user: process.env.QQ_EMAIL, // 用户名
         pass: 'nydyycjudkjjbaed' // SMTP授权码
     }
 }));
@@ -30,7 +30,7 @@ exports.sendMailCode = async (req, res) => {
     if (regEmail.test(EMAIL)) {  //邮箱验证通过
         let code = randomFns()
         transport.sendMail({
-            from: '1482581329@qq.com', // 发件邮箱
+            from: process.env.QQ_EMAIL, // 发件邮箱
             to: EMAIL, // 收件列表
             subject: '验证你的电子邮件', // 标题
             html: `

@@ -104,13 +104,13 @@ exports.getUserQuesList = async (req, res) => {
 		})
 	}
 
-	const userData = await isHaveUser(Number(userId))
-	if (userData.length <= 0) {
-		return res.status(NOT_FOUND).send({
-			code: NOT_FOUND,
-			msg: '该用户不存在'
-		})
-	}
+	// const userData = await isHaveUser(Number(userId))
+	// if (userData.length <= 0) {
+	// 	return res.status(NOT_FOUND).send({
+	// 		code: NOT_FOUND,
+	// 		msg: '该用户不存在'
+	// 	})
+	// }
 
 	try {
 		const userAllQues = await getUserAllQues(Number(userId), req.offset, req.pageSize, isPublished)
