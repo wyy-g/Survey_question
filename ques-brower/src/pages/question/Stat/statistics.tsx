@@ -133,9 +133,13 @@ const Statistics: FC = () => {
 					})
 
 					// 生成表格的data格式
-					function genDataSource(type: string) {
+					function genDataSource(type: string, component_instance_id: number | string) {
 						const filterData =
-							dataSource.filter((answer: any) => answer.question_type == type) || []
+							dataSource.filter(
+								(answer: any) =>
+									answer.question_type == type &&
+									answer.component_instance_id == component_instance_id,
+							) || []
 
 						if (type === 'questionRadio') {
 							return options?.map((opt: any) => {
@@ -167,8 +171,12 @@ const Statistics: FC = () => {
 					}
 
 					// 生成每个问题有几个答案
-					function genAnswerByType(type: string) {
-						return dataSource.filter((answer: any) => answer.question_type == type).length
+					function genAnswerByType(type: string, component_instance_id: number | string) {
+						return dataSource.filter(
+							(answer: any) =>
+								answer.question_type == type &&
+								answer.component_instance_id == component_instance_id,
+						).length
 					}
 
 					function handleToggleTableChart() {
@@ -275,7 +283,7 @@ const Statistics: FC = () => {
 												</Button>
 											</Space>
 										) : (
-											<span style={{ fontSize: '12px' }}>共 {genAnswerByType(type)} 条</span>
+											<span style={{ fontSize: '12px' }}>共 {genAnswerByType(type, id)} 条</span>
 										)}
 									</div>
 									<div className={styles['answer-item-data']}>
@@ -283,31 +291,31 @@ const Statistics: FC = () => {
 											<Skeleton />
 										) : showState === 'table' ? (
 											<>
-												<Table columns={columns} dataSource={genDataSource(type)} />
+												<Table columns={columns} dataSource={genDataSource(type, id)} />
 											</>
 										) : isShowChart ? (
 											<div style={{ width: '80%', marginTop: '5px' }}>
 												{questionCharts[id] === 'statChart' && (
 													<ColumnChart
-														chartData={genDataSource(type)}
+														chartData={genDataSource(type, id)}
 														onChartReady={handleChartInstance}
 													/>
 												)}
 												{questionCharts[id] === 'barChart' && (
 													<BarChart
-														chartData={genDataSource(type)}
+														chartData={genDataSource(type, id)}
 														onChartReady={handleChartInstance}
 													/>
 												)}
 												{questionCharts[id] === 'pieChart' && (
 													<PieChart
-														chartData={genDataSource(type)}
+														chartData={genDataSource(type, id)}
 														onChartReady={handleChartInstance}
 													/>
 												)}
 											</div>
 										) : (
-											<Table columns={columns} dataSource={genDataSource(type)} />
+											<Table columns={columns} dataSource={genDataSource(type, id)} />
 										)}
 									</div>
 								</div>
