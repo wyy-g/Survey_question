@@ -23,6 +23,8 @@ const AnswerQues: FC = () => {
 	const { id = '' } = useParams()
 
 	const [isSubmit, setIsSubmit] = useState(false)
+	// 提交问卷的loading防止多次提交
+	const [submitLoading, setSubmitLoading] = useState(false)
 
 	const [isPublished, setIsPublished] = useState(false)
 	const [title, setTitle] = useState('')
@@ -168,6 +170,7 @@ const AnswerQues: FC = () => {
 
 	async function submitAnswer() {
 		// 获取设别信息
+		setSubmitLoading(true)
 		const data = await submitAnswers({
 			survey_id: Number(id),
 			device_info,
@@ -180,6 +183,7 @@ const AnswerQues: FC = () => {
 		})
 		if (data.submission_id) {
 			setIsSubmit(true)
+			setSubmitLoading(false)
 			message.success('提交答案成功')
 		} else {
 			message.error('提交失败，请稍后再试')
@@ -229,7 +233,7 @@ const AnswerQues: FC = () => {
 									)
 								})}
 								<div className={styles['footer']}>
-									<Button type="primary" onClick={submitAnswer}>
+									<Button type="primary" onClick={submitAnswer} loading={submitLoading}>
 										提交
 									</Button>
 								</div>
