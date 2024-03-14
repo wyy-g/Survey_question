@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { message } from 'antd'
 import { normalizeCommand, executeCommand } from '../utools/commandHandlers'
 
 declare global {
@@ -80,7 +81,10 @@ const useVoiceToText = () => {
 			// 将实例存入ref中
 			recognitionRef.current = recognition
 
-			recognition.onerror = (error: any) => console.error('语音识别错误:', error)
+			recognition.onerror = (error: any) => {
+				console.error('语音识别错误:', error)
+				message.error('语音识别错误，请检查浏览器是否支持')
+			}
 		}
 		// 组件卸载时清理资源
 		return () => {
