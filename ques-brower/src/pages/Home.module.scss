@@ -1,0 +1,39 @@
+.home-wrapper {
+    width: 100%;
+    background-color: #fff !important;
+    min-height: 100%;
+    display: flex;
+    // align-items: center;
+    justify-content: space-around;
+    user-select: none;
+    // justify-content: center;
+    .left {
+        margin-top: 130px;
+        width: 616px;
+        .img-style {
+            width: 700px;
+            height: 320px;
+            overflow: hidden; /* 隐藏超过盒子部分的内容 */
+            position: relative; /* 为img使用绝对定位做准备 */
+            img {
+                display: block; /* 去除底部空白间隙 */
+                max-width: 100%; /* 使得图片宽度不超过盒子宽度 */
+                max-height: 100%; /* 使得图片高度不超过盒子高度 */
+                height: auto; /* 保持图片原有比例 */
+                width: 100%;
+                position: absolute; /* 绝对定位 */
+                top: 0;
+                left: 0;
+                object-fit: cover; /* 保持图片比例，填满盒子，可能裁剪图片边缘 */
+            }
+        }
+    }
+    .head {
+        margin-top: 100px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 40px;
+    }
+   
+}

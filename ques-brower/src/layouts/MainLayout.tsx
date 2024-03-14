@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Layout } from 'antd'
 
 import styles from './mainLayout.module.scss'
 import UserInfo from '../components/UserInfo'
 import useLoadUserData from '../hooks/useLoadUserData'
 import useRouteGuard from '../hooks/useRouteGuard'
+import Home from '../pages/Home'
 
 const { Header, Content } = Layout
 
@@ -21,8 +22,7 @@ const MainLayout: FC = () => {
 					<div className={styles['info']}>{<UserInfo />}</div>
 				</div>
 			</Header>
-			<Content className={styles['content']}>{!waitingUserData && <Outlet />}</Content>
-			{/* <Footer>MainLayout Footer</Footer> */}
+			<Content className={styles['content']}>{!waitingUserData ? <Outlet /> : <Home />}</Content>
 		</Layout>
 	)
 }

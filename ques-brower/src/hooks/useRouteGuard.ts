@@ -16,7 +16,6 @@ export default function useRouteGuard(waitingUserData?: boolean) {
 		}
 		if (userId && [LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) {
 			// 已登录但访问登录或注册页面，则重定向到首页或其他受保护的页面
-			console.log(123)
 			nav(HOME_PATHNAME)
 		}
 	}, [waitingUserData, userId, pathname])
