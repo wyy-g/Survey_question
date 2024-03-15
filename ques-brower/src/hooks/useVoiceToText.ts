@@ -13,6 +13,8 @@ type Recognition = any
 const useVoiceToText = () => {
 	// 初始化语音转文字的结果状态
 	const [transcript, setTranscript] = useState('')
+	// 是否已经在监听中
+	const [isRecognizing, setIsRecognizing] = useState(false)
 
 	// 创建一个ref来存储recognition实例，以便在外部函数中访问
 	const recognitionRef = useRef<Recognition | undefined>(undefined)
@@ -94,11 +96,17 @@ const useVoiceToText = () => {
 
 	// 提供给外部使用的开始监听语音方法
 	const startListening = () => {
-		recognitionRef.current?.start()
+		if (!isRecognizing && recognitionRef.current) {
+			setIsRecognizing(true)
+			recognitionRef.current.start()
+		} else if (isRecognizing) {
+			message.info('语音识别已在进行中，请先停止当前识别')
+		}
 	}
 
 	// 提供给外部使用的停止监听语音方法
 	const stopListening = () => {
+		console.log('123')
 		recognitionRef.current && recognitionRef.current.stop()
 	}
 
