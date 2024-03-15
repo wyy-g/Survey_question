@@ -106,8 +106,8 @@ const useVoiceToText = () => {
 
 	// 提供给外部使用的停止监听语音方法
 	const stopListening = () => {
-		console.log('123')
 		recognitionRef.current && recognitionRef.current.stop()
+		setIsRecognizing(false)
 	}
 
 	// 提供给外部使用

@@ -4,6 +4,7 @@ import IconFont from '../../utools/IconFont'
 import styles from './index.module.scss'
 import useVoiceToText from '../../hooks/useVoiceToText'
 import { commandRegistry, normalizeCommand } from '../../utools/commandHandlers'
+import { useDebounceFn } from 'ahooks'
 
 const VoiceAssistant: FC = () => {
 	// 是否展示输入框
@@ -46,9 +47,13 @@ const VoiceAssistant: FC = () => {
 		}
 	}, [isShowVoiceInput, startListening, stopListening])
 
-	function handleShowInput() {
-		setIsShowVoiceInput(!isShowVoiceInput)
-	}
+	const { run: handleShowInput } = useDebounceFn(() => setIsShowVoiceInput(!isShowVoiceInput), {
+		wait: 250,
+	})
+
+	// function handleShowInput() {
+	// 	setIsShowVoiceInput(!isShowVoiceInput)
+	// }
 
 	return (
 		<div className={styles['voice-wrapper']}>
