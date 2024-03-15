@@ -27,6 +27,9 @@ const AnswerQues: FC = () => {
 	const [submitLoading, setSubmitLoading] = useState(false)
 
 	const [isPublished, setIsPublished] = useState(false)
+	// 问卷有效时间
+	const [validStartTime, setValidStartTime] = useState('')
+	const [validEndTime, setValidEndTime] = useState('')
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [componentList = [], setComponentList] = useState([])
@@ -54,6 +57,8 @@ const AnswerQues: FC = () => {
 				setComponentList(data!.componentList)
 				setTitle(data!.title)
 				setDescription(data!.description)
+				setValidStartTime(moment.utc(data!.startTime).local().format('YYYY-MM-DD HH:mm:ss'))
+				setValidEndTime(moment.utc(data!.endTime).local().format('YYYY-MM-DD HH:mm:ss'))
 			},
 		},
 	)
@@ -105,8 +110,6 @@ const AnswerQues: FC = () => {
 			window.removeEventListener('resize', handleResize)
 		}
 	}, [])
-
-	console.log('rootFontSize', rootFontSize)
 
 	// 获取设备信息
 	function getDeviceInfoAndBrowserInfo(userAgent: any) {
@@ -190,6 +193,11 @@ const AnswerQues: FC = () => {
 		}
 	}
 
+	// 判断当前时间是否在有效时间中
+	function currenTimeIsValid() {
+		return moment().isBetween(validStartTime, validEndTime)
+	}
+
 	return (
 		<div className={device_info == 'PC' ? styles['answers-wrapper-pc'] : styles['answers-wrapper']}>
 			{loading ? (
@@ -202,7 +210,7 @@ const AnswerQues: FC = () => {
 				</div>
 			) : (
 				<div className={device_info == 'PC' ? styles['pc-wrapper'] : ''}>
-					{!isPublished && !isSubmit ? (
+					{!isPublished || !currenTimeIsValid() ? (
 						<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 							<Empty
 								image={emptyImg}
@@ -217,7 +225,7 @@ const AnswerQues: FC = () => {
 					) : (
 						''
 					)}
-					{isPublished && !isSubmit ? (
+					{isPublished && currenTimeIsValid() && !isSubmit ? (
 						<>
 							<div className={styles['answer-ques-wrapper']}>
 								<div className={styles['header']}>

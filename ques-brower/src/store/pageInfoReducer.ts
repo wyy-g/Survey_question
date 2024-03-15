@@ -8,6 +8,8 @@ export type PageInfoType = {
 	isPublished?: boolean
 	createdAt?: string
 	updatedAt?: string
+	startTime?: string
+	endTime?: string
 }
 
 const INIT_STATE: PageInfoType = {
@@ -17,6 +19,8 @@ const INIT_STATE: PageInfoType = {
 	isPublished: false,
 	createdAt: '',
 	updatedAt: '',
+	startTime: '',
+	endTime: '',
 }
 
 const pageInfoSlice = createSlice({

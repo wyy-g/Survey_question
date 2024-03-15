@@ -32,6 +32,8 @@ function useLoadQuestionData() {
 			isPublished,
 			createdAt,
 			updatedAt,
+			startTime,
+			endTime,
 		} = data
 		//获取默认选中的selected
 		let selectId = ''
@@ -40,7 +42,16 @@ function useLoadQuestionData() {
 		}
 		dispatch(resetComponents({ selectId, componentList }))
 		dispatch(
-			resetPageInfo({ title, isShowOrderIndex, description, isPublished, createdAt, updatedAt }),
+			resetPageInfo({
+				title,
+				isShowOrderIndex,
+				description,
+				isPublished,
+				createdAt,
+				updatedAt,
+				startTime,
+				endTime,
+			}),
 		)
 	}, [data])
 

@@ -18,7 +18,14 @@ import { ComponentInfoType } from '../store/componentReducer'
 import { getComponentConfByType } from '../components/QuestionComponents'
 
 const Header: FC = () => {
-	const { title, isShowOrderIndex, description, isPublished = '' } = useGetPageInfo()
+	const {
+		title,
+		isShowOrderIndex,
+		description,
+		isPublished = '',
+		startTime,
+		endTime,
+	} = useGetPageInfo()
 	const dispatch = useDispatch()
 	const { componentList = [] } = useGetComponentStore()
 	const nav = useNavigate()
@@ -60,17 +67,28 @@ const Header: FC = () => {
 		},
 	)
 
+	const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
+	const formateStartTime = startTime
+		? moment.utc(startTime).local().format('YYYY-MM-DD HH:mm:ss')
+		: currentTime
+	const formateEndTime = endTime
+		? moment.utc(endTime).local().format('YYYY-MM-DD HH:mm:ss')
+		: moment().clone().add(15, 'days').format('YYYY-MM-DD HH:mm:ss')
 	// 发布按钮
 	const PublishButton: FC = () => {
 		const { run: publish } = useRequest(
-			async (status: boolean) => {
+			async (status: boolean, startTime?: string, endTime?: string) => {
+				const validStartTime = startTime ? startTime : formateStartTime
+				const validEndTime = endTime ? endTime : formateEndTime
 				await updateQuesService(Number(id), {
 					title,
 					isShowOrderIndex,
 					description,
 					componentList,
 					isPublished: status,
-					updatedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+					updatedAt: currentTime,
+					startTime: validStartTime,
+					endTime: validEndTime,
 				})
 			},
 			{ manual: true },
@@ -106,7 +124,7 @@ const Header: FC = () => {
 						icon={<IconFont type="icon-wodefabu-baise" />}
 						type="primary"
 						onClick={() => {
-							publish(true)
+							publish(true, formateStartTime, formateEndTime)
 							dispatch(changePageIsPushlished(true))
 							message.success('发布成功')
 						}}

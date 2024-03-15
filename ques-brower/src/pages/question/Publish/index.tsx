@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC } from 'react'
 import { useParams } from 'react-router-dom'
 /* eslint-disable */
 // @ts-ignore
 import moment from 'moment'
+import dayjs from 'dayjs'
 /* eslint-enable */
-import { Typography, Switch, Divider, Button, Space, message } from 'antd'
+import { Typography, Switch, Divider, Button, Space, message, DatePicker } from 'antd'
 import { useDispatch } from 'react-redux'
 import QRCode from 'qrcode.react'
 import { useRequest } from 'ahooks'
@@ -16,33 +17,57 @@ import { updateQuesService } from '../../../services/question'
 import useGetComponentStore from '../../../hooks/useGetComponentStore'
 
 const { Title } = Typography
+const { RangePicker } = DatePicker
 
 const Publish: FC = () => {
 	const { id = '' } = useParams()
-	const { loading } = useLoadQuestionData()
-	const { createdAt, updatedAt, isPublished, title, isShowOrderIndex, description } =
-		useGetPageInfo()
+	useLoadQuestionData()
+	const {
+		createdAt,
+		updatedAt,
+		isPublished,
+		title,
+		isShowOrderIndex,
+		description,
+		startTime,
+		endTime,
+	} = useGetPageInfo()
 	const { componentList = [] } = useGetComponentStore()
 
 	const dispatch = useDispatch()
+	const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
+	const formateStartTime = startTime
+		? moment.utc(startTime).local().format('YYYY-MM-DD HH:mm:ss')
+		: currentTime
+	const formateEndTime = endTime
+		? moment.utc(endTime).local().format('YYYY-MM-DD HH:mm:ss')
+		: moment().clone().add(15, 'days').format('YYYY-MM-DD HH:mm:ss')
+
+	const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
 	const { run: publish } = useRequest(
-		async (status: boolean) => {
-			await updateQuesService(Number(id), {
+		async (status: boolean, startTime?: string, endTime?: string) => {
+			const validStartTime = startTime ? startTime : formateStartTime
+			const validEndTime = endTime ? endTime : formateEndTime
+			const params = {
 				title,
 				isShowOrderIndex,
 				description,
 				componentList,
 				isPublished: status,
-				updatedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
-			})
+				updatedAt: currentTime,
+				startTime: validStartTime,
+				endTime: validEndTime,
+			}
+
+			await updateQuesService(Number(id), params)
 		},
 		{ manual: true },
 	)
 
 	function handleChange(checked: boolean) {
 		dispatch(changePageIsPushlished(checked))
-		publish(checked)
+		publish(checked, formateStartTime, formateEndTime)
 	}
 
 	const apiUrl = process.env.REACT_APP_API_URL!
@@ -73,6 +98,15 @@ const Publish: FC = () => {
 		oA.remove()
 	}
 
+	function handleTimeChange(_: any, dateStr: any) {
+		publish(isPublished!, dateStr[0], dateStr[1])
+	}
+
+	function disablePastDates(current: any) {
+		// 禁止选择过去的日期作为结束日期
+		return current && current < moment().subtract(1, 'day').endOf('day')
+	}
+
 	return (
 		<div className={styles.publish}>
 			<div className={styles['form-info']}>
@@ -98,6 +132,24 @@ const Publish: FC = () => {
 							'未发布'
 						)}
 					</div>
+					{isPublished && (
+						<div style={{ fontWeight: 'bold', margin: '16px 0', fontSize: '16px' }}>
+							设置时间（未设置将自动发布有效期15天）
+						</div>
+					)}
+					{isPublished && (
+						<RangePicker
+							// 禁止选择过去的结束日期
+							disabledDate={disablePastDates}
+							format="YYYY-MM-DD HH:mm:ss"
+							defaultValue={[
+								dayjs(formateStartTime, dateFormat),
+								dayjs(formateEndTime, dateFormat),
+							]}
+							showTime
+							onChange={handleTimeChange}
+						/>
+					)}
 				</div>
 			</div>
 			{isPublished ? (
