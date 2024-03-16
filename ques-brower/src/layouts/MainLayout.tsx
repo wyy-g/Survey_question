@@ -7,11 +7,13 @@ import UserInfo from '../components/UserInfo'
 import useLoadUserData from '../hooks/useLoadUserData'
 import useRouteGuard from '../hooks/useRouteGuard'
 import Home from '../pages/Home'
+import { getUserIdStorage } from '../utools/user-storage'
 
 const { Header, Content } = Layout
 
 const MainLayout: FC = () => {
 	const { waitingUserData } = useLoadUserData()
+	const userId = getUserIdStorage()
 	useRouteGuard()
 	return (
 		<Layout>
@@ -22,7 +24,7 @@ const MainLayout: FC = () => {
 					<div className={styles['info']}>{<UserInfo />}</div>
 				</div>
 			</Header>
-			<Content className={styles['content']}>{!waitingUserData ? <Outlet /> : <Home />}</Content>
+			<Content className={styles['content']}>{userId ? <Outlet /> : <Home />}</Content>
 		</Layout>
 	)
 }
