@@ -3,6 +3,7 @@ import { Typography, Input } from 'antd'
 import { QuestionInputPropsType, QuestionInputDefaultProps } from './interface'
 import IconFont from '../../../utools/IconFont'
 import addZero from '../../../utools/addZero'
+import styles from '../common.module.scss'
 
 const { Paragraph } = Typography
 
@@ -16,6 +17,7 @@ const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
 		order_index,
 		isShowOrderIndex,
 		onValueChange,
+		isShowWarning,
 	} = {
 		...QuestionInputDefaultProps,
 		...props,
@@ -37,7 +39,7 @@ const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
 					</Paragraph>
 				)}
 			</div>
-			<div style={{ marginLeft: '15px' }}>
+			<div style={{ marginLeft: '15px', marginBottom: '10px' }}>
 				<Input
 					placeholder={placeholder}
 					allowClear={isClear}
@@ -46,6 +48,12 @@ const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
 					onBlur={handlValueChange}
 				></Input>
 			</div>
+			{isShowWarning && !inputValue && (
+				<span className={styles['warning']}>
+					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
+					请填写此项
+				</span>
+			)}
 		</div>
 	)
 }

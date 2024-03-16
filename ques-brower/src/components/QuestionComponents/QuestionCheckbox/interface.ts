@@ -15,6 +15,7 @@ export type QuestionCheckboxPropsType = {
 	order_index?: number | string
 	isShowOrderIndex?: boolean
 	onValueChange?: (value: string) => void
+	isShowWarning?: boolean
 }
 
 export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
@@ -29,4 +30,5 @@ export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
 	isMustFill: true,
 	isShow: false,
 	isShowOrderIndex: true,
+	isShowWarning: false,
 }

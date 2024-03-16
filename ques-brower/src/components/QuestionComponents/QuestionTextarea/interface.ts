@@ -10,6 +10,7 @@ export type QuestionTextareaPropsType = {
 	order_index?: number | string
 	isShowOrderIndex?: boolean
 	onValueChange?: (value: string) => void
+	isShowWarning?: boolean //必填状态下是否实现未填警告
 }
 
 export const QuestionTextareaDefaultProps: QuestionTextareaPropsType = {
@@ -21,4 +22,5 @@ export const QuestionTextareaDefaultProps: QuestionTextareaPropsType = {
 	isShow: false,
 	isMustFill: true,
 	isShowOrderIndex: true,
+	isShowWarning: false,
 }

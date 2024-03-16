@@ -4,6 +4,7 @@ import type { RadioChangeEvent } from 'antd'
 import { QuestionRadioDefaultProps, QuestionRadioPropsType } from './interface'
 import IconFont from '../../../utools/IconFont'
 import addZero from '../../../utools/addZero'
+import styles from '../common.module.scss'
 
 const { Paragraph } = Typography
 
@@ -19,6 +20,7 @@ const Component: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) =>
 		order_index,
 		isShowOrderIndex,
 		onValueChange,
+		isShowWarning,
 	} = {
 		...QuestionRadioDefaultProps,
 		...props,
@@ -51,32 +53,41 @@ const Component: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) =>
 					</Paragraph>
 				)}
 			</div>
-			<Radio.Group onChange={handleChange} value={innerValue}>
-				<Space
-					direction={isVertical ? 'vertical' : 'horizontal'}
-					wrap
-					style={{ marginLeft: '15px' }}
-				>
-					{options.map(opt => {
-						const { value, text } = opt
-						return (
-							<Radio
-								key={value}
-								value={value}
-								style={{
-									borderRadius: '8px',
-									border: '1px solid #dcdfe6',
-									padding: '5px 12px',
-									minWidth: '150px',
-									marginRight: '3px',
-								}}
-							>
-								{text}
-							</Radio>
-						)
-					})}
-				</Space>
-			</Radio.Group>
+			<div>
+				<Radio.Group onChange={handleChange} value={innerValue}>
+					<Space
+						direction={isVertical ? 'vertical' : 'horizontal'}
+						wrap
+						style={{ marginLeft: '15px', marginBottom: '10px' }}
+					>
+						{options.map(opt => {
+							const { value, text } = opt
+							return (
+								<Radio
+									key={value}
+									value={value}
+									style={{
+										borderRadius: '8px',
+										border: '1px solid #dcdfe6',
+										padding: '5px 12px',
+										minWidth: '150px',
+										marginRight: '3px',
+									}}
+								>
+									{text}
+								</Radio>
+							)
+						})}
+					</Space>
+				</Radio.Group>
+			</div>
+
+			{isShowWarning && !innerValue && (
+				<span className={styles['warning']}>
+					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
+					请填写此项
+				</span>
+			)}
 		</div>
 	)
 }

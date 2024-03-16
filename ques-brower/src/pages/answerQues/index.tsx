@@ -32,7 +32,7 @@ const AnswerQues: FC = () => {
 	const [validEndTime, setValidEndTime] = useState('')
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
-	const [componentList = [], setComponentList] = useState([])
+	const [componentList = [], setComponentList] = useState<ComponentInfoType[]>([])
 	const [startTime, setStartTime] = useState<string>('')
 	const [submitLocationInfo, setSubmitLocationInfo] = useState<{ [key: string]: string }>({})
 	const [device_info, setDevice_info] = useState('')
@@ -158,7 +158,7 @@ const AnswerQues: FC = () => {
 		})
 	}
 
-	function genComponent(componentInfo: ComponentInfoType) {
+	function genComponent(componentInfo: ComponentInfoType, isShowWarning: boolean) {
 		const { type, props, title, order_index, id } = componentInfo
 		const componentConf = getComponentConfByType(type)
 		if (!componentConf) return
@@ -167,12 +167,40 @@ const AnswerQues: FC = () => {
 			...props,
 			title,
 			order_index,
+			isShowWarning,
 		}
 		return <Component {...newProps} onValueChange={value => handleValueChange(value, id, type)} />
 	}
 
+	// 子组件是否必填状态下是否显示警告
+	const [childWarnings, setChildWarnings] = useState<{ [key: string | number]: boolean }>({})
+	// 验证所有子组件的输入值
+	const validateForm = () => {
+		let hasEmptyField = false
+		// 每个子组件是否要显示警告
+		const newChildWarnings: { [key: string | number]: boolean } = {}
+
+		for (const component of componentList as ComponentInfoType[]) {
+			if (
+				component.props.isMustFill &&
+				!writeAnswer.some(
+					(answer: any) => answer.component_instance_id === component.id && answer.answer_value,
+				)
+			) {
+				newChildWarnings[component.id] = true
+				hasEmptyField = true
+			} else {
+				newChildWarnings[component.id] = false
+			}
+		}
+
+		setChildWarnings(newChildWarnings)
+		return !hasEmptyField
+	}
+
 	async function submitAnswer() {
 		// 获取设别信息
+		if (!validateForm()) return
 		setSubmitLoading(true)
 		const data = await submitAnswers({
 			survey_id: Number(id),
@@ -236,7 +264,9 @@ const AnswerQues: FC = () => {
 									const { id } = c
 									return (
 										<div className={styles['component-wrapper']} key={id}>
-											<div className={styles['component']}>{genComponent(c)}</div>
+											<div className={styles['component']}>
+												{genComponent(c, childWarnings[c.id])}
+											</div>
 										</div>
 									)
 								})}

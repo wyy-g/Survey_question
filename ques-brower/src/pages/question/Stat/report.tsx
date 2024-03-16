@@ -98,7 +98,6 @@ const Report: FC = () => {
 
 	// 点击查看详情
 	const handleViewDetails = (record: any) => {
-		console.log('查看详情：', record)
 		// 在这里添加查看详细信息的功能实现
 		setAnswerDetail(record)
 		setShowDrawer(true)

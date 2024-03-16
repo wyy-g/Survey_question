@@ -3,21 +3,33 @@ import { Typography, Input } from 'antd'
 import { QuestionTiankongPropsType, QuestionTiankongDefaultProps } from './interface'
 import IconFont from '../../../utools/IconFont'
 import addZero from '../../../utools/addZero'
+import styles from '../common.module.scss'
 
 const { Paragraph } = Typography
 
 const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsType) => {
-	const { title, isMustFill, isShowTitle, content, order_index, isShowOrderIndex, onValueChange } =
-		{
-			...QuestionTiankongDefaultProps,
-			...props,
-		}
+	const {
+		title,
+		isMustFill,
+		isShowTitle,
+		content,
+		order_index,
+		isShowOrderIndex,
+		onValueChange,
+		isShowWarning,
+	} = {
+		...QuestionTiankongDefaultProps,
+		...props,
+	}
 
 	// 存储答案
 	const [fillValue, setFillValue] = useState<string[]>([])
 
+	const filterValue = fillValue.filter((item: any) => item)
+
+	// const isShowWarningStatus = fillValue.every(item => item !== null && item !== undefined && (typeof item !== 'string' || item.trim().length > 0));
+
 	function handlValueChange() {
-		const filterValue = fillValue.filter((item: any) => item)
 		onValueChange && onValueChange(filterValue.join(','))
 	}
 
@@ -41,7 +53,7 @@ const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsTy
 					<span style={{ marginLeft: '2px' }}>{title}</span>
 				</Paragraph>
 			)}
-			<div style={{ marginLeft: '15px' }}>
+			<div style={{ marginLeft: '15px', marginBottom: '10px' }}>
 				{textList!.map((text, index) => (
 					<span key={index} style={{ fontSize: '14px', color: '#606266', margin: '0 6px' }}>
 						{text !== 'input' ? (
@@ -72,6 +84,12 @@ const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsTy
 					</span>
 				))}
 			</div>
+			{isShowWarning && fillValue.length < 1 && (
+				<span className={styles['warning']}>
+					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
+					请填写此项
+				</span>
+			)}
 		</div>
 	)
 }

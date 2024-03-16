@@ -57,11 +57,9 @@ const Login: FC = () => {
 
 	function onFinish(values: any) {
 		run(values)
-		console.log(values.remember)
 		if (values.remember) {
 			rememberUser(values.username, values.password)
 		} else {
-			console.log(1)
 			delUserFromStorage()
 		}
 	}

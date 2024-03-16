@@ -3,6 +3,7 @@ import { Typography, Space, Checkbox } from 'antd'
 import { QuestionCheckboxDefaultProps, QuestionCheckboxPropsType } from './interface'
 import IconFont from '../../../utools/IconFont'
 import addZero from '../../../utools/addZero'
+import styles from '../common.module.scss'
 
 const { Paragraph } = Typography
 
@@ -17,6 +18,7 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 		order_index,
 		isShowOrderIndex,
 		onValueChange,
+		isShowWarning,
 	} = {
 		...QuestionCheckboxDefaultProps,
 		...props,
@@ -26,6 +28,9 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 	const [checkboxValues, setCheckboxValues] = useState<{ [key: string]: boolean }>(
 		list.reduce((acc, opt) => ({ ...acc, [opt.value]: !!opt.checked }), {}),
 	)
+
+	// 用来控制警告提示是否显示 全都为false就显示，只要有一个是true就不显示
+	const checkboxSelectStatus = Object.values(checkboxValues).every(value => value === false)
 
 	// 定义一个通用的handleChange函数
 	const handleChange = (value: string) => {
@@ -60,30 +65,43 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 					</Paragraph>
 				)}
 			</div>
-			<Space direction={isVertical ? 'vertical' : 'horizontal'} wrap style={{ marginLeft: '15px' }}>
-				{list?.map(opt => {
-					const { value, text } = opt
-					// 根据内部状态设置默认选中状态
-					const checked = checkboxValues[value]
-					return (
-						<Checkbox
-							key={value}
-							value={value}
-							checked={checked}
-							style={{
-								borderRadius: '8px',
-								border: '1px solid #dcdfe6',
-								padding: '5px 12px',
-								minWidth: '150px',
-								marginRight: '3px',
-							}}
-							onChange={() => handleChange(value)}
-						>
-							{text}
-						</Checkbox>
-					)
-				})}
-			</Space>
+			<div>
+				<Space
+					direction={isVertical ? 'vertical' : 'horizontal'}
+					wrap
+					style={{ marginLeft: '15px', marginBottom: '10px' }}
+				>
+					{list?.map(opt => {
+						const { value, text } = opt
+						// 根据内部状态设置默认选中状态
+						const checked = checkboxValues[value]
+						return (
+							<Checkbox
+								key={value}
+								value={value}
+								checked={checked}
+								style={{
+									borderRadius: '8px',
+									border: '1px solid #dcdfe6',
+									padding: '5px 12px',
+									minWidth: '150px',
+									marginRight: '3px',
+								}}
+								onChange={() => handleChange(value)}
+							>
+								{text}
+							</Checkbox>
+						)
+					})}
+				</Space>
+			</div>
+
+			{isShowWarning && checkboxSelectStatus && (
+				<span className={styles['warning']}>
+					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
+					请填写此项
+				</span>
+			)}
 		</div>
 	)
 }

@@ -193,7 +193,11 @@ const Header: FC = () => {
 			}
 		}
 		const [device, setDevice] = useState('pc')
-		function genComponent(componentInfo: ComponentInfoType, isShowOrderIndex: boolean) {
+		function genComponent(
+			componentInfo: ComponentInfoType,
+			isShowOrderIndex: boolean,
+			isShowWarning: boolean,
+		) {
 			const { type, props, title, order_index, id } = componentInfo
 			const componentConf = getComponentConfByType(type)
 			if (!componentConf) return
@@ -203,9 +207,38 @@ const Header: FC = () => {
 				title,
 				order_index,
 				isShowOrderIndex,
+				isShowWarning,
 			}
 			return <Component {...newProps} onValueChange={value => handleValueChange(value, id)} />
 		}
+
+		// 子组件是否必填状态下是否显示警告
+		const [childWarnings, setChildWarnings] = useState<{ [key: string | number]: boolean }>({})
+		// 验证所有子组件的输入值
+		const validateForm = () => {
+			let hasEmptyField = false
+			// 每个子组件是否要显示警告
+			const newChildWarnings: { [key: string | number]: boolean } = {}
+
+			for (const component of componentList) {
+				if (
+					component.props.isMustFill &&
+					!writeAnswer.some((answer: any) => answer.id === component.id && answer.value)
+				) {
+					newChildWarnings[component.id] = true
+					hasEmptyField = true
+				} else {
+					newChildWarnings[component.id] = false
+				}
+			}
+
+			setChildWarnings(newChildWarnings)
+
+			if (hasEmptyField) {
+				console.warn('存在必填项未填写')
+			}
+		}
+
 		return (
 			<Modal
 				style={{
@@ -278,13 +311,13 @@ const Header: FC = () => {
 										<div
 											className={device == 'pc' ? styles['component'] : styles['component-mobile']}
 										>
-											{genComponent(c, isShowOrderIndex!)}
+											{genComponent(c, isShowOrderIndex!, childWarnings[c.id])}
 										</div>
 									</div>
 								)
 							})}
 							<div className={styles['footer']}>
-								<Button type="primary" onClick={() => console.log('writeAnswer', writeAnswer)}>
+								<Button type="primary" onClick={validateForm}>
 									提交
 								</Button>
 							</div>

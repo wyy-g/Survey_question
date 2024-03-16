@@ -15,6 +15,7 @@ export type QuestionRadioPropsType = {
 	order_index?: number | string
 	isShowOrderIndex?: boolean
 	onValueChange?: (value: string) => void
+	isShowWarning?: boolean
 }
 
 export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
@@ -30,4 +31,5 @@ export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
 	],
 	value: '',
 	isShowOrderIndex: true,
+	isShowWarning: false,
 }

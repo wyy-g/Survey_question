@@ -8,6 +8,7 @@ export type QuestionTiankongPropsType = {
 	order_index?: number | string
 	isShowOrderIndex?: boolean
 	onValueChange?: (value: string) => void
+	isShowWarning?: boolean //必填状态下是否实现未填警告
 }
 
 export const QuestionTiankongDefaultProps: QuestionTiankongPropsType = {
@@ -17,4 +18,5 @@ export const QuestionTiankongDefaultProps: QuestionTiankongPropsType = {
 	isShow: false,
 	content: '请输入多项填空内容',
 	isShowOrderIndex: true,
+	isShowWarning: false,
 }
