@@ -11,11 +11,13 @@ import headDefaultImg from '../assets/head.png'
 import { removeToken, removeUserId } from '../utools/user-storage'
 import useGetUserInfo from '../hooks/useGetUserInfo'
 import { logoutReducer } from '../store/userReducer'
+import { getUserIdStorage } from '../utools/user-storage'
 
 const UserInfo: FC = () => {
 	const nav = useNavigate()
 	const dispatch = useDispatch()
 	const { nickname, username, headImg } = useGetUserInfo()
+	const userId = getUserIdStorage()
 	const onClick: MenuProps['onClick'] = ({ key }) => {
 		if (key === 'logout') {
 			dispatch(logoutReducer())
@@ -41,7 +43,7 @@ const UserInfo: FC = () => {
 	return (
 		<>
 			<div className={styles['container']}>
-				{username ? (
+				{userId ? (
 					<Dropdown trigger={['click']} menu={{ items, onClick }}>
 						<Space>
 							<div className={styles['headImg']}>
