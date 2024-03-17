@@ -162,6 +162,30 @@ const Statistics: FC = () => {
 							})
 						}
 
+						if (type === 'questionSignature') {
+							return filterData.map((answer: any) => {
+								return {
+									key: answer.answer_id,
+									answer: (
+										<div
+											style={{
+												display: 'inline-block',
+												background: '#f5f5f5', // 设置背景色
+												padding: '3px',
+												borderRadius: '4px', // 可选，添加边框圆角
+											}}
+										>
+											<img
+												src={answer.answer_value}
+												alt="签名"
+												style={{ maxWidth: '100%', maxHeight: '30px' }}
+											/>
+										</div>
+									),
+								}
+							})
+						}
+
 						return filterData.map((answer: any) => {
 							return {
 								key: answer.answer_id,

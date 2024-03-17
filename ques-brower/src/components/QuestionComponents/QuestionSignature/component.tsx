@@ -7,6 +7,7 @@ import styles from '../common.module.scss'
 // @ts-ignore
 import SignatureCanvas from 'react-signature-canvas'
 import { QuestionSingaturePropsType, QuestionSignatureDefaultProps } from './interface'
+import { setAutoFreeze } from 'immer'
 
 const { Paragraph } = Typography
 
@@ -35,6 +36,7 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 	// 清除签名
 	const clearSignature = () => {
 		signatureRef.current && signatureRef.current.clear()
+		setIseCOnfirm(false)
 	}
 
 	// 获取签名图像数据
