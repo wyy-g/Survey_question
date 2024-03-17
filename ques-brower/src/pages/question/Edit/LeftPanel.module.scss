@@ -1,0 +1,18 @@
+.component-lib {
+    height: calc(100vh - 120px);
+     overflow: auto
+}
+
+.component-lib::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+.component-lib::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+
+.component-lib::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 设置滚动条轨道背景颜色 */
+    border-radius: 10px;
+  }
