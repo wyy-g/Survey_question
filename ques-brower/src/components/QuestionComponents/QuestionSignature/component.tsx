@@ -7,7 +7,6 @@ import styles from '../common.module.scss'
 // @ts-ignore
 import SignatureCanvas from 'react-signature-canvas'
 import { QuestionSingaturePropsType, QuestionSignatureDefaultProps } from './interface'
-import { setAutoFreeze } from 'immer'
 
 const { Paragraph } = Typography
 
@@ -100,7 +99,7 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 			{isShowWarning && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
-					请填写此项
+					请填写签名并确认
 				</span>
 			)}
 		</div>

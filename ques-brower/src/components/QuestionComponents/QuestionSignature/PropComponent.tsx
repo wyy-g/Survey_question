@@ -3,19 +3,7 @@ import { Form, Input, Switch, ColorPicker } from 'antd'
 import { QuestionSignatureDefaultProps, QuestionSingaturePropsType } from './interface'
 
 const PropComponent: FC<QuestionSingaturePropsType> = (props: QuestionSingaturePropsType) => {
-	const {
-		title,
-		placeholder,
-		isShowTitle,
-		isMustFill,
-		order_index,
-		isShowOrderIndex,
-		onValueChange,
-		isShow,
-		isShowWarning,
-		color,
-		onChange,
-	} = {
+	const { title, placeholder, isShowTitle, isMustFill, isShow, color, onChange } = {
 		...QuestionSignatureDefaultProps,
 		...props,
 	}
@@ -75,7 +63,7 @@ const PropComponent: FC<QuestionSingaturePropsType> = (props: QuestionSingatureP
 				<Switch />
 			</Form.Item>
 			<Form.Item label="颜色" name="color">
-				<ColorPicker />
+				<ColorPicker showText />
 			</Form.Item>
 		</Form>
 	)

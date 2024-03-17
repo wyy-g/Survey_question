@@ -36,7 +36,12 @@ const PageSetting: FC = () => {
 				<Input placeholder="请输入标题" />
 			</Form.Item>
 			<Form.Item label="问卷描述" name="description">
-				<Input.TextArea placeholder="请输入问卷描述"></Input.TextArea>
+				<Input.TextArea
+					placeholder="请输入问卷描述"
+					maxLength={200}
+					style={{ height: 100, width: '180px' }}
+					showCount
+				></Input.TextArea>
 			</Form.Item>
 			<Form.Item label="显示题目序号" name="isShowOrderIndex">
 				<Switch />
