@@ -1,6 +1,5 @@
 import React, { FC, useEffect } from 'react'
 import { Form, Input, Switch } from 'antd'
-import {} from '@ant-design/icons'
 import { QuestionInputPropsType, QuestionInputDefaultProps } from './interface'
 
 const PropComponent: FC<QuestionInputPropsType> = (props: QuestionInputPropsType) => {

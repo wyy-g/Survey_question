@@ -112,10 +112,12 @@ const Report: FC = () => {
 		{
 			title: '答案',
 			dataIndex: 'answer',
+			render: (value: React.ReactNode) => value, // 这里允许直接渲染非文本节点
 		},
 	]
 	// 生成详情中的行
 	function genDetailRow(answerDetail: any) {
+		console.log('item', answerDetail)
 		const rowArr = []
 		for (const item in answerDetail) {
 			if (
@@ -207,9 +209,30 @@ const Report: FC = () => {
 						// 将组件标题及其答案添加到累积器对象中
 						if (answerContent !== undefined) {
 							// 防止未找到答案时添加空属性
-							/* eslint-disable */
-							// @ts-ignore
-							acc[c.title] = answerContent.answer_value
+							if (c.type === 'questionSignature') {
+								/* eslint-disable */
+								// @ts-ignore
+								acc[c.title] = (
+									<div
+										style={{
+											display: 'inline-block',
+											background: '#f5f5f5', // 设置背景色
+											padding: '3px',
+											borderRadius: '4px', // 可选，添加边框圆角
+										}}
+									>
+										<img
+											src={answerContent.answer_value}
+											alt={`签名 - ${c.title}`}
+											style={{ maxWidth: '100%', maxHeight: '30px' }}
+										/>
+									</div>
+								)
+							} else {
+								/* eslint-disable */
+								// @ts-ignore
+								acc[c.title] = answerContent.answer_value
+							}
 						}
 						return acc
 					},
