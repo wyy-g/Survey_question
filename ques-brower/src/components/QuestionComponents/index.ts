@@ -7,6 +7,7 @@ import QuestionTiankongConf, { QuestionTiankongPropsType } from './QuestionTiank
 import QuestionRadioConf, { QuestionRadioPropsType } from './QuestionRadio'
 import QuestionCheckboxConf, { QuestionCheckboxPropsType } from './QuestionCheckbox'
 import QuestionSignatureConf, { QuestionSingaturePropsType } from './QuestionSignature'
+import QuestionMarkConf, { QuestionMarkPropsType } from './QuestionMark'
 
 // 各个组件的props
 export type ComponentPropsType = QuestionInputPropsType &
@@ -16,7 +17,8 @@ export type ComponentPropsType = QuestionInputPropsType &
 	QuestionTiankongPropsType &
 	QuestionRadioPropsType &
 	QuestionCheckboxPropsType &
-	QuestionSingaturePropsType
+	QuestionSingaturePropsType &
+	QuestionMarkPropsType
 
 //组件的配置
 export type ComponentConfType = {
@@ -37,6 +39,7 @@ const componentConfList: ComponentConfType[] = [
 	QuestionRadioConf,
 	QuestionCheckboxConf,
 	QuestionSignatureConf,
+	QuestionMarkConf,
 ]
 
 export function getComponentConfByType(type: string) {

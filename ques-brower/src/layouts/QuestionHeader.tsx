@@ -183,7 +183,7 @@ const Header: FC = () => {
 	// 预览组件
 	const [openPriview, setOpenPriview] = useState(false)
 	const PreviewElem: FC = () => {
-		function handleValueChange(value: string, id: string | number) {
+		function handleValueChange(value: string | number, id: string | number) {
 			// setWriteAnswer([...writeAnswer, { id, value }])
 			const answer = writeAnswer.find((a: any) => a.id === id)
 			if (answer) {

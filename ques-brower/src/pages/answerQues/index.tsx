@@ -135,7 +135,7 @@ const AnswerQues: FC = () => {
 	}
 
 	function handleValueChange(
-		answer_value: string,
+		answer_value: string | number,
 		component_instance_id: string | number,
 		question_type: string,
 	) {
