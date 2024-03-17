@@ -582,6 +582,18 @@ exports.updateQues = async (req, res) => {
 				order_index: item.order_index
 			})
 
+			Object.entries(item.props).forEach(async prop => {
+				if (typeof prop[1] !== 'object') {
+					await addComPropInfo({
+						comId: item.id,
+						property_key: prop[0],
+						property_value: prop[1],
+						option_mode: null,
+						is_complex: 0
+					})
+				}
+			})
+
 			if (item.type === 'questionRadio') {
 				const addComPropInfoRes = await addComPropInfo({ comId: item.id, property_key: 'radio', property_value: '', option_mode: 'single', is_complex: 1 })
 				for (const optItem of item.props.options) {
