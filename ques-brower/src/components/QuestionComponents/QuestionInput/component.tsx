@@ -18,6 +18,7 @@ const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
 		isShowOrderIndex,
 		onValueChange,
 		isShowWarning,
+		customErrorMessage,
 	} = {
 		...QuestionInputDefaultProps,
 		...props,
@@ -51,7 +52,7 @@ const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
 			{isShowWarning && !inputValue && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
-					请填写此项
+					{customErrorMessage}
 				</span>
 			)}
 		</div>

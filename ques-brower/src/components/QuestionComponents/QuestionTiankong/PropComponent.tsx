@@ -6,7 +6,7 @@ import IconFont from '../../../utools/IconFont'
 const { TextArea } = Input
 
 const PropComponent: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsType) => {
-	const { title, isMustFill, isShow, isShowTitle, content, onChange } = {
+	const { title, isMustFill, isShow, isShowTitle, content, onChange, customErrorMessage } = {
 		...QuestionTiankongDefaultProps,
 		...props,
 	}
@@ -14,7 +14,7 @@ const PropComponent: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPro
 	const [form] = Form.useForm()
 
 	useEffect(() => {
-		form.setFieldsValue({ title, isShow, isShowTitle, isMustFill, content })
+		form.setFieldsValue({ title, isShow, isShowTitle, isMustFill, content, customErrorMessage })
 	}, [title, isShow, isShowTitle, isMustFill, content])
 
 	function handleValueChange() {
@@ -33,7 +33,7 @@ const PropComponent: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPro
 	return (
 		<Form
 			layout="horizontal"
-			initialValues={{ title, isMustFill, isShow, isShowTitle, content }}
+			initialValues={{ title, isMustFill, isShow, isShowTitle, content, customErrorMessage }}
 			labelCol={{ span: 7 }}
 			wrapperCol={{ span: 14 }}
 			onValuesChange={handleValueChange}
@@ -54,6 +54,13 @@ const PropComponent: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPro
 			</Form.Item>
 			<Form.Item label="是否必填" name="isMustFill">
 				<Switch />
+			</Form.Item>
+			<Form.Item
+				label="错误提示"
+				tooltip="填表者在提交不符合校验规则的数据时，会显示此处自定义的文案。"
+				name="customErrorMessage"
+			>
+				<Input />
 			</Form.Item>
 			<Divider>填空内容</Divider>
 			<Form.Item name="content" wrapperCol={{ span: 24 }}>

@@ -3,7 +3,16 @@ import { Form, Input, Switch, ColorPicker } from 'antd'
 import { QuestionSignatureDefaultProps, QuestionSingaturePropsType } from './interface'
 
 const PropComponent: FC<QuestionSingaturePropsType> = (props: QuestionSingaturePropsType) => {
-	const { title, placeholder, isShowTitle, isMustFill, isShow, color, onChange } = {
+	const {
+		title,
+		placeholder,
+		isShowTitle,
+		isMustFill,
+		isShow,
+		color,
+		onChange,
+		customErrorMessage,
+	} = {
 		...QuestionSignatureDefaultProps,
 		...props,
 	}
@@ -31,13 +40,22 @@ const PropComponent: FC<QuestionSingaturePropsType> = (props: QuestionSingatureP
 			isShowTitle,
 			isMustFill,
 			color: colorStr,
+			customErrorMessage,
 		})
-	}, [title, placeholder, isShow, isShowTitle, isMustFill, color])
+	}, [title, placeholder, isShow, isShowTitle, isMustFill, color, customErrorMessage])
 
 	return (
 		<Form
 			layout="horizontal"
-			initialValues={{ title, placeholder, isShow, isShowTitle, isMustFill, color }}
+			initialValues={{
+				title,
+				placeholder,
+				isShow,
+				isShowTitle,
+				isMustFill,
+				color,
+				customErrorMessage,
+			}}
 			form={form}
 			onValuesChange={handleValueChange}
 			labelCol={{ span: 7 }}
@@ -64,6 +82,13 @@ const PropComponent: FC<QuestionSingaturePropsType> = (props: QuestionSingatureP
 			</Form.Item>
 			<Form.Item label="颜色" name="color">
 				<ColorPicker showText />
+			</Form.Item>
+			<Form.Item
+				label="错误提示"
+				tooltip="填表者在提交不符合校验规则的数据时，会显示此处自定义的文案。"
+				name="customErrorMessage"
+			>
+				<Input />
 			</Form.Item>
 		</Form>
 	)

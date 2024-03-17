@@ -6,10 +6,11 @@ import IconFont from '../../../utools/IconFont'
 import { MinusCircleOutlined } from '@ant-design/icons'
 
 const PropComponent: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsType) => {
-	const { title, isVertical, isShowTitle, isMustFill, isShow, list, onChange } = {
-		...QuestionCheckboxDefaultProps,
-		...props,
-	}
+	const { title, isVertical, isShowTitle, isMustFill, isShow, list, onChange, customErrorMessage } =
+		{
+			...QuestionCheckboxDefaultProps,
+			...props,
+		}
 	const [form] = Form.useForm()
 
 	function handleValueChange() {
@@ -31,7 +32,15 @@ const PropComponent: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPro
 	return (
 		<Form
 			layout="horizontal"
-			initialValues={{ title, isVertical, isShowTitle, isMustFill, isShow, list }}
+			initialValues={{
+				title,
+				isVertical,
+				isShowTitle,
+				isMustFill,
+				isShow,
+				list,
+				customErrorMessage,
+			}}
 			form={form}
 			onValuesChange={handleValueChange}
 			labelCol={{ span: 7 }}
@@ -53,9 +62,17 @@ const PropComponent: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPro
 			<Form.Item label="是否必填" name="isMustFill">
 				<Switch />
 			</Form.Item>
+			<Form.Item
+				label="错误提示"
+				tooltip="填表者在提交不符合校验规则的数据时，会显示此处自定义的文案。"
+				name="customErrorMessage"
+			>
+				<Input />
+			</Form.Item>
 			<Form.Item label="竖向排列" name="isVertical" valuePropName="checked">
 				<Checkbox />
 			</Form.Item>
+
 			<Divider>选项</Divider>
 			<Form.Item wrapperCol={{ span: 24 }} style={{ marginLeft: '30px' }}>
 				<Form.List name="list">

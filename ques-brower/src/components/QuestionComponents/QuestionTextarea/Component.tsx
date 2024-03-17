@@ -21,6 +21,7 @@ const QuestionTextarea: FC<QuestionTextareaPropsType> = (props: QuestionTextarea
 		isShowOrderIndex,
 		onValueChange,
 		isShowWarning,
+		customErrorMessage,
 	} = {
 		...QuestionTextareaDefaultProps,
 		...props,
@@ -51,7 +52,7 @@ const QuestionTextarea: FC<QuestionTextareaPropsType> = (props: QuestionTextarea
 			{isShowWarning && !textareaValue && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
-					请填写此项
+					{customErrorMessage}
 				</span>
 			)}
 		</div>

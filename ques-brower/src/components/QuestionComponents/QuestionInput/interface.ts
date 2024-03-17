@@ -11,6 +11,7 @@ export type QuestionInputPropsType = {
 	isShowOrderIndex?: boolean // 是否显示序号
 	onValueChange?: (value: string) => void //值改变执行的函数
 	isShowWarning?: boolean //必填状态下是否实现未填警告
+	customErrorMessage?: string
 }
 
 export const QuestionInputDefaultProps: QuestionInputPropsType = {
@@ -23,4 +24,5 @@ export const QuestionInputDefaultProps: QuestionInputPropsType = {
 	isMustFill: true,
 	isShowOrderIndex: true,
 	isShowWarning: false,
+	customErrorMessage: '请填写此项',
 }

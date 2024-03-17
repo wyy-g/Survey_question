@@ -17,6 +17,7 @@ const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsTy
 		isShowOrderIndex,
 		onValueChange,
 		isShowWarning,
+		customErrorMessage,
 	} = {
 		...QuestionTiankongDefaultProps,
 		...props,
@@ -87,7 +88,7 @@ const Component: FC<QuestionTiankongPropsType> = (props: QuestionTiankongPropsTy
 			{isShowWarning && fillValue.length < 1 && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
-					请填写此项
+					{customErrorMessage}
 				</span>
 			)}
 		</div>

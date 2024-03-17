@@ -21,6 +21,7 @@ const Component: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) =>
 		isShowOrderIndex,
 		onValueChange,
 		isShowWarning,
+		customErrorMessage,
 	} = {
 		...QuestionRadioDefaultProps,
 		...props,
@@ -85,7 +86,7 @@ const Component: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) =>
 			{isShowWarning && !innerValue && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
-					请填写此项
+					{customErrorMessage}
 				</span>
 			)}
 		</div>

@@ -16,6 +16,7 @@ export type QuestionRadioPropsType = {
 	isShowOrderIndex?: boolean
 	onValueChange?: (value: string) => void
 	isShowWarning?: boolean
+	customErrorMessage?: string
 }
 
 export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
@@ -32,4 +33,5 @@ export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
 	value: '',
 	isShowOrderIndex: true,
 	isShowWarning: false,
+	customErrorMessage: '请选择一个',
 }

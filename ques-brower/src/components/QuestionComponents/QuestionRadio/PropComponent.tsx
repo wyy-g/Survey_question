@@ -6,15 +6,34 @@ import IconFont from '../../../utools/IconFont'
 import { MinusCircleOutlined } from '@ant-design/icons'
 
 const PropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) => {
-	const { title, isVertical, options, isShowTitle, isMustFill, isShow, value, onChange } = {
+	const {
+		title,
+		isVertical,
+		options,
+		isShowTitle,
+		isMustFill,
+		isShow,
+		value,
+		onChange,
+		customErrorMessage,
+	} = {
 		...QuestionRadioDefaultProps,
 		...props,
 	}
 	const [form] = Form.useForm()
 
 	useEffect(() => {
-		form.setFieldsValue({ title, isVertical, options, isShowTitle, isMustFill, isShow, value })
-	}, [title, isVertical, options, isShowTitle, isMustFill, isShow, value])
+		form.setFieldsValue({
+			title,
+			isVertical,
+			options,
+			isShowTitle,
+			isMustFill,
+			isShow,
+			value,
+			customErrorMessage,
+		})
+	}, [title, isVertical, options, isShowTitle, isMustFill, isShow, value, customErrorMessage])
 
 	function handleValueChange() {
 		if (onChange) {
@@ -34,7 +53,16 @@ const PropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType
 	return (
 		<Form
 			layout="horizontal"
-			initialValues={{ title, isVertical, options, isShowTitle, isMustFill, isShow, value }}
+			initialValues={{
+				title,
+				isVertical,
+				options,
+				isShowTitle,
+				isMustFill,
+				isShow,
+				value,
+				customErrorMessage,
+			}}
 			onValuesChange={handleValueChange}
 			form={form}
 			labelCol={{ span: 7 }}
@@ -55,6 +83,13 @@ const PropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType
 			</Form.Item>
 			<Form.Item label="是否必填" name="isMustFill">
 				<Switch />
+			</Form.Item>
+			<Form.Item
+				label="错误提示"
+				tooltip="填表者在提交不符合校验规则的数据时，会显示此处自定义的文案。"
+				name="customErrorMessage"
+			>
+				<Input />
 			</Form.Item>
 			<Form.Item label="默认选中" name="value">
 				<Select

@@ -16,6 +16,7 @@ export type QuestionCheckboxPropsType = {
 	isShowOrderIndex?: boolean
 	onValueChange?: (value: string) => void
 	isShowWarning?: boolean
+	customErrorMessage?: string
 }
 
 export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
@@ -31,4 +32,5 @@ export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
 	isShow: false,
 	isShowOrderIndex: true,
 	isShowWarning: false,
+	customErrorMessage: '至少选择一个',
 }

@@ -10,6 +10,7 @@ export type QuestionSingaturePropsType = {
 	onValueChange?: (value: string) => void //值改变执行的函数
 	isShowWarning?: boolean //必填状态下是否实现未填警告
 	color?: any //签名得颜色
+	customErrorMessage?: string
 }
 
 export const QuestionSignatureDefaultProps: QuestionSingaturePropsType = {
@@ -21,4 +22,5 @@ export const QuestionSignatureDefaultProps: QuestionSingaturePropsType = {
 	isShowOrderIndex: true,
 	isShowWarning: false,
 	color: '#000000 ',
+	customErrorMessage: '请填写签名并确认',
 }

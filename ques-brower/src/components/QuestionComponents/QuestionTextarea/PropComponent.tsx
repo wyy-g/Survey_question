@@ -3,15 +3,32 @@ import { Form, Input, Switch } from 'antd'
 import { QuestionTextareaPropsType, QuestionTextareaDefaultProps } from './interface'
 
 const PropComponent: FC<QuestionTextareaPropsType> = (props: QuestionTextareaPropsType) => {
-	const { title, placeholder, isClear, isShow, isShowTitle, isMustFill, onChange } = {
+	const {
+		title,
+		placeholder,
+		isClear,
+		isShow,
+		isShowTitle,
+		isMustFill,
+		onChange,
+		customErrorMessage,
+	} = {
 		...QuestionTextareaDefaultProps,
 		...props,
 	}
 	const [form] = Form.useForm()
 
 	useEffect(() => {
-		form.setFieldsValue({ title, placeholder, isClear, isShow, isShowTitle, isMustFill })
-	}, [title, placeholder, isClear, isShow, isShowTitle, isMustFill])
+		form.setFieldsValue({
+			title,
+			placeholder,
+			isClear,
+			isShow,
+			isShowTitle,
+			isMustFill,
+			customErrorMessage,
+		})
+	}, [title, placeholder, isClear, isShow, isShowTitle, isMustFill, customErrorMessage])
 
 	function handleValueChange() {
 		if (onChange) {
@@ -22,7 +39,15 @@ const PropComponent: FC<QuestionTextareaPropsType> = (props: QuestionTextareaPro
 	return (
 		<Form
 			layout="horizontal"
-			initialValues={{ title, placeholder, isClear, isShow, isShowTitle, isMustFill }}
+			initialValues={{
+				title,
+				placeholder,
+				isClear,
+				isShow,
+				isShowTitle,
+				isMustFill,
+				customErrorMessage,
+			}}
 			form={form}
 			onValuesChange={handleValueChange}
 			labelCol={{ span: 7 }}
@@ -49,6 +74,13 @@ const PropComponent: FC<QuestionTextareaPropsType> = (props: QuestionTextareaPro
 			</Form.Item>
 			<Form.Item label="是否必填" name="isMustFill">
 				<Switch />
+			</Form.Item>
+			<Form.Item
+				label="错误提示"
+				tooltip="填表者在提交不符合校验规则的数据时，会显示此处自定义的文案。"
+				name="customErrorMessage"
+			>
+				<Input />
 			</Form.Item>
 		</Form>
 	)

@@ -11,6 +11,7 @@ export type QuestionTextareaPropsType = {
 	isShowOrderIndex?: boolean
 	onValueChange?: (value: string) => void
 	isShowWarning?: boolean //必填状态下是否实现未填警告
+	customErrorMessage?: string
 }
 
 export const QuestionTextareaDefaultProps: QuestionTextareaPropsType = {
@@ -23,4 +24,5 @@ export const QuestionTextareaDefaultProps: QuestionTextareaPropsType = {
 	isMustFill: true,
 	isShowOrderIndex: true,
 	isShowWarning: false,
+	customErrorMessage: '请填写此项',
 }

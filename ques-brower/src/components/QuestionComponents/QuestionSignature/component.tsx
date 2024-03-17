@@ -19,9 +19,9 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 		order_index,
 		isShowOrderIndex,
 		onValueChange,
-		isShow,
 		isShowWarning,
 		color,
+		customErrorMessage,
 	} = {
 		...QuestionSignatureDefaultProps,
 		...props,
@@ -99,7 +99,7 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 			{isShowWarning && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
-					请填写签名并确认
+					{customErrorMessage}
 				</span>
 			)}
 		</div>

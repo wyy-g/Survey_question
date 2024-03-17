@@ -19,6 +19,7 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 		isShowOrderIndex,
 		onValueChange,
 		isShowWarning,
+		customErrorMessage,
 	} = {
 		...QuestionCheckboxDefaultProps,
 		...props,
@@ -99,7 +100,7 @@ const Component: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPropsTy
 			{isShowWarning && checkboxSelectStatus && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
-					请填写此项
+					{customErrorMessage}
 				</span>
 			)}
 		</div>
