@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Rate, Typography } from 'antd'
 import IconFont from '../../../utools/IconFont'
 import addZero from '../../../utools/addZero'
@@ -25,7 +25,11 @@ const QuestionMark: FC<QuestionMarkPropsType> = (props: QuestionMarkPropsType) =
 		...props,
 	}
 
+	// 存储值用来判断显示警告后重写填写警告消失
+	const [markValue, setMarkValue] = useState(0)
+
 	function handlValueChange(value: number) {
+		setMarkValue(value)
 		onValueChange && onValueChange(value)
 	}
 
@@ -50,7 +54,7 @@ const QuestionMark: FC<QuestionMarkPropsType> = (props: QuestionMarkPropsType) =
 					onChange={handlValueChange}
 				/>
 			</div>
-			{isShowWarning && (
+			{isShowWarning && markValue === 0 && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
 					{customErrorMessage}

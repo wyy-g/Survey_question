@@ -32,10 +32,14 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 	// 是否确认上传
 	const [isConfirm, setIseCOnfirm] = useState(false)
 
+	// 存储值用来判断显示警告后重写填写警告消失
+	const [imageData, setImgDate] = useState('')
+
 	// 清除签名
 	const clearSignature = () => {
 		signatureRef.current && signatureRef.current.clear()
 		setIseCOnfirm(false)
+		setImgDate('')
 	}
 
 	// 获取签名图像数据
@@ -43,6 +47,7 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 		const imageData = signatureRef.current.toDataURL()
 		onValueChange && onValueChange(imageData)
 		setIseCOnfirm(true)
+		setImgDate(imageData)
 	}
 
 	return (
@@ -96,7 +101,7 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 					</Button>
 				</Space>
 			</div>
-			{isShowWarning && (
+			{isShowWarning && !imageData && (
 				<span className={styles['warning']}>
 					<IconFont type="icon-xianshi_jinggao" style={{ marginRight: '4px' }}></IconFont>
 					{customErrorMessage}
