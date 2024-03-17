@@ -57,7 +57,7 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 					</Paragraph>
 				)}
 			</div>
-			<div style={{ position: 'relative', width: '500px', height: '200px' }}>
+			<div style={{ position: 'relative', width: '500px', height: '200px', marginLeft: '15px' }}>
 				<SignatureCanvas
 					ref={signatureRef}
 					canvasProps={{
@@ -87,7 +87,7 @@ const QusetionSignature: FC<QuestionSingaturePropsType> = (props: QuestionSingat
 				)}
 			</div>
 
-			<div style={{ marginTop: '15px' }}>
+			<div style={{ marginTop: '15px', marginBottom: '10px', marginLeft: '15px' }}>
 				<Space>
 					<Button onClick={clearSignature} disabled={isPlaceholderVisible}>
 						重写
