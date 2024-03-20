@@ -74,7 +74,7 @@ const PropComponent: FC<QuestionCheckboxPropsType> = (props: QuestionCheckboxPro
 			</Form.Item>
 
 			<Divider>选项</Divider>
-			<Form.Item wrapperCol={{ span: 24 }} style={{ marginLeft: '30px' }}>
+			<Form.Item wrapperCol={{ span: 24 }} style={{ marginLeft: '15px' }}>
 				<Form.List name="list">
 					{(fields, { add, remove }) => (
 						<>
