@@ -25,6 +25,7 @@ const Header: FC = () => {
 		isPublished = '',
 		startTime,
 		endTime,
+		isEnableFeedback,
 	} = useGetPageInfo()
 	const dispatch = useDispatch()
 	const { componentList = [] } = useGetComponentStore()
@@ -43,6 +44,7 @@ const Header: FC = () => {
 				componentList,
 				isPublished,
 				updatedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+				isEnableFeedback,
 			})
 		},
 		{ manual: true },
@@ -61,7 +63,7 @@ const Header: FC = () => {
 				save()
 			}
 		},
-		[componentList, title, description, isShowOrderIndex],
+		[componentList, title, description, isShowOrderIndex, isEnableFeedback],
 		{
 			wait: 1000,
 		},

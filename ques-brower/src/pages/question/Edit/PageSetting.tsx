@@ -46,6 +46,9 @@ const PageSetting: FC = () => {
 			<Form.Item label="显示题目序号" name="isShowOrderIndex">
 				<Switch />
 			</Form.Item>
+			<Form.Item label="是否开启反馈" name="isEnableFeedback">
+				<Switch />
+			</Form.Item>
 		</Form>
 	)
 }

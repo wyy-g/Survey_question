@@ -26,4 +26,30 @@ async function downloadTable(surveyId: string): Promise<ResDataType> {
 	return data
 }
 
-export { getAnswers, deleteAnswers, submitAnswers, downloadTable }
+// 提交反馈
+async function submitFeedback(opt: { [key: string]: any }): Promise<ResDataType> {
+	const data = await http.post(API.ANSWER.feedback + opt.survey_id, opt)
+	return data
+}
+
+// 获取反馈
+async function getFeedback(survey_id: number): Promise<ResDataType> {
+	const data = await http.get(API.ANSWER.feedback + survey_id)
+	return data
+}
+
+// 删除反馈
+async function delFeedback(survey_id: number): Promise<ResDataType> {
+	const data = await http.delete(API.ANSWER.feedback + survey_id)
+	return data
+}
+
+export {
+	getAnswers,
+	deleteAnswers,
+	submitAnswers,
+	downloadTable,
+	submitFeedback,
+	getFeedback,
+	delFeedback,
+}

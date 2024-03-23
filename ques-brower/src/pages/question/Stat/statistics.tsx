@@ -9,9 +9,10 @@ import ColumnChart from './columnChart'
 import BarChart from './barChart'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import styles from './index.module.scss'
+import Feedback from './FeedBack'
 
 const Statistics: FC = () => {
-	const { loading } = useLoadQuestionData()
+	useLoadQuestionData()
 	const { componentList } = useGetComponentStore()
 	const { data: answersData, run: reloadAnswers, loading: loadAnswersLoading } = useLoadAnswers()
 	const { answersList = [], count = 0 } = answersData ? answersData : {}
@@ -89,15 +90,18 @@ const Statistics: FC = () => {
 			<div className={styles['stat-detail']}>
 				<div className={styles['stat-params']}>
 					<div>params</div>
-					<Button
-						icon={
-							<IconFont
-								type="icon-shuaxin"
-								className={loadAnswersLoading ? styles['rotate-icon'] : ''}
-							/>
-						}
-						onClick={() => reloadAnswers()}
-					></Button>
+					<Space>
+						<Feedback />
+						<Button
+							icon={
+								<IconFont
+									type="icon-shuaxin"
+									className={loadAnswersLoading ? styles['rotate-icon'] : ''}
+								/>
+							}
+							onClick={() => reloadAnswers()}
+						></Button>
+					</Space>
 				</div>
 				{componentList.map(c => {
 					const { id, title, order_index, props, type } = c

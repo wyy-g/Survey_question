@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
-import { Empty, Button, Spin, message } from 'antd'
+import { Empty, Button, Spin, message, Space } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 /* eslint-disable */
 // @ts-ignore
@@ -17,6 +17,7 @@ import { submitAnswers } from '../../services/answer'
 import styles from './index.module.scss'
 import { ComponentInfoType } from '../../store/componentReducer'
 import { getComponentConfByType } from '../../components/QuestionComponents'
+import Feedback from './FeedBack'
 
 const AnswerQues: FC = () => {
 	const nav = useNavigate()
@@ -27,6 +28,8 @@ const AnswerQues: FC = () => {
 	const [submitLoading, setSubmitLoading] = useState(false)
 
 	const [isPublished, setIsPublished] = useState(false)
+	// 是否显示反馈
+	const [isEnableFeedback, setIsEnableFeedback] = useState(false)
 	// 问卷有效时间
 	const [validStartTime, setValidStartTime] = useState('')
 	const [validEndTime, setValidEndTime] = useState('')
@@ -54,6 +57,7 @@ const AnswerQues: FC = () => {
 		{
 			onSuccess: data => {
 				setIsPublished(data!.isPublished)
+				setIsEnableFeedback(data!.isEnableFeedback)
 				setComponentList(data!.componentList)
 				setTitle(data!.title)
 				setDescription(data!.description)
@@ -292,9 +296,12 @@ const AnswerQues: FC = () => {
 						<div className={styles['submit-success']}>
 							<span>提交成功</span>
 							<span className={styles['desc']}>感谢您的填写</span>
-							<Button type="primary" onClick={() => nav('/')}>
-								创建我的问卷
-							</Button>
+							<Space>
+								<Button type="primary" onClick={() => nav('/')}>
+									创建我的问卷
+								</Button>
+								{isEnableFeedback ? <Feedback survey_id={Number(id)} /> : ''}
+							</Space>
 						</div>
 					)}
 				</div>

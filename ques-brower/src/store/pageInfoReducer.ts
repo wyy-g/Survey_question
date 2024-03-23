@@ -10,6 +10,7 @@ export type PageInfoType = {
 	updatedAt?: string
 	startTime?: string
 	endTime?: string
+	isEnableFeedback?: boolean
 }
 
 const INIT_STATE: PageInfoType = {
@@ -21,6 +22,7 @@ const INIT_STATE: PageInfoType = {
 	updatedAt: '',
 	startTime: '',
 	endTime: '',
+	isEnableFeedback: false,
 }
 
 const pageInfoSlice = createSlice({

@@ -34,6 +34,7 @@ function useLoadQuestionData() {
 			updatedAt,
 			startTime,
 			endTime,
+			isEnableFeedback,
 		} = data
 		//获取默认选中的selected
 		let selectId = ''
@@ -51,6 +52,7 @@ function useLoadQuestionData() {
 				updatedAt,
 				startTime,
 				endTime,
+				isEnableFeedback,
 			}),
 		)
 	}, [data])
