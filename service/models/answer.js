@@ -46,3 +46,28 @@ exports.addAnswersModel = async ({ submission_id, component_instance_id, questio
         [submission_id, component_instance_id, question_type, answer_value]
     )
 }
+
+exports.addFeedbackMOdel = async ({ survey_id, username, email, comment }) => {
+    if (!username) username = ''
+    if (!email) email = ''
+    return executeQuery(
+        `INSERT INTO survey_feedback (survey_id, username, email, comment) VALUES (?,?,?,?)`,
+        [survey_id, username, email, comment]
+    )
+}
+
+exports.getFeedbackModel = async (survey_id) => {
+    return executeQuery(
+        `select * from survey_feedback where survey_id = ?`,
+        [survey_id]
+    )
+}
+
+exports.delFeedbackModel = async (feedback_id) => {
+    return executeQuery(
+        `delete from survey_feedback where feedback_id = ?`,
+        [
+            feedback_id
+        ]
+    )
+}

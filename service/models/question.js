@@ -273,12 +273,12 @@ exports.sortQuesModel = async (userId, sort, order, offset, pageSize, isPublishe
 }
 
 // 更新问卷信息
-exports.updateQuestionModel = async (quesId, title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime) => {
+exports.updateQuestionModel = async (quesId, title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime, isEnableFeedback) => {
     return await executeQuery(
         `UPDATE surveys 
-        SET title = ?, isStar = ?, isPublished = ?, isDeleted = ?, description = ?,isShowOrderIndex = ?, updatedAt = ?, startTime = ?, endTime = ?
+        SET title = ?, isStar = ?, isPublished = ?, isDeleted = ?, description = ?,isShowOrderIndex = ?, updatedAt = ?, startTime = ?, endTime = ?, isEnableFeedback = ?
         WHERE id = ?;`,
-        [title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime, quesId]
+        [title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime, isEnableFeedback, quesId]
     )
 }
 

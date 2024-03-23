@@ -20,7 +20,8 @@ const surveysTableSql = `CREATE TABLE IF NOT EXISTS surveys (
     isDeleted BOOLEAN DEFAULT FALSE,
     userId INT,
     isShowOrderIndex BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (userId) REFERENCES users(id)
+    isEnableFeedback BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
   );`
 
 // 整个系统的组件表
@@ -97,22 +98,16 @@ const codeSql = `CREATE TABLE IF NOT EXISTS verifications (
 );
 `
 
-// const questionsTableSql = `CREATE TABLE IF NOT EXISTS questions (
-//   id INT AUTO_INCREMENT PRIMARY KEY,
-//   survey_id INT NOT NULL,
-//   title VARCHAR(255) NOT NULL,
-//   description TEXT,
-//   component_id INT NOT NULL,
-//   required BOOLEAN DEFAULT false,
-//   order INT NOT NULL
-// );
-// `
-
-// const optionsTableSql = `CREATE TABLE IF NOT EXISTS options (
-//   id INT AUTO_INCREMENT PRIMARY KEY,
-//   question_id INT NOT NULL,
-//   text VARCHAR(255) NOT NULL,
-// );`
+// 问卷反馈表
+const surveyFeedbackSql = `CREATE TABLE IF NOT EXISTS Survey_Feedback (
+  feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+  survey_id INT NOT NULL,
+  username VARCHAR(255) DEFAULT NULL,
+  email VARCHAR(255) DEFAULT NULL,
+  comment TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE ON UPDATE CASCADE
+);`
 
 const dbTable = [
   userTableSql,
@@ -123,7 +118,8 @@ const dbTable = [
   componentOptions,
   answersSql,
   submissionSql,
-  codeSql
+  codeSql,
+  surveyFeedbackSql
 ]
 
 module.exports = dbTable

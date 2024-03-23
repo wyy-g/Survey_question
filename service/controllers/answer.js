@@ -3,7 +3,10 @@ const { getSubmissionModel,
     delAnswersModel,
     delSubmissionsModel,
     addSubmissionModel,
-    addAnswersModel
+    addAnswersModel,
+    addFeedbackMOdel,
+    getFeedbackModel,
+    delFeedbackModel
 } = require('../models/answer')
 const { getSingleCom } = require('../models/questionCom');
 const { isHaveQues } = require('../models/common');
@@ -178,3 +181,54 @@ exports.submitAnswers = async (req, res) => {
         })
     }
 };
+
+exports.addFeedback = async (req, res) => {
+    const { survey_id, username, email, comment } = req.body
+    try {
+        await addFeedbackMOdel({ survey_id, username, email, comment })
+        res.status(200).send({
+            code: 200,
+            msg: '提交反馈成功',
+        })
+    } catch (error) {
+        res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+}
+
+
+exports.getFeedback = async (req, res) => {
+    const { id } = req.params
+    try {
+        const data = await getFeedbackModel(id)
+        res.status(200).send({
+            code: 200,
+            msg: '',
+            data
+        })
+    } catch (error) {
+        res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+}
+
+// 删除反馈记录
+exports.delFeedback = async (req, res) => {
+    const { id } = req.params
+    try {
+        await delFeedbackModel(Number(id))
+        res.status(200).send({
+            code: 200,
+            msg: '删除反馈成功',
+        })
+    } catch (error) {
+        res.status(INTERNAL_SERVER_ERROR).send({
+            code: INTERNAL_SERVER_ERROR,
+            msg: '服务端内部错误'
+        })
+    }
+}

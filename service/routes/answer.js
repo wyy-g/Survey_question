@@ -14,5 +14,8 @@ router.get(API.ANSWER.getSingleAnswers, answerController.getAnswers)
 router.delete(API.ANSWER.delAnswer, answerController.delAnswer)
 router.get(API.ANSWER.downloadExcel, answerController.downloadExcel)
 router.post(API.ANSWER.submitAnswer, answerController.submitAnswers)
+router.post(API.ANSWER.feedback, answerController.addFeedback)
+router.get(API.ANSWER.feedback, answerController.getFeedback)
+router.delete(API.ANSWER.feedback, answerController.delFeedback)
 
 module.exports = router

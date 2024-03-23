@@ -487,8 +487,10 @@ exports.updateQues = async (req, res) => {
 		}, {});
 	}
 
-	const { title, isStar, isPublished, isDeleted, isShowOrderIndex, description, updatedAt, startTime, endTime }
-		= safeDestructure(req.body, ['title', 'isStar', 'isPublished', 'isDeleted', 'isShowOrderIndex', 'description', 'updatedAt', 'startTime', 'endTime']);
+	const { title, isStar, isPublished, isDeleted, isShowOrderIndex, description, updatedAt, startTime, endTime, isEnableFeedback }
+		= safeDestructure(req.body,
+			['title', 'isStar', 'isPublished', 'isDeleted', 'isShowOrderIndex', 'description', 'updatedAt', 'startTime', 'endTime', 'isEnableFeedback']
+		);
 	const { componentList } = req.body
 
 	componentList && componentList.forEach(async item => {
@@ -617,7 +619,7 @@ exports.updateQues = async (req, res) => {
 
 
 
-	await updateQuestionModel(quesId, title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime)
+	await updateQuestionModel(quesId, title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime, isEnableFeedback)
 	return res.status(OK).send({
 		code: OK,
 		msg: '更新问卷成功',
