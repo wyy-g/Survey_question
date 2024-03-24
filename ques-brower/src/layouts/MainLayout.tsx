@@ -8,6 +8,7 @@ import useLoadUserData from '../hooks/useLoadUserData'
 import useRouteGuard from '../hooks/useRouteGuard'
 import Home from '../pages/Home'
 import { getUserIdStorage } from '../utools/user-storage'
+import Inform from '../components/inform'
 
 const { Header, Content } = Layout
 
@@ -21,6 +22,7 @@ const MainLayout: FC = () => {
 				<div className={styles['logo']}> </div>
 
 				<div className={styles['right']}>
+					<Inform />
 					<div className={styles['info']}>{<UserInfo />}</div>
 				</div>
 			</Header>

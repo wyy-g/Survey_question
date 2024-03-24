@@ -38,6 +38,7 @@ const API = {
 	CREATEDQUESBYAI: '/api/createAiQues',
 	SENDEMAILCODE: '/api/sendEmailCode',
 	VERIFSUBMITYCODE: '/api/verifyCode',
+	FEEDBACKNOTIFICARION: '/api/feedbackNotification/',
 }
 
 export default API

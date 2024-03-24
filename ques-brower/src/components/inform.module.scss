@@ -1,0 +1,51 @@
+
+.inform-wrapper {
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: visible;
+    padding: 5px 0;
+}
+
+.inform-wrapper::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+  }
+  
+  .inform-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+  
+  .inform-wrapper::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 设置滚动条轨道背景颜色 */
+    border-radius: 10px;
+  }
+
+.inform-card {
+    padding: 10px 10px 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    line-height:20px;
+    // color: #aaa;
+    display: flex;
+    flex-direction: column;
+    .hidden-icon {
+        display: none;
+    }
+    &:hover {
+        background-color: #F5F5F5;
+        .hidden-icon {
+            display: inline-block;
+        }
+    }
+    .header {
+        font-weight: 600;
+        color: #aaa;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+    .message {
+        color: #aaa;
+    }
+}
