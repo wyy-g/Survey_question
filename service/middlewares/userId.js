@@ -12,6 +12,7 @@ const isHaveUserId = async (req, res, next) => {
         next()
         return
     }
+    // console.log('req.path', req.path, req.query, req.method)
     let userId = req.header('x-user-id');
     const userData = await isHaveUser(Number(userId))
     if (userId && userData.length > 0) {

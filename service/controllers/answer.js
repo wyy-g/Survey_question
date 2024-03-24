@@ -9,10 +9,11 @@ const { getSubmissionModel,
     delFeedbackModel
 } = require('../models/answer')
 const { getSingleCom } = require('../models/questionCom');
-const { isHaveQues } = require('../models/common');
+const { addFeedbackNotificationModal } = require('../models/notification')
+const { isHaveQues, getUserIdBySurveyId } = require('../models/common');
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/httpStatusCodes')
-const xlsx = require('node-xlsx');
 const ExcelJS = require('exceljs');
+const WebSocketManager = require('../utils/webSocketManager')
 
 exports.getAnswers = async (req, res) => {
     const surveyId = req.params.id
@@ -185,12 +186,34 @@ exports.submitAnswers = async (req, res) => {
 exports.addFeedback = async (req, res) => {
     const { survey_id, username, email, comment } = req.body
     try {
+        // 向反馈表插入数据
         await addFeedbackMOdel({ survey_id, username, email, comment })
+        // 通过问卷id获取用户id
+        const userInfo = await getUserIdBySurveyId(survey_id)
+        // 构建有反馈后向前端发送的信息
+        const message = `关于你创建的${userInfo[0].title}问卷，用户在填写完之后提供了一些反馈和建议信息，快去看看吧。`
+        if (userInfo[0].userId) {
+            await addFeedbackNotificationModal(
+                {
+                    survey_id,
+                    user_id: Number(userInfo[0].userId),
+                    is_read: false,
+                    message
+                })
+            // 通过WebSocket向用户发送消息
+            WebSocketManager.sendMessageToUser(userInfo[0].userId, {
+                action: 'new_feedback',
+                survey_id,
+                message,
+                is_read: false
+            })
+        }
         res.status(200).send({
             code: 200,
             msg: '提交反馈成功',
         })
     } catch (error) {
+        console.log('error', error)
         res.status(INTERNAL_SERVER_ERROR).send({
             code: INTERNAL_SERVER_ERROR,
             msg: '服务端内部错误'

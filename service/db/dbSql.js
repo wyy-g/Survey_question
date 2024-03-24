@@ -109,6 +109,19 @@ const surveyFeedbackSql = `CREATE TABLE IF NOT EXISTS Survey_Feedback (
   FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE ON UPDATE CASCADE
 );`
 
+// 反馈通知表
+const feedbackNotificationsSql = `CREATE TABLE feedbackNotifications (
+  notification_id INT AUTO_INCREMENT PRIMARY KEY,
+  survey_id INT NOT NULL,
+  user_id INT NOT NULL,
+  message TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  is_read BOOLEAN DEFAULT FALSE,
+  FOREIGN KEY (survey_id) REFERENCES surveys(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);`
+
 const dbTable = [
   userTableSql,
   surveysTableSql,
@@ -119,7 +132,8 @@ const dbTable = [
   answersSql,
   submissionSql,
   codeSql,
-  surveyFeedbackSql
+  surveyFeedbackSql,
+  feedbackNotificationsSql
 ]
 
 module.exports = dbTable

@@ -15,3 +15,9 @@ exports.isHaveQues = async (quesId) => {
         `select * from surveys where id=?;`, [quesId]
     )
 }
+
+exports.getUserIdBySurveyId = async (survey_id) => {
+    return await executeQuery(
+        `select * from surveys where id=?;`, [survey_id]
+    )
+}
