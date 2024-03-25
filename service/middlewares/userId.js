@@ -12,6 +12,11 @@ const isHaveUserId = async (req, res, next) => {
         next()
         return
     }
+    // 提交反馈可能不需要登录
+    if (req.params['0'].split('/')[0] === 'feedback' && req.method === 'POST') {
+        next()
+        return
+    }
     // console.log('req.path', req.path, req.query, req.method)
     let userId = req.header('x-user-id');
     const userData = await isHaveUser(Number(userId))

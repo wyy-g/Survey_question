@@ -19,11 +19,18 @@ exports.verifyToken = function (req, res, next) {
         next()
         return
     }
+    // 提交答案不需要登录
+
     if (req.params['0'] === 'answers' && req.method === 'POST') {
         next()
         return
     }
-    // console.log('req.path', req.path, req.query, req.method)
+    // 提交反馈可能不需要登录
+    if (req.params['0'].split('/')[0] === 'feedback' && req.method === 'POST') {
+        next()
+        return
+    }
+
     jwt.verify(token, secretKey, function (err, decoded) {
         if (err) {
             console.log("verify token error", err)
