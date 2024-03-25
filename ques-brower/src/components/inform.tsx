@@ -2,7 +2,8 @@ import React, { FC, useRef, useEffect, useState } from 'react'
 import { useRequest } from 'ahooks'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '../utools/IconFont'
-import { Button, Badge, Popover, Tabs, notification, Empty } from 'antd'
+import { Button, Badge, Popover, Tabs, notification, Empty, Dropdown } from 'antd'
+import type { MenuProps } from 'antd'
 import { getUserIdStorage, getToekn } from '../utools/user-storage'
 import {
 	getFeedNotifications,
@@ -62,7 +63,10 @@ const Inform: FC = () => {
 		run(userId)
 		if (!socketRef.current) {
 			// 创建WebSocket连接
-			const socketUrl = `ws://localhost:3031/feedback-notifications`
+			const socketUrl =
+				process.env.NODE_ENV === 'production'
+					? `${process.env.REACT_APP_WS_URL}/feedback-notifications`
+					: `ws://localhost:3031/feedback-notifications`
 			const query = token && userId ? `?token=${encodeURIComponent(token)}&userId=${userId}` : ''
 
 			socketRef.current = new WebSocket(socketUrl + query)
@@ -104,6 +108,25 @@ const Inform: FC = () => {
 	}, [informtions])
 
 	const innerElem = () => {
+		const onClick: MenuProps['onClick'] = ({ key }) => {
+			if (key === 'allRead') {
+				console.log('allRead')
+			} else if (key === 'alldelete') {
+				console.log('alldelete')
+			}
+		}
+
+		const items: MenuProps['items'] = [
+			{
+				label: <span>全部已读</span>,
+				key: 'allRead',
+			},
+			{
+				label: <span>全部删除</span>,
+				key: 'alldelete',
+			},
+		]
+
 		const tabsColumns = [
 			{
 				key: 'unread',
@@ -121,7 +144,8 @@ const Inform: FC = () => {
 									return (
 										<>
 											{is_read ? (
-												<Empty description="暂无未读消息" />
+												// <Empty description="暂无未读消息" />
+												''
 											) : (
 												<Badge dot={!is_read} key={notification_id + String(index)}>
 													<div
@@ -199,19 +223,21 @@ const Inform: FC = () => {
 		return (
 			<div style={{ display: 'flex', width: '350px' }}>
 				<Tabs items={tabsColumns} style={{ flexGrow: 1 }} />
-				<Button
-					type="text"
-					icon={<IconFont type="icon-shezhi" />}
-					style={{
-						position: 'absolute',
-						right: '20px',
-						top: '20px',
-						bottom: 0,
-						borderLeft: '1px solid #DCDFE6',
-					}}
-				>
-					设置
-				</Button>
+				<Dropdown placement="bottom" menu={{ items, onClick }}>
+					<Button
+						type="text"
+						icon={<IconFont type="icon-shezhi" />}
+						style={{
+							position: 'absolute',
+							right: '20px',
+							top: '20px',
+							bottom: 0,
+							borderLeft: '1px solid #DCDFE6',
+						}}
+					>
+						设置
+					</Button>
+				</Dropdown>
 			</div>
 		)
 	}
