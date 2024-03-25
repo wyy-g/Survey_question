@@ -38,7 +38,9 @@ const API = {
     CREATEDQUESBYAI: '/api/createAiQues',
     SENDEMAILCODE: '/api/sendEmailCode',
     VERIFSUBMITYCODE: '/api/verifyCode',
-    FEEDBACKNOTIFICARION: '/api/feedbackNotification/:id'
+    FEEDBACKNOTIFICARION: '/api/feedbackNotification/:id',
+    FEEDBACKNOTIFICARIONALL: '/api/feedbackNotificationAll/:id'
+
 }
 
 module.exports = API

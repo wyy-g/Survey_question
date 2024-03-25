@@ -27,3 +27,19 @@ exports.updateFeedbackNotificationModal = async (notification_id) => {
         [notification_id]
     )
 }
+
+// 全部删除某一个问卷反馈建议
+exports.delAllFeedbackNotificationBySurveyIdModal = async (surver_id) => {
+    return executeQuery(
+        `delete from feedbacknotifications where user_id = ?`,
+        [surver_id]
+    )
+}
+
+// 全部已读某一个问卷反馈建议
+exports.updateAllFeedbackNotificationBySurveyIdModal = async (surver_id) => {
+    return executeQuery(
+        `update feedbacknotifications set is_read = 1 where user_id = ?`,
+        [surver_id]
+    )
+}
