@@ -39,6 +39,7 @@ const API = {
 	SENDEMAILCODE: '/api/sendEmailCode',
 	VERIFSUBMITYCODE: '/api/verifyCode',
 	FEEDBACKNOTIFICARION: '/api/feedbackNotification/',
+	FEEDBACKNOTIFICARIONALL: '/api/feedbackNotificationAll/',
 }
 
 export default API

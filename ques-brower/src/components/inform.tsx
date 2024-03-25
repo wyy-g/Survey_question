@@ -9,6 +9,8 @@ import {
 	getFeedNotifications,
 	delFeedNoticifation,
 	updateFeedbackNoticifation,
+	delAllFeedNoticifation,
+	updateAllFeedbackNoticifation,
 } from '../services/notification'
 import styles from './inform.module.scss'
 /* eslint-disable */
@@ -108,11 +110,14 @@ const Inform: FC = () => {
 	}, [informtions])
 
 	const innerElem = () => {
-		const onClick: MenuProps['onClick'] = ({ key }) => {
-			if (key === 'allRead') {
-				console.log('allRead')
-			} else if (key === 'alldelete') {
-				console.log('alldelete')
+		const onClick: MenuProps['onClick'] = async ({ key }) => {
+			if (informtions) {
+				if (key === 'allRead') {
+					await updateAllFeedbackNoticifation(userId)
+				} else if (key === 'alldelete') {
+					await delAllFeedNoticifation(userId)
+				}
+				run(userId)
 			}
 		}
 
