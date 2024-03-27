@@ -43,36 +43,42 @@ const List: FC = () => {
 	}, [keyword])
 
 	// 加载函数
-	const {
-		run: load,
-		loading,
-		refresh,
-	} = useRequest(
-		async () => {
+	const { run: load, loading } = useRequest(
+		async (pageParams?: number, reload?: boolean) => {
 			const data = keyword
 				? await getSearchQuesListService({
 						userId,
 						keyword,
 						isDeleted: false,
 						isStar: false,
-						page,
+						page: pageParams ? pageParams : page,
 						pageSize: 5,
 						isPublished: status,
 					})
-				: await getAllQuestionListService(Number(userId), page, 5, status)
-			return data
+				: await getAllQuestionListService(Number(userId), pageParams ? pageParams : page, 5, status)
+			return { res: data, reload }
 		},
 		{
 			manual: true,
-			onSuccess(res) {
+			onSuccess(result) {
+				const { res, reload } = result
 				if (keyword) {
 					const { quesData = [], total = 0 } = res
-					setQuestionList(questionList.concat(quesData))
+					if (reload) {
+						setQuestionList(quesData)
+					} else {
+						setQuestionList(questionList.concat(quesData))
+					}
 					setTotal(total)
 					setPage(page + 1)
 				} else {
 					const { userAllQues = [], total = 0 } = res
-					setQuestionList(questionList.concat(userAllQues))
+					if (reload) {
+						setQuestionList(userAllQues)
+					} else {
+						setQuestionList(questionList.concat(userAllQues))
+					}
+
 					setTotal(total)
 					setPage(page + 1)
 				}
@@ -184,7 +190,7 @@ const List: FC = () => {
 
 	// 处理假删除问卷，但是没有删除后立即触发页面更新
 	function handleDelQuestion() {
-		// refresh()
+		load(1, true)
 	}
 
 	const loadMoreContentElem = () => {
