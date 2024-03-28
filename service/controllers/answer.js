@@ -17,8 +17,9 @@ const WebSocketManager = require('../utils/webSocketManager')
 
 exports.getAnswers = async (req, res) => {
     const surveyId = req.params.id
+    const { start_time, end_time } = req.query
     try {
-        const submissions = await getSubmissionModel(parseInt(surveyId))
+        const submissions = await getSubmissionModel(parseInt(surveyId), start_time, end_time)
         // 创建一个Promise数组，用于并发获取每个提交的答案
         const answerPromises = submissions.map(async submission => {
             return await getAnswersBySubmissionId(submission.submission_id);

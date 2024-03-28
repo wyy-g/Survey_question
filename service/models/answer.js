@@ -1,10 +1,17 @@
 const { executeQuery } = require('../db/index')
 
-exports.getSubmissionModel = (surverId) => {
-    return executeQuery(
-        `SELECT * FROM submissions WHERE survey_id = ?`,
-        [surverId]
-    )
+exports.getSubmissionModel = (surverId, start_time, end_time) => {
+    if (start_time && end_time) {
+        return executeQuery(
+            `SELECT * FROM submissions WHERE survey_id = ? AND submit_time BETWEEN ? AND ?`,
+            [surverId, start_time, end_time]
+        )
+    } else {
+        return executeQuery(
+            `SELECT * FROM submissions WHERE survey_id = ?`,
+            [surverId]
+        )
+    }
 }
 
 exports.getAnswersBySubmissionId = async (submissionId) => {
