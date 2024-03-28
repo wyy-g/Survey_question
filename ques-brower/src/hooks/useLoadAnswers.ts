@@ -7,7 +7,14 @@ import { getAnswers } from '../services/answer'
 export default function useLoadAnswers() {
 	const { id = '' } = useParams()
 
-	const { run, loading, data } = useRequest(async () => await getAnswers(id), { manual: true })
+	const { run, loading, data } = useRequest(
+		async (startTime?: string, endTime?: string) => {
+			console.log(startTime)
+			return await getAnswers(id, startTime, endTime)
+		},
+
+		{ manual: true },
+	)
 	useEffect(() => {
 		run()
 	}, [])

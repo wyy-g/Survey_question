@@ -10,6 +10,7 @@ import BarChart from './barChart'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import styles from './index.module.scss'
 import Feedback from './FeedBack'
+import Params from './params'
 
 const Statistics: FC = () => {
 	useLoadQuestionData()
@@ -59,6 +60,10 @@ const Statistics: FC = () => {
 		}
 	}
 
+	function handleTimeParamChange(dateRange: any) {
+		reloadAnswers(dateRange[0], dateRange[1])
+	}
+
 	return (
 		<div className={styles['stat-detail-wrapper']}>
 			<div className={styles['catalog']}>
@@ -89,7 +94,7 @@ const Statistics: FC = () => {
 			</div>
 			<div className={styles['stat-detail']}>
 				<div className={styles['stat-params']}>
-					<div>params</div>
+					<Params onTimeParamChange={handleTimeParamChange} />
 					<Space>
 						<Feedback />
 						<Button

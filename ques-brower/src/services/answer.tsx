@@ -1,8 +1,17 @@
 import http, { ResDataType } from './http'
 import API from './api'
 
-async function getAnswers(surveyId: string): Promise<ResDataType> {
-	const data = await http.get(API.ANSWER.getSingleAnswers + surveyId)
+async function getAnswers(
+	surveyId: string,
+	start_time?: string,
+	end_time?: string,
+): Promise<ResDataType> {
+	const data = await http.get(API.ANSWER.getSingleAnswers + surveyId, {
+		params: {
+			start_time,
+			end_time,
+		},
+	})
 	return data
 }
 

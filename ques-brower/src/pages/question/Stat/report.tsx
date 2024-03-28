@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom'
 import { getToekn } from '../../../utools/user-storage'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
+import Params from './params'
 
 const Report: FC = () => {
 	const { loading } = useLoadQuestionData()
@@ -253,6 +254,14 @@ const Report: FC = () => {
 		}
 	}, [answersList])
 
+	function handleTimeParamChange(dateRange?: any) {
+		if (dateRange) {
+			reloadAnswers(dateRange[0], dateRange[1])
+		} else {
+			reloadAnswers()
+		}
+	}
+
 	const moreColumnElem = () => {
 		// 是否全选
 		const checkAll = columns.length === checkedList.length
@@ -285,6 +294,7 @@ const Report: FC = () => {
 		<div className={styles['report']}>
 			<div className={styles['report-query']}>
 				<Space>
+					<Params onTimeParamChange={handleTimeParamChange} />
 					<Popover content={moreColumnElem} placement="bottom" arrow={false}>
 						<Button icon={<IconFont type="icon-liebiao" />} style={{ backgroundColor: '' }}>
 							更多列
