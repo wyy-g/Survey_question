@@ -118,7 +118,6 @@ const Report: FC = () => {
 	]
 	// 生成详情中的行
 	function genDetailRow(answerDetail: any) {
-		console.log('item', answerDetail)
 		const rowArr = []
 		for (const item in answerDetail) {
 			if (

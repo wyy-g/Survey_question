@@ -53,6 +53,24 @@ async function delFeedback(survey_id: number): Promise<ResDataType> {
 	return data
 }
 
+// 答案为上传文件
+async function uploadAnswersFileApi(
+	surveyId: string,
+	formData: FormData,
+	type?: string,
+): Promise<ResDataType> {
+	const data = await http.post(API.ANSWER.uploadFile, formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+		params: {
+			surveyId,
+			type,
+		},
+	})
+	return data
+}
+
 export {
 	getAnswers,
 	deleteAnswers,
@@ -61,4 +79,5 @@ export {
 	submitFeedback,
 	getFeedback,
 	delFeedback,
+	uploadAnswersFileApi,
 }

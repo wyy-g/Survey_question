@@ -9,7 +9,6 @@ export default function useLoadAnswers() {
 
 	const { run, loading, data } = useRequest(
 		async (startTime?: string, endTime?: string) => {
-			console.log(startTime)
 			return await getAnswers(id, startTime, endTime)
 		},
 

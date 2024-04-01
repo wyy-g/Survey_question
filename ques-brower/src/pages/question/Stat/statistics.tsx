@@ -195,6 +195,38 @@ const Statistics: FC = () => {
 							})
 						}
 
+						if (type === 'questionFile') {
+							return filterData.map((answer: any) => {
+								return {
+									key: answer.answer_id,
+									answer: (
+										<>
+											{JSON.parse(answer.answer_value).map((item: any, index: number) => {
+												const fileSuffix = item.split('.')[1]
+												return (
+													<div
+														key={item + index}
+														style={{
+															display: 'inline-block',
+															background: '#f5f5f5', // 设置背景色
+															padding: '3px',
+															borderRadius: '4px', // 可选，添加边框圆角
+														}}
+													>
+														{['png', 'jpg', 'jpeg', 'gif'].includes(fileSuffix) ? (
+															<img src={item} style={{ maxWidth: '100%', maxHeight: '30px' }} />
+														) : (
+															<p>{item}</p>
+														)}
+													</div>
+												)
+											})}
+										</>
+									),
+								}
+							})
+						}
+
 						return filterData.map((answer: any) => {
 							return {
 								key: answer.answer_id,

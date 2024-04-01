@@ -46,7 +46,11 @@ const PageSetting: FC = () => {
 			<Form.Item label="显示题目序号" name="isShowOrderIndex">
 				<Switch />
 			</Form.Item>
-			<Form.Item label="是否开启反馈" name="isEnableFeedback">
+			<Form.Item
+				label="开启反馈"
+				name="isEnableFeedback"
+				tooltip="开启反馈后用户提交完可以填写对此文件的建议，你可以实时接受到此建议"
+			>
 				<Switch />
 			</Form.Item>
 		</Form>

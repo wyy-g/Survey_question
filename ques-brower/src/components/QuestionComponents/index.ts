@@ -10,6 +10,7 @@ import QuestionSignatureConf, { QuestionSingaturePropsType } from './QuestionSig
 import QuestionMarkConf, { QuestionMarkPropsType } from './QuestionMark'
 import QuestionDateConf, { QuestionDatePropsType } from './QuestionDate'
 import QuestionDateScopeConf, { QuestionDateScopePropsType } from './QuestionDateScope'
+import QuestionFileConf, { QuestionFilePropsType } from './QuestionFile'
 
 // 各个组件的props
 export type ComponentPropsType = QuestionInputPropsType &
@@ -22,7 +23,8 @@ export type ComponentPropsType = QuestionInputPropsType &
 	QuestionSingaturePropsType &
 	QuestionMarkPropsType &
 	QuestionDatePropsType &
-	QuestionDateScopePropsType
+	QuestionDateScopePropsType &
+	QuestionFilePropsType
 
 //组件的配置
 export type ComponentConfType = {
@@ -46,6 +48,7 @@ const componentConfList: ComponentConfType[] = [
 	QuestionMarkConf,
 	QuestionDateConf,
 	QuestionDateScopeConf,
+	QuestionFileConf,
 ]
 
 export function getComponentConfByType(type: string) {
