@@ -153,7 +153,7 @@ exports.uploadImg = async (req, res) => {
 		}
 
 		// 图片已经存储在./uploads/<type>/<filename>
-		const baseUrl = process.env.NODE_ENV === 'production' ? 'http://localhost:3031/uploads/' : 'http://localhost:3031/uploads/'
+		const baseUrl = process.env.NODE_ENV === 'production' ? 'https://sobering.cn//uploads/' : 'http://localhost:3031/uploads/'
 		const headImg = `${baseUrl}${req.query.type}/${req.file.filename}`;
 		// 这里可以继续处理图片，例如保存到数据库，返回响应等
 		// ...

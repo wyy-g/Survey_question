@@ -78,3 +78,24 @@ exports.delFeedbackModel = async (feedback_id) => {
         ]
     )
 }
+
+// 答案是图片把需要上传到数据库
+exports.uploadFileModel = async ({ storage_address, filetype, survey_id }) => {
+    return executeQuery(
+        `insert into uploadedfiles (storage_address, filetype, survey_id) values (?,?,?)`,
+        [storage_address, filetype, survey_id]
+    )
+}
+
+exports.updateFileStatusModel = async (url) => {
+    return executeQuery(
+        `update uploadedfiles set submit_status = true where storage_address = ?`,
+        [url]
+    )
+}
+
+exports.delFilesModel = async () => {
+    return executeQuery(
+        `delete from uploadedfiles where submit_status = false`
+    )
+}

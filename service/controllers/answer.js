@@ -6,7 +6,9 @@ const { getSubmissionModel,
     addAnswersModel,
     addFeedbackMOdel,
     getFeedbackModel,
-    delFeedbackModel
+    delFeedbackModel,
+    uploadFileModel,
+    updateFileStatusModel
 } = require('../models/answer')
 const { getSingleCom } = require('../models/questionCom');
 const { addFeedbackNotificationModal } = require('../models/notification')
@@ -166,9 +168,19 @@ exports.submitAnswers = async (req, res) => {
     const answersPromises = writeAnswer.map(async (answerData) => {
         return await addAnswersModel({ ...answerData, submission_id });
     });
+    const fileUrls = writeAnswer.map(item => {
+        if (item.question_type === 'questionFile') {
+            return JSON.parse(item.answer_value)
+        }
+    })
+    const updateFileStatus = fileUrls[0].map(async (url) => {
+        return await updateFileStatusModel(url)
+    })
     try {
         // 等待所有答案插入完成
         await Promise.all(answersPromises);
+
+        await Promise.all(updateFileStatus)
 
         res.status(200).send({
             code: 200,
@@ -254,5 +266,36 @@ exports.delFeedback = async (req, res) => {
             code: INTERNAL_SERVER_ERROR,
             msg: '服务端内部错误'
         })
+    }
+}
+
+// 上传答案的文件（图片、视频、音频、文档）
+exports.uploadAnswerUpload = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: '未接收到文件' });
+        }
+
+        const baseUrl = process.env.NODE_ENV === 'production' ? 'https://sobering.cn/uploads/' : 'http://localhost:3031/uploads/'
+        const storageAddress = `${baseUrl}${req.query.type}/${req.file.filename}`;
+
+        if (storageAddress) {
+            await uploadFileModel({
+                storage_address: storageAddress,
+                filetype: req.query.type,
+                survey_id: req.query.surveyId
+            })
+        }
+
+        res.status(200).send({
+            code: 200,
+            msg: '文件上传成功',
+            data: {
+                url: storageAddress
+            }
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ success: false, message: '文件上传失败' });
     }
 }

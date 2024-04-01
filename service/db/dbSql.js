@@ -122,6 +122,16 @@ const feedbackNotificationsSql = `CREATE TABLE feedbackNotifications (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );`
 
+const uploadAnswerFiles = `CREATE TABLE uploadedFiles (
+  file_id INT AUTO_INCREMENT PRIMARY KEY, -- 文件ID，自增主键
+  storage_address VARCHAR(255) NOT NULL, -- 存储地址，如 'localhost:3031/uploads/headImg/***'
+  filetype  VARCHAR(255), -- 文件类型
+  upload_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 上传时间戳，自动设置为当前时间
+  submit_status BOOLEAN NOT NULL DEFAULT FALSE, -- 提交状态，初始值为未提交（FALSE）
+  survey_id INT NOT NULL, -- 关联的问卷ID
+  FOREIGN KEY (survey_id) REFERENCES surveys(id) -- 外键约束，确保问卷ID存在
+);`
+
 const dbTable = [
   userTableSql,
   surveysTableSql,
@@ -133,7 +143,8 @@ const dbTable = [
   submissionSql,
   codeSql,
   surveyFeedbackSql,
-  feedbackNotificationsSql
+  feedbackNotificationsSql,
+  uploadAnswerFiles
 ]
 
 module.exports = dbTable

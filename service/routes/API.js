@@ -31,7 +31,8 @@ const API = {
         delAnswer: '/api/answers',
         downloadExcel: '/api/download/:id',
         submitAnswer: '/api/answers',
-        feedback: '/api/feedback/:id'
+        feedback: '/api/feedback/:id',
+        uploadFile: '/api/uploadAnswerFile'
     },
     UPLOADIMG: '/api/uploadimg',
     AI: '/api/generate/gpt',
