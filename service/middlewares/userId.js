@@ -17,6 +17,12 @@ const isHaveUserId = async (req, res, next) => {
         next()
         return
     }
+
+    if (req.params['0'] === 'uploadAnswerFile' && req.method === 'POST') {
+        next()
+        return
+    }
+
     // console.log('req.path', req.path, req.query, req.method)
     let userId = req.header('x-user-id');
     const userData = await isHaveUser(Number(userId))

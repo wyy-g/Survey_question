@@ -31,6 +31,12 @@ exports.verifyToken = function (req, res, next) {
         return
     }
 
+    // 提交文件不需要
+    if (req.params['0'] === 'uploadAnswerFile' && req.method === 'POST') {
+        next()
+        return
+    }
+
     jwt.verify(token, secretKey, function (err, decoded) {
         if (err) {
             console.log("verify token error", err)
