@@ -171,16 +171,21 @@ exports.submitAnswers = async (req, res) => {
     const fileUrls = writeAnswer.map(item => {
         if (item.question_type === 'questionFile') {
             return JSON.parse(item.answer_value)
+        } else {
+            return []
         }
     })
-    const updateFileStatus = fileUrls[0].map(async (url) => {
+    const updateFileStatus = fileUrls && fileUrls[0].map(async (url) => {
         return await updateFileStatusModel(url)
     })
     try {
         // 等待所有答案插入完成
         await Promise.all(answersPromises);
 
-        await Promise.all(updateFileStatus)
+        if (updateFileStatus) {
+            await Promise.all(updateFileStatus)
+        }
+
 
         res.status(200).send({
             code: 200,
