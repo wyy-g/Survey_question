@@ -34,6 +34,7 @@ const {
 } = require('../models/questionCom')
 const { isHaveUser, isHaveQues } = require('../models/common')
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/httpStatusCodes')
+const translateText = require('../utils/translateText')
 
 exports.createQues = async (req, res) => {
 	const {
@@ -487,9 +488,9 @@ exports.updateQues = async (req, res) => {
 		}, {});
 	}
 
-	const { title, isStar, isPublished, isDeleted, isShowOrderIndex, description, updatedAt, startTime, endTime, isEnableFeedback }
+	const { title, isStar, isPublished, isDeleted, isShowOrderIndex, description, updatedAt, startTime, endTime, isEnableFeedback, isMultiLang, lang, defaultLang }
 		= safeDestructure(req.body,
-			['title', 'isStar', 'isPublished', 'isDeleted', 'isShowOrderIndex', 'description', 'updatedAt', 'startTime', 'endTime', 'isEnableFeedback']
+			['title', 'isStar', 'isPublished', 'isDeleted', 'isShowOrderIndex', 'description', 'updatedAt', 'startTime', 'endTime', 'isEnableFeedback', 'isMultiLang', 'lang', 'defaultLang']
 		);
 	const { componentList } = req.body
 
@@ -619,7 +620,7 @@ exports.updateQues = async (req, res) => {
 
 
 
-	await updateQuestionModel(quesId, title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime, isEnableFeedback)
+	await updateQuestionModel(quesId, title, isStar, isPublished, isDeleted, description, isShowOrderIndex, updatedAt, startTime, endTime, isEnableFeedback, isMultiLang, lang, defaultLang)
 	return res.status(OK).send({
 		code: OK,
 		msg: '更新问卷成功',
@@ -704,4 +705,21 @@ exports.getQuesInfo = async (req, res) => {
 		msg: quesId,
 		data: result
 	})
+}
+
+// 翻译
+exports.getTranslateText = async (req, res) => {
+	const params = req.body
+	try {
+		const translateRes = await translateText.TextTranslateBatch(params)
+		console.log('translateRes', translateRes)
+		res.status(OK).send({
+			code: OK,
+			msg: '',
+			data: translateRes
+		})
+	} catch (error) {
+		console.error("error", err)
+	}
+
 }

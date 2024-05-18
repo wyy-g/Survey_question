@@ -18,7 +18,8 @@ const API = {
         sortQues: '/api/question/sortQues',
         getOneQues: `/api/question/:id`,
         updateQues: `/api/question/:id`,
-        copyQues: `/api/question/duplicate/:id`
+        copyQues: `/api/question/duplicate/:id`,
+        translateQues: `/api/question/translate`
     },
     QUES_COM: {
         getAllQuesCom: '/api/questionComponents'

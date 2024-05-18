@@ -53,4 +53,7 @@ router.post(API.AI, aiQuesController.generateSurvey)
 // 创建AI生成的问卷
 router.post(API.CREATEDQUESBYAI, aiQuesController.createdAiGenQues)
 
+// 翻译问卷
+router.post(API.SURVEYS.translateQues, quesController.getTranslateText)
+
 module.exports = router
