@@ -69,10 +69,24 @@ async function verifyCodeService(email: string, code: number): Promise<ResDataTy
 	return data
 }
 
+// 更新用户信息
 async function updateUserInfoService(email: string, nickname: string): Promise<ResDataType> {
 	const data = await http.post(API.USER.updateUserInfo, {
 		email,
 		nickname,
+	})
+	return data
+}
+
+async function updateUserPwdService(
+	email: string,
+	password: string,
+	confirmPwd: string,
+): Promise<ResDataType> {
+	const data = await http.post(API.USER.updateUserPassword, {
+		email,
+		password,
+		confirmPwd,
 	})
 	return data
 }
@@ -85,4 +99,5 @@ export {
 	sendEmailCode,
 	verifyCodeService,
 	updateUserInfoService,
+	updateUserPwdService,
 }

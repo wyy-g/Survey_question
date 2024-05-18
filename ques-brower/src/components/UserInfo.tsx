@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { Dropdown, Space, message } from 'antd'
+import { Dropdown, Space, message, notification } from 'antd'
 import type { MenuProps } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +16,7 @@ import { getUserIdStorage } from '../utools/user-storage'
 const UserInfo: FC = () => {
 	const nav = useNavigate()
 	const dispatch = useDispatch()
-	const { nickname, username, headImg } = useGetUserInfo()
+	const { nickname, username, headImg, email } = useGetUserInfo()
 	const userId = getUserIdStorage()
 	const onClick: MenuProps['onClick'] = ({ key }) => {
 		if (key === 'logout') {
@@ -27,6 +27,16 @@ const UserInfo: FC = () => {
 			nav(LOGIN_PATHNAME)
 		}
 	}
+
+	// if (!email) {
+	// 	notification.info({
+	// 		message: '系统提示',
+	// 		description: '未绑定邮箱，去绑定邮箱',
+	// 		// onClick: () => {
+	// 		// 	nav(`/question/stat/${messageData.survey_id}`)
+	// 		// },
+	// 	})
+	// }
 	const items: MenuProps['items'] = [
 		{
 			label: <Link to="/profile">个人信息</Link>,

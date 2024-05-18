@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { CheckCircleOutlined, RightCircleFilled } from '@ant-design/icons'
 import { Button, Space } from 'antd'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -11,6 +11,7 @@ const Login: FC = () => {
 	const nav = useNavigate()
 	const { pathname } = useLocation()
 	useRouteGuard()
+
 	return (
 		<>
 			<div className={commons['container']}>
@@ -44,32 +45,61 @@ const Login: FC = () => {
 						</div>
 					</div>
 				</div>
-				<div className={commons['right']}>
-					<div className={commons['title']}>
-						<h2>{pathname === '/user/login' ? '登录' : '注册'}你的问卷账户</h2>
-						<span className={commons['is-have-account']}>
-							{pathname === '/user/login' ? '没有账户?' : '已有账户?'}
-							{pathname === '/user/login' ? (
-								<Button
-									type="link"
-									onClick={() => nav('/user/register')}
-									style={{ padding: '0 4px', fontWeight: 500 }}
-								>
-									免费注册
-									<RightCircleFilled style={{ color: '#4E89FF' }} />
-								</Button>
-							) : (
+				<div
+					className={
+						pathname === '/user/findBackPassword' ? commons['findBackPassword'] : commons['right']
+					}
+				>
+					{pathname === '/user/findBackPassword' ? (
+						<>
+							<h2>找回密码</h2>
+							<div style={{ marginBottom: '90px' }}>
 								<Button
 									type="link"
 									onClick={() => nav('/user/login')}
 									style={{ padding: '0 4px', fontWeight: 500 }}
 								>
-									前去登录
+									去登录
 									<RightCircleFilled style={{ color: '#4E89FF' }} />
 								</Button>
-							)}
-						</span>
-					</div>
+								<Button
+									type="link"
+									onClick={() => nav('/user/register')}
+									style={{ padding: '0 4px', fontWeight: 500 }}
+								>
+									去注册
+									<RightCircleFilled style={{ color: '#4E89FF' }} />
+								</Button>
+							</div>
+						</>
+					) : (
+						<div className={commons['title']}>
+							<h2>{pathname === '/user/login' ? '登录' : '注册'}你的问卷账户</h2>
+							<span className={commons['is-have-account']}>
+								{pathname === '/user/login' ? '没有账户?' : '已有账户?'}
+								{pathname === '/user/login' ? (
+									<Button
+										type="link"
+										onClick={() => nav('/user/register')}
+										style={{ padding: '0 4px', fontWeight: 500 }}
+									>
+										免费注册
+										<RightCircleFilled style={{ color: '#4E89FF' }} />
+									</Button>
+								) : (
+									<Button
+										type="link"
+										onClick={() => nav('/user/login')}
+										style={{ padding: '0 4px', fontWeight: 500 }}
+									>
+										前去登录
+										<RightCircleFilled style={{ color: '#4E89FF' }} />
+									</Button>
+								)}
+							</span>
+						</div>
+					)}
+
 					<Outlet></Outlet>
 				</div>
 			</div>

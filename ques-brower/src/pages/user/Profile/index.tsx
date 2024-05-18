@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Divider, Button, Tabs, Form, Input, Space, Modal, Upload, message, Row, Col } from 'antd'
+import { Divider, Button, Tabs, Form, Input, Space, Modal, Upload, message, Tooltip } from 'antd'
 import type { UploadProps, UploadFile } from 'antd'
 import { InboxOutlined } from '@ant-design/icons'
 /* eslint-disable */
@@ -13,8 +13,10 @@ import headDefaultImg from '../../../assets/head.png'
 import { uploadimgService } from '../../../services/user'
 import useLoadUserData from '../../../hooks/useLoadUserData'
 import AvatarEditor from './avatarEditorElem'
+import UpdatePassword from './updatePassword'
 import { sendEmailCode, verifyCodeService, updateUserInfoService } from '../../../services/user'
 import { useRequest } from 'ahooks'
+import validateEmail from '../../../utools/validateEmail'
 
 const { Dragger } = Upload
 
@@ -102,13 +104,6 @@ const Profile: FC = () => {
 
 	const Basic: FC = () => {
 		const [basicForm] = Form.useForm()
-		// 邮箱的验证规则
-		function validateEmail(_: any, value: any) {
-			const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-			return !value || emailPattern.test(value)
-				? Promise.resolve()
-				: Promise.reject(new Error('请输入有效的邮箱地址'))
-		}
 
 		// 点击发送邮件执行60s定时器60s后才能用
 		let timer: any
@@ -235,11 +230,8 @@ const Profile: FC = () => {
 
 				<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
 					<Space>
-						<Button type="primary" htmlType="submit">
+						<Button type="primary" htmlType="submit" style={{ padding: '0 50px' }}>
 							保存
-						</Button>
-						<Button type="primary" danger htmlType="submit">
-							取消
 						</Button>
 					</Space>
 				</Form.Item>
@@ -252,15 +244,16 @@ const Profile: FC = () => {
 			label: '基本资料',
 			children: <Basic />,
 		},
-		{
-			key: 'bind',
-			label: '绑定登录',
-			children: 'Content of Tab Pane 2',
-		},
+		// {
+		// 	key: 'bind',
+		// 	label: '绑定登录',
+		// 	children: 'Content of Tab Pane 2',
+		// },
 		{
 			key: 'update',
-			label: '修改密码',
-			children: 'Content of Tab Pane 3',
+			label: !email ? <Tooltip title="未绑定邮箱，无法修改密码">修改密码</Tooltip> : '修改密码',
+			disabled: !email,
+			children: <UpdatePassword />,
 		},
 	]
 	return (

@@ -86,7 +86,11 @@ const Login: FC = () => {
 							<Checkbox>记住账号</Checkbox>
 							<div className={styles['forget-pwd']}>
 								·
-								<Button type="link" style={{ padding: '0 4px', fontWeight: 500 }}>
+								<Button
+									type="link"
+									style={{ padding: '0 4px', fontWeight: 500 }}
+									onClick={() => nav('/user/findBackPassword')}
+								>
 									忘记密码？
 								</Button>
 							</div>

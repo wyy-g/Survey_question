@@ -5,6 +5,7 @@ import MainLayout from '../layouts/MainLayout'
 import Home from '../pages/Home'
 import Login from '../pages/user/Login'
 import Register from '../pages/user/Register'
+import FindBackPassword from '../pages/user/FindBackPassword'
 import Profile from '../pages/user/Profile'
 import ManageLayout from '../layouts/ManageLayout'
 import List from '../pages/manage/List'
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
 				path: '/user/register',
 				element: <Register />,
 			},
+			{
+				path: '/user/findBackPassword',
+				element: <FindBackPassword />,
+			},
 		],
 	},
 
@@ -108,3 +113,4 @@ export const HOME_PATHNAME = '/'
 export const LOGIN_PATHNAME = '/user/login'
 export const REGISTER_PATHNAME = '/user/register'
 export const MANAGE_INDEX_PATHNAME = '/manage/list'
+export const FIND_BACK_PASS_PATHNAME = '/user/findBackPassword'
