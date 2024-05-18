@@ -54,3 +54,10 @@ exports.updateUserInfo = async (userInfo) => {
     const res = await executeQuery(sql, values);
     return res;
 }
+
+exports.updateUserPassword = async (password, email) => {
+    const res = await executeQuery(
+        `UPDATE users SET password=? where email=?;`, [password, email]
+    )
+    return res
+}

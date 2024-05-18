@@ -37,6 +37,25 @@ exports.verifyToken = function (req, res, next) {
         return
     }
 
+
+    // 发送验证码不需要
+    if (req.params['0'].split('/')[0] === 'sendEmailCode' && req.method === 'POST') {
+        next()
+        return
+    }
+
+    // 验证码是否正确不需要
+    if (req.params['0'] === 'verifyCode' && req.method === 'POST') {
+        next()
+        return
+    }
+
+    // 修改密码不需要
+    if (req.params['0'].split('/')[0] === 'updatePassword' && req.method === 'POST') {
+        next()
+        return
+    }
+
     jwt.verify(token, secretKey, function (err, decoded) {
         if (err) {
             console.log("verify token error", err)

@@ -15,6 +15,8 @@ router.post(API.USER.login, userController.userLogin)
 router.post(API.USER.register, userController.userRegister)
 // 获取单个问卷的信息，不需要登录，因为答卷的时候不需要登录
 // router.get(API.SURVEYS.getOneQues, quesController.getQuesInfo)
+// 修改密码
+router.post(API.USER.updateUserPassword, userController.updateUserPasswordService)
 
 // token验证
 router.use('/api/*', verifyToken)
@@ -30,6 +32,7 @@ router.post(API.SENDEMAILCODE, emailCodeController.sendMailCode)
 
 // 验证验证码是否正确
 router.post(API.VERIFSUBMITYCODE, emailCodeController.verifySubmitEmailAndCode)
+
 // 更新用户的头像和绑定邮箱
 router.post(API.USER.updateUserInfo, userController.updateUserInfo)
 

@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const { register, isHaveUsername, updateUserInfo } = require('../models/user')
+const { register, isHaveUsername, updateUserInfo, updateUserPassword } = require('../models/user')
 const { deleteVerifyCode } = require('../models/verifyCode')
 const { generateToken } = require('../middlewares/authorization')
 const { isHaveUser } = require('../models/common')
@@ -202,4 +202,60 @@ exports.updateUserInfo = async (req, res) => {
 		console.error(error);
 		res.status(500).send({ success: false, message: '更新信息失败' });
 	}
+}
+
+// 修改密码
+exports.updateUserPasswordService = async (req, res) => {
+	const { email, password, confirmPwd } = req.body
+
+	if (!password) return res.send({
+		code: BAD_REQUEST,
+		msg: '密码不能为空'
+	})
+
+	const pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}');
+
+	if (!pwdRegex.test(password)) {
+		return res.send({
+			code: BAD_REQUEST,
+			msg: '您的密码复杂度太低（密码中必须包含字母、数字），请重新设置'
+		})
+	}
+
+	if (!confirmPwd) return res.send({
+		code: BAD_REQUEST,
+		msg: '确认密码不能为空'
+	})
+
+
+	if (password !== confirmPwd) {
+		return res.send({
+			code: BAD_REQUEST,
+			msg: '两次密码不一致'
+		})
+	}
+
+	// 自动生成盐 和 hash
+	bcrypt.hash(password, saltRounds, async (err, hash) => {
+		if (err) {
+			return res.status(INTERNAL_SERVER_ERROR).json({
+				success: false,
+				message: 'password transion hash error'
+			})
+		}
+		try {
+			await updateUserPassword(hash, email)
+			res.send({
+				code: OK,
+				msg: ''
+			})
+		} catch (err) {
+			console.error(err)
+			res.status(INTERNAL_SERVER_ERROR).json({
+				code: INTERNAL_SERVER_ERROR,
+				success: false,
+				msg: '服务端错误'
+			})
+		}
+	})
 }

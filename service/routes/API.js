@@ -3,7 +3,8 @@ const API = {
         register: '/api/user/register',
         login: '/api/user/login',
         info: '/api/user/info',
-        updateUserInfo: '/api/user/update'
+        updateUserInfo: '/api/user/update',
+        updateUserPassword: '/api/user/updatePassword',
     },
     SURVEYS: {
         createQues: `/api/question/create`,
