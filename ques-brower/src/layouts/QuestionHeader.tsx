@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Button, Space, Input, Modal, Tooltip, message } from 'antd'
+import { Button, Space, Input, Modal, Tooltip, message, Select } from 'antd'
 import { LeftOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import styles from './QuestionHeader.module.scss'
@@ -13,11 +13,23 @@ import IconFont from '../utools/IconFont'
 import useGetPageInfo from '../hooks/useGetPageInfo'
 import useGetComponentStore from '../hooks/useGetComponentStore'
 import { changePageTitle, changePageIsPushlished } from '../store/pageInfoReducer'
-import { updateQuesService } from '../services/question'
+import { updateQuesService, translateQues } from '../services/question'
 import { ComponentInfoType } from '../store/componentReducer'
 import { getComponentConfByType } from '../components/QuestionComponents'
+import { multiLangOptions, LanguageOption } from '../utools/const'
+import { collectStringsForTranslation } from '../utools/collectStringsForTranslation'
 
 const Header: FC = () => {
+	const pageInfo = useGetPageInfo()
+	const componentInfo = useGetComponentStore()
+	const needComponentsList = componentInfo.componentList
+
+	// 将数据的value转成[value， value]格式
+	const { texts, paths } = collectStringsForTranslation({
+		...pageInfo,
+		componentList: needComponentsList,
+	})
+
 	const {
 		title,
 		isShowOrderIndex,
@@ -26,9 +38,14 @@ const Header: FC = () => {
 		startTime,
 		endTime,
 		isEnableFeedback,
-	} = useGetPageInfo()
+		isMultiLang,
+		lang,
+		defaultLang,
+	} = pageInfo
+
+	const { componentList = [] } = componentInfo
 	const dispatch = useDispatch()
-	const { componentList = [] } = useGetComponentStore()
+
 	const nav = useNavigate()
 	const { pathname } = useLocation()
 	const match = pathname.match(/\/(\w+)\/(\d+)/)!
@@ -37,6 +54,8 @@ const Header: FC = () => {
 
 	const { loading, run: save } = useRequest(
 		async () => {
+			// 将多语言的数组转为字符串传递
+			const langStr = lang ? lang.join(',') : 'zh'
 			await updateQuesService(Number(id), {
 				title,
 				isShowOrderIndex,
@@ -45,9 +64,31 @@ const Header: FC = () => {
 				isPublished,
 				updatedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
 				isEnableFeedback,
+				isMultiLang,
+				lang: langStr,
+				defaultLang: defaultLang ? defaultLang : 'zh',
 			})
 		},
 		{ manual: true },
+	)
+
+	// 翻译接口
+	const { run: translateTextService } = useRequest(
+		async (SourceTextList, targetLang) => {
+			const data = await translateQues({
+				SourceTextList,
+				Source: 'auto',
+				Target: targetLang,
+				ProjectId: 1313566,
+			})
+			return data
+		},
+		{
+			manual: true,
+			onSuccess(res) {
+				console.log('111111111111', res)
+			},
+		},
 	)
 
 	useKeyPress(['ctrl.s', 'meta.s'], (event: KeyboardEvent) => {
@@ -63,7 +104,16 @@ const Header: FC = () => {
 				save()
 			}
 		},
-		[componentList, title, description, isShowOrderIndex, isEnableFeedback],
+		[
+			componentList,
+			title,
+			description,
+			isShowOrderIndex,
+			isEnableFeedback,
+			isMultiLang,
+			lang,
+			defaultLang,
+		],
 		{
 			wait: 1000,
 		},
@@ -241,6 +291,18 @@ const Header: FC = () => {
 			}
 		}
 
+		// 可切换的语言
+		const [filterLang, setFilterLang] = useState<LanguageOption[]>([])
+		useEffect(() => {
+			const selectLang = multiLangOptions.filter(item => lang?.includes(item.value))
+
+			setFilterLang(selectLang)
+		}, [isMultiLang, multiLangOptions])
+
+		function handleLangChange(value: string) {
+			translateTextService(texts, value)
+		}
+
 		return (
 			<Modal
 				style={{
@@ -294,6 +356,18 @@ const Header: FC = () => {
 								device == 'pc' ? styles['preview-content'] : styles['preview-content-mobile']
 							}
 						>
+							{isMultiLang ? (
+								<div className={styles['lang-select']}>
+									<Select
+										defaultValue={defaultLang || 'zh'}
+										style={{ width: 120 }}
+										onChange={handleLangChange}
+										options={filterLang}
+									/>
+								</div>
+							) : (
+								<div></div>
+							)}
 							{device == 'pc' ? (
 								<div className={styles['header']}>
 									<div style={{ fontWeight: 500, fontSize: '22px' }}>{title}</div>

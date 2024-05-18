@@ -19,6 +19,7 @@ const API = {
 		getOneQues: `/api/question/`,
 		updateQues: `/api/question/`,
 		copyQues: `/api/question/duplicate/`,
+		translateQues: `/api/question/translate`,
 	},
 	QUES_COM: {
 		getAllQuesCom: '/api/questionComponents',

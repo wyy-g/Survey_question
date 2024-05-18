@@ -52,6 +52,7 @@ const Statistics: FC = () => {
 			const anchorElement = document.getElementById(anchorName)
 			if (anchorElement) {
 				anchorElement.scrollIntoView()
+				// 设置跳转到问题的id
 				setActiveAnswerId(id)
 				setTimeout(() => {
 					setActiveAnswerId(null)

@@ -31,6 +31,6 @@ export const QuestionFileDefaultProps: QuestionFilePropsType = {
 	customErrorMessage: '请填写此项',
 	uploadMaxNum: 1,
 	uploadMinNum: 1,
-	fileType: '',
-	singleFileSize: '1',
+	fileType: 'all',
+	singleFileSize: '5',
 }

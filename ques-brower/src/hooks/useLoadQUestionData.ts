@@ -35,12 +35,17 @@ function useLoadQuestionData() {
 			startTime,
 			endTime,
 			isEnableFeedback,
+			isMultiLang,
+			lang,
+			defaultLang,
 		} = data
 		//获取默认选中的selected
 		let selectId = ''
 		if (componentList.length > 0) {
 			selectId = componentList[0].id
 		}
+		// 将传过来的lang 字符串转为数组
+		const langArr = lang ? lang.split(',') : ['zh', 'en']
 		dispatch(resetComponents({ selectId, componentList }))
 		dispatch(
 			resetPageInfo({
@@ -53,6 +58,9 @@ function useLoadQuestionData() {
 				startTime,
 				endTime,
 				isEnableFeedback,
+				isMultiLang,
+				lang: langArr,
+				defaultLang: defaultLang ? defaultLang : 'zh',
 			}),
 		)
 	}, [data])

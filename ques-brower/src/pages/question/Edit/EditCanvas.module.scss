@@ -2,12 +2,19 @@
     min-height: 100%;
     background-color: #fff;
     overflow: hidden;  
+    .lang-select {
+        margin-top: 10px;
+        margin-right: 10px;
+        display: flex;
+        justify-content: flex-end;
+        pointer-events: none; 
+    }
     .canvas-header {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 107px;
+        height: 80px;
         padding: 0 24px;
     }    
 }

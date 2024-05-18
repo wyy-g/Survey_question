@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
-import { Empty, Button, Spin, message, Space } from 'antd'
+import { Empty, Button, Spin, message, Space, Select } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 /* eslint-disable */
 // @ts-ignore
@@ -12,12 +12,20 @@ import { useRequest } from 'ahooks'
 import axios from 'axios'
 import QRCode from 'qrcode.react'
 import emptyImg from '../../assets/no_publish.png'
-import { getQuesInfoService } from '../../services/question'
+import { getQuesInfoService, translateQues } from '../../services/question'
 import { submitAnswers } from '../../services/answer'
 import styles from './index.module.scss'
 import { ComponentInfoType } from '../../store/componentReducer'
 import { getComponentConfByType } from '../../components/QuestionComponents'
 import Feedback from './FeedBack'
+import { multiLangOptions, LanguageOption } from '../../utools/const'
+import {
+	collectStringsForTranslation,
+	replaceTextInDataStructure,
+} from '../../utools/collectStringsForTranslation'
+import zh from '../../locals/zh'
+import en from '../../locals/en'
+import ja from '../../locals/ja'
 
 const AnswerQues: FC = () => {
 	const nav = useNavigate()
@@ -41,6 +49,9 @@ const AnswerQues: FC = () => {
 	const [device_info, setDevice_info] = useState('')
 	const [browser_info, setBrowser_info] = useState('')
 	const [writeAnswer, setWriteAnswer] = useState<{ [key: string]: string | number }[]>([])
+	const [isMultiLang, setIsMultiLang] = useState(false)
+	const [lang, setLang] = useState<string[]>([])
+	const [defaultLang, setDefaultLang] = useState('')
 
 	const apiUrl = process.env.REACT_APP_API_URL!
 	const url =
@@ -63,6 +74,51 @@ const AnswerQues: FC = () => {
 				setDescription(data!.description)
 				setValidStartTime(moment.utc(data!.startTime).local().format('YYYY-MM-DD HH:mm:ss'))
 				setValidEndTime(moment.utc(data!.endTime).local().format('YYYY-MM-DD HH:mm:ss'))
+				setIsMultiLang(data!.isMultiLang)
+				setLang(data!.lang)
+				setDefaultLang(data!.defaultLang)
+			},
+		},
+	)
+
+	const { texts, paths } = collectStringsForTranslation({
+		title,
+		description,
+		componentList,
+	})
+
+	// 翻译接口
+	const { run: translateTextService, loading: tarnslateLoading } = useRequest(
+		async (SourceTextList, targetLang) => {
+			const data = await translateQues({
+				SourceTextList,
+				Source: 'auto',
+				Target: targetLang,
+				ProjectId: 1313566,
+			})
+			return data
+		},
+		{
+			manual: true,
+			onSuccess(res) {
+				const translatedTexts = res.TargetTextList
+				if (translatedTexts.length) {
+					const translationMap = paths.reduce(
+						(acc, path, index) => {
+							acc[path] = translatedTexts[index]
+							return acc
+						},
+						{} as Record<string, string>,
+					)
+					const translateResData = replaceTextInDataStructure(
+						{ title, description, componentList },
+						translationMap,
+					)
+					console.log('translateResData', translateResData)
+					setTitle(translateResData!.title)
+					setDescription(translateResData!.description)
+					setComponentList(translateResData!.componentList)
+				}
 			},
 		},
 	)
@@ -230,6 +286,43 @@ const AnswerQues: FC = () => {
 		return moment().isBetween(validStartTime, validEndTime)
 	}
 
+	// 可切换的语言
+	const [filterLang, setFilterLang] = useState<LanguageOption[]>([])
+	const [currentLang, setCurrentLang] = useState(defaultLang)
+	useEffect(() => {
+		const selectLang = multiLangOptions.filter(item => lang?.includes(item.value))
+
+		setFilterLang(selectLang)
+	}, [isMultiLang, multiLangOptions])
+
+	// 处理选择语言
+	function handleLangChange(value: string) {
+		translateTextService(texts, value)
+		setCurrentLang(value)
+	}
+
+	// 处理多语言
+	function moreLang(field: string) {
+		switch (currentLang) {
+			case 'zh':
+				/* eslint-disable */
+				//@ts-ignore
+				return zh.answerQuse[field]
+			case 'en':
+				/* eslint-disable */
+				//@ts-ignore
+				return en.answerQuse[field]
+			case 'ja':
+				/* eslint-disable */
+				//@ts-ignore
+				return ja.answerQuse[field]
+			default:
+				/* eslint-disable */
+				//@ts-ignore
+				return zh.answerQuse[field]
+		}
+	}
+
 	return (
 		<div className={device_info == 'PC' ? styles['answers-wrapper-pc'] : styles['answers-wrapper']}>
 			{loading ? (
@@ -260,6 +353,18 @@ const AnswerQues: FC = () => {
 					{isPublished && currenTimeIsValid() && !isSubmit ? (
 						<>
 							<div className={styles['answer-ques-wrapper']}>
+								{isMultiLang ? (
+									<div className={styles['lang-select']}>
+										<Select
+											defaultValue={defaultLang || 'zh'}
+											style={{ width: 120 }}
+											onChange={handleLangChange}
+											options={filterLang}
+										/>
+									</div>
+								) : (
+									<div></div>
+								)}
 								<div className={styles['header']}>
 									<div className={styles['title']}>{title}</div>
 									<div className={styles['desc']}>{description}</div>
@@ -276,13 +381,15 @@ const AnswerQues: FC = () => {
 								})}
 								<div className={styles['footer']}>
 									<Button type="primary" onClick={submitAnswer} loading={submitLoading}>
-										提交
+										{moreLang('submit')}
 									</Button>
 								</div>
 								{device_info === 'PC' ? (
 									<div className={styles['qr-code']}>
 										<QRCode value={url} size={120} id="canvas"></QRCode>
-										<div style={{ marginTop: '10px', fontSize: '16px' }}>扫一扫手机填写</div>
+										<div style={{ marginTop: '10px', fontSize: '16px' }}>
+											{moreLang('scanQrCode')}
+										</div>
 									</div>
 								) : (
 									''

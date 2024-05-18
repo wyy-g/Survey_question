@@ -1,19 +1,44 @@
-import React, { FC, useEffect } from 'react'
-import { Form, Input, Switch } from 'antd'
+import React, { FC, useEffect, useState } from 'react'
+import { Form, Input, Switch, Select } from 'antd'
 import { useDispatch } from 'react-redux'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import { resetPageInfo } from '../../../store/pageInfoReducer'
+import { multiLangOptions, LanguageOption } from '../../../utools/const'
 
 const PageSetting: FC = () => {
 	const pageInfo = useGetPageInfo()
-	const { isPublished, createdAt, updatedAt } = pageInfo
+	const {
+		isPublished,
+		createdAt,
+		updatedAt,
+		isMultiLang,
+		lang: innerLang,
+		defaultLang: innerDefaultLang,
+	} = pageInfo
 	const [form] = Form.useForm()
 
 	const dispatch = useDispatch()
 
 	function handleValueChange() {
-		dispatch(resetPageInfo({ ...form.getFieldsValue(), isPublished, createdAt, updatedAt }))
+		const { defaultLang, lang } = form.getFieldsValue()
+		dispatch(
+			resetPageInfo({
+				...form.getFieldsValue(),
+				isPublished,
+				createdAt,
+				updatedAt,
+				defaultLang: defaultLang ? defaultLang : innerDefaultLang,
+				lang: lang ? lang : innerLang,
+			}),
+		)
 	}
+
+	// 可切换的语言
+	const [filterLang, setFilterLang] = useState<LanguageOption[]>([])
+	useEffect(() => {
+		const selectLang = multiLangOptions.filter(item => innerLang?.includes(item.value))
+		setFilterLang(selectLang)
+	}, [innerLang])
 
 	useEffect(() => {
 		form.setFieldsValue(pageInfo)
@@ -53,6 +78,40 @@ const PageSetting: FC = () => {
 			>
 				<Switch />
 			</Form.Item>
+			<Form.Item
+				label="多语言"
+				name="isMultiLang"
+				tooltip="开启多语言后可以设置语言格式，在答卷时用户可以选择语言"
+			>
+				<Switch />
+			</Form.Item>
+			{isMultiLang ? (
+				<>
+					<Form.Item label="默认展示语言" name="defaultLang">
+						<Select
+							style={{ width: '100%' }}
+							defaultValue={innerDefaultLang || 'zh'}
+							options={filterLang}
+							placeholder="请选择语言"
+						/>
+					</Form.Item>
+					<Form.Item
+						name="lang"
+						label="可切换语言"
+						wrapperCol={{ span: 24 }}
+						rules={[{ required: true, message: '请至少选择一种语言!' }]}
+					>
+						<Select
+							mode="multiple"
+							style={{ width: '100%' }}
+							options={multiLangOptions}
+							placeholder="请选择语言"
+						/>
+					</Form.Item>
+				</>
+			) : (
+				''
+			)}
 		</Form>
 	)
 }

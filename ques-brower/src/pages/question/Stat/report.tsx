@@ -238,11 +238,11 @@ const Report: FC = () => {
 					},
 					{
 						key: answer.submission_id,
-						开始时间: moment.utc(answer.start_time).local().format('YYYY-MM-DD HH:mm:ss') || '', // 确保startTime不为null或undefined，给一个默认值''
-						提交时间: moment.utc(answer.submit_time).local().format('YYYY-MM-DD HH:mm:ss') || '',
-						填写设备: answer.device_info || '', // 如果deviceInfo是对象且可能不存在，使用可选链操作符(?.)
-						浏览器: answer.browser_info || '',
-						IP: answer.ip_address || '',
+						开始时间: moment.utc(answer.start_time).local().format('YYYY-MM-DD HH:mm:ss') || '-', // 确保startTime不为null或undefined，给一个默认值''
+						提交时间: moment.utc(answer.submit_time).local().format('YYYY-MM-DD HH:mm:ss') || '-',
+						填写设备: answer.device_info || '-', // 如果deviceInfo是对象且可能不存在，使用可选链操作符(?.)
+						浏览器: answer.browser_info || '-',
+						IP: answer.ip_address || '-',
 					},
 				)
 			})

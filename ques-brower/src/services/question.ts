@@ -175,6 +175,12 @@ async function createAiQues(options: {
 	return data
 }
 
+// 翻译问卷
+async function translateQues(quesText: any): Promise<ResDataType> {
+	const data = await http.post(API.SURVEYS.translateQues, quesText)
+	return data
+}
+
 export {
 	createQuesService,
 	getQuesInfoService,
@@ -189,4 +195,5 @@ export {
 	getSystemComponents,
 	genAiQuestion,
 	createAiQues,
+	translateQues,
 }

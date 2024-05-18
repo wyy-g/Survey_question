@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react'
-import { Spin } from 'antd'
+import React, { FC, useState, useEffect } from 'react'
+import { Spin, Select } from 'antd'
 import { useDispatch } from 'react-redux'
 import className from 'classnames'
 import styles from './EditCanvas.module.scss'
@@ -11,6 +11,7 @@ import EditToolbar from './EditToolbar'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import SortableComtainer from '../../../components/DragSoetable/SortableContainer'
 import SortableItem from '../../../components/DragSoetable/SortableItem'
+import { multiLangOptions, LanguageOption } from '../../../utools/const'
 
 type PropsType = {
 	loading: boolean
@@ -33,10 +34,17 @@ function genComponent(componentInfo: ComponentInfoType, isShowOrderIndex: boolea
 const EditCanvas: FC<PropsType> = ({ loading }) => {
 	const dispatch = useDispatch()
 	const { componentList = [], selectId = '' } = useGetComponentStore()
-	const { isShowOrderIndex, title, description } = useGetPageInfo()
+	const { isShowOrderIndex, title, description, isMultiLang, lang, defaultLang } = useGetPageInfo()
 
 	// 删除，移动，复制等按钮的显示与隐藏
 	const [hoveredId, setHoveredId] = useState<string | number>('')
+
+	const [filterLang, setFilterLang] = useState<LanguageOption[]>([])
+
+	useEffect(() => {
+		const selectLang = multiLangOptions.filter(item => lang?.includes(item.value))
+		setFilterLang(selectLang)
+	}, [isMultiLang, lang, defaultLang])
 
 	function handleClick(id: string | number) {
 		dispatch(changeSelectId(id))
@@ -58,6 +66,13 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
 	return (
 		<SortableComtainer items={componentList} onDragEnd={handleDragEnd}>
 			<div className={styles['canvas']}>
+				{isMultiLang ? (
+					<div className={styles['lang-select']}>
+						<Select value={defaultLang} style={{ width: 120 }} options={filterLang} />
+					</div>
+				) : (
+					<div></div>
+				)}
 				<div className={styles['canvas-header']}>
 					<div style={{ fontWeight: 500, fontSize: '22px' }}>{title}</div>
 					<div style={{ marginTop: '10px' }}>{description}</div>

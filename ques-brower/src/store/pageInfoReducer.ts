@@ -11,6 +11,9 @@ export type PageInfoType = {
 	startTime?: string
 	endTime?: string
 	isEnableFeedback?: boolean
+	isMultiLang?: boolean
+	lang?: string[]
+	defaultLang?: string
 }
 
 const INIT_STATE: PageInfoType = {
@@ -23,6 +26,9 @@ const INIT_STATE: PageInfoType = {
 	startTime: '',
 	endTime: '',
 	isEnableFeedback: false,
+	isMultiLang: false,
+	lang: [],
+	defaultLang: 'zh',
 }
 
 const pageInfoSlice = createSlice({

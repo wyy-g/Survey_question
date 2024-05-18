@@ -33,6 +33,7 @@
     "react-router-hash-link": "^2.4.3",
     "react-scripts": "5.0.1",
     "react-signature-canvas": "^1.0.6",
+    "tencentcloud-sdk-nodejs": "^4.0.848",
     "typescript": "^4.9.5",
     "ua-parser-js": "^1.0.37",
     "web-vitals": "^2.1.4"
