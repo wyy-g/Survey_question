@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const { register, isHaveUsername, updateUserInfo, updateUserPassword } = require('../models/user')
 const { deleteVerifyCode } = require('../models/verifyCode')
 const { generateToken } = require('../middlewares/authorization')
