@@ -8,8 +8,8 @@ const tencentClient = new CvmClient({
     // 为了保护密钥安全，建议将密钥设置在环境变量中或者配置文件中，请参考本文凭证管理章节。
     // 硬编码密钥到代码中有可能随代码泄露而暴露，有安全隐患，并不推荐。
     credential: {
-        secretId: 'AKIDgNL1pgfxP66xlOvz50paAteWOFxgZQNP',
-        secretKey: '9RztnebqGiAkLqW7fL7ncQRYesKsPuXI',
+        secretId: process.env.TENCENT_ID,
+        secretKey: process.env.TENCENT_KEY,
     },
     // 产品地域
     region: "ap-shanghai",
