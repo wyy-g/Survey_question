@@ -56,6 +56,8 @@ exports.verifyToken = function (req, res, next) {
         return
     }
 
+    // 翻译不需要
+
     jwt.verify(token, secretKey, function (err, decoded) {
         if (err) {
             console.log("verify token error", err)
